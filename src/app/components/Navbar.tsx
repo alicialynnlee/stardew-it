@@ -9,34 +9,33 @@ export default function Navbar() {
 
   return (
     <Styled.Navbar>
-      <div>
-        <Link href="/">
-          MyApp {/* Or your app name/logo */}
-        </Link>
-      </div>
-      <div>
-        {status === 'loading' ? (
-          <span>Loading...</span>
-        ) : session ? (
-          <Styled.AuthActions>
-            <span>
-              Signed in as {session.user?.username || session.user?.name || 'User'}
-            </span>
-            <button onClick={() => signOut()}>
-              Sign Out
-            </button>
-          </Styled.AuthActions>
-        ) : (
-          <Styled.AuthActions>
-            <button onClick={() => signIn()}>
-              Sign In
-            </button>
-            <Link href="/auth/signup" >
-              Sign Up
+        <div>
+            <Link href="/">
+                MyApp {/* Or your app name/logo */}
             </Link>
-          </Styled.AuthActions>
-        )}
-      </div>
+        </div>
+        <Styled.AuthActions>
+            {status === 'loading' ? (
+                <span>Loading...</span>
+            ) : (
+                <>
+                    {session && session.user && (
+                        <span>
+                            Signed in as {session.user?.username || session.user?.name || 'User'}
+                        </span>
+                    )}
+                    {session ? (
+                        <Styled.AuthButton onClick={() => signOut()}>
+                            Sign Out
+                        </Styled.AuthButton>
+                    ) : (
+                        <Styled.AuthButton onClick={() => signIn()}>
+                            Sign In
+                        </Styled.AuthButton>
+                    )}
+                </>
+            )}
+        </Styled.AuthActions>
     </Styled.Navbar>
   );
 } 

@@ -3,7 +3,7 @@
 import { useState, FormEvent } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation'; // Use next/navigation for App Router
-import styles from './signin.module.css'; // We'll create this CSS module
+import * as Styled from '../signup.styled';
 
 export default function SignInPage() {
   const router = useRouter();
@@ -52,11 +52,11 @@ export default function SignInPage() {
   };
 
   return (
-    <div className={styles.container}>
+    <Styled.Container>
       <h1>Sign In</h1>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        {formError && <p className={styles.error}>{formError}</p>}
-        <div className={styles.inputGroup}>
+      <Styled.Form onSubmit={handleSubmit}>
+        {formError && <Styled.ErrorMessage>{formError}</Styled.ErrorMessage>}
+        <Styled.InputGroup>
           <label htmlFor="username">Username</label>
           <input
             id="username"
@@ -66,8 +66,8 @@ export default function SignInPage() {
             required
             disabled={loading}
           />
-        </div>
-        <div className={styles.inputGroup}>
+        </Styled.InputGroup>
+        <Styled.InputGroup>
           <label htmlFor="password">Password</label>
           <input
             id="password"
@@ -77,14 +77,14 @@ export default function SignInPage() {
             required
             disabled={loading}
           />
-        </div>
-        <button type="submit" disabled={loading} className={styles.button}>
+        </Styled.InputGroup>
+        <Styled.Button type="submit" disabled={loading}>
           {loading ? 'Signing In...' : 'Sign In'}
-        </button>
-      </form>
-       <p className={styles.linkText}>
+        </Styled.Button>
+      </Styled.Form>
+       <Styled.LinkText>
           Don't have an account? <a href="/auth/signup">Sign Up</a>
-       </p>
-    </div>
+       </Styled.LinkText>
+    </Styled.Container>
   );
 } 

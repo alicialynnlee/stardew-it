@@ -21,6 +21,26 @@ export const Home = styled.div`
 export const AuthActions = styled.div`
   display: flex;
   gap: 1rem;
+  align-items: center;
+  font-size: 1rem;
+  button, a {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+  }
+  button {
+    cursor: pointer;
+  }
 `;
+
+export const AuthButton = styled.button`
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+`
 
 

@@ -2,8 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation'; // Use next/navigation for App Router
-import styles from './signup.module.css'; // We'll create this CSS module
-
+import * as Styled from '../signup.styled';
 export default function SignUpPage() {
   const router = useRouter();
   const [name, setName] = useState('');
@@ -52,12 +51,12 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className={styles.container}>
+    <Styled.Container>
       <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        {error && <p className={styles.error}>{error}</p>}
-        {success && <p className={styles.success}>{success}</p>}
-        <div className={styles.inputGroup}>
+      <Styled.Form onSubmit={handleSubmit}>
+        {error && <Styled.ErrorMessage>{error}</Styled.ErrorMessage>}
+        {success && <Styled.SuccessMessage>{success}</Styled.SuccessMessage>}
+        <Styled.InputGroup>
           <label htmlFor="name">Name (Optional)</label>
           <input
             id="name"
@@ -66,8 +65,8 @@ export default function SignUpPage() {
             onChange={(e) => setName(e.target.value)}
             disabled={loading}
           />
-        </div>
-        <div className={styles.inputGroup}>
+        </Styled.InputGroup>
+        <Styled.InputGroup>
           <label htmlFor="username">Username</label>
           <input
             id="username"
@@ -77,8 +76,8 @@ export default function SignUpPage() {
             required
             disabled={loading}
           />
-        </div>
-        <div className={styles.inputGroup}>
+        </Styled.InputGroup>
+        <Styled.InputGroup>
           <label htmlFor="password">Password</label>
           <input
             id="password"
@@ -89,14 +88,14 @@ export default function SignUpPage() {
             minLength={6} // Enforce min length on client-side as well
             disabled={loading}
           />
-        </div>
-        <button type="submit" disabled={loading} className={styles.button}>
+        </Styled.InputGroup>
+        <Styled.Button type="submit" disabled={loading}>
           {loading ? 'Signing Up...' : 'Sign Up'}
-        </button>
-      </form>
-      <p className={styles.linkText}>
+        </Styled.Button>
+      </Styled.Form>
+      <Styled.LinkText>
           Already have an account? <a href="/auth/signin">Sign In</a>
-       </p>
-    </div>
+       </Styled.LinkText>
+    </Styled.Container>
   );
 } 
