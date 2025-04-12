@@ -1,18 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import StyledComponentsRegistry from './registry';
+import GlobalStyles from "./styles/GlobalStyles";
 import AuthProvider from "./components/AuthProvider";
-import Navbar from "./components/Navbar";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { Navbar, SideNav } from "./components";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,11 +16,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <AuthProvider>
-          <Navbar />
-          <main className="flex-grow">{children}</main>
-        </AuthProvider>
+      <body>
+        <StyledComponentsRegistry>
+          <GlobalStyles />
+          <AuthProvider>
+            <Navbar />
+            <div style={{ display: 'flex', minHeight: '100vh' }}>
+              <SideNav />
+              <main className="flex-grow">{children}</main>
+            </div>
+          </AuthProvider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
