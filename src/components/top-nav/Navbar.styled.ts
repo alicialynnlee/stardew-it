@@ -30,5 +30,3 @@ export const AuthButton = styled.button`
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
 `;
-
-

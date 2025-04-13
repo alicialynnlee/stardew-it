@@ -1,11 +1,11 @@
-import NextAuth from "next-auth"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { prisma } from "./prisma"
+import NextAuth from 'next-auth';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { prisma } from './prisma';
 
 // Import your providers
 //import GitHub from "next-auth/providers/github"
 //import Google from "next-auth/providers/google"
-import Credentials from "next-auth/providers/credentials"; // For email/password
+import Credentials from 'next-auth/providers/credentials'; // For email/password
 import bcrypt from 'bcryptjs';
 
 const handler = NextAuth({
@@ -13,39 +13,45 @@ const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
-        name: "Credentials",
-        credentials: {
-            email: { label: "Email", type: "email" },
-            password: { label: "Password", type: "password" },
-        },
-        authorize: async (credentials) => {
-            if (!credentials?.email || !credentials?.password) {
-                console.error("Credentials missing email or password");
-                throw new Error("Missing email or password");
-            }
-            const email = credentials.email as string;
-            const password = credentials.password as string;
-            try {
-                const user = await prisma.user.findUnique({
-                    where: { email },
-                });
-                // Hash the password
-                const passwordsMatch = await bcrypt.compare(password, user?.password || '');
-                if (passwordsMatch && user) {
-                    console.info("Credentials user found and password matched:", user.email);
-                    return {
-                      id: user.id,
-                      email: user.email,
-                    };
-                } else {
-                    console.error("Password does not match");
-                    throw new Error("Invalid credentials");
-                }
-            } catch (error) {
-                console.error("Error finding user:", error);
-                throw new Error("Invalid credentials");
-            }
-        },
+      name: 'Credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      authorize: async (credentials) => {
+        if (!credentials?.email || !credentials?.password) {
+          console.error('Credentials missing email or password');
+          throw new Error('Missing email or password');
+        }
+        const email = credentials.email as string;
+        const password = credentials.password as string;
+        try {
+          const user = await prisma.user.findUnique({
+            where: { email },
+          });
+          // Hash the password
+          const passwordsMatch = await bcrypt.compare(
+            password,
+            user?.password || ''
+          );
+          if (passwordsMatch && user) {
+            console.info(
+              'Credentials user found and password matched:',
+              user.email
+            );
+            return {
+              id: user.id,
+              email: user.email,
+            };
+          } else {
+            console.error('Password does not match');
+            throw new Error('Invalid credentials');
+          }
+        } catch (error) {
+          console.error('Error finding user:', error);
+          throw new Error('Invalid credentials');
+        }
+      },
     }),
     // Add other providers like Google, Credentials, etc.
     // Google({}),
@@ -56,7 +62,7 @@ const handler = NextAuth({
   ],
   session: {
     // Use JSON Web Tokens for session management
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   callbacks: {
     // Optional: Customize session/token data
@@ -88,11 +94,11 @@ const handler = NextAuth({
     signOut: '/auth/signout',
   },
   secret: process.env.AUTH_SECRET,
-    // signOut: '/auth/signout',
-    // error: '/auth/error', // Error code passed in query string as ?error=
+  // signOut: '/auth/signout',
+  // error: '/auth/error', // Error code passed in query string as ?error=
   //   // verifyRequest: '/auth/verify-request', // (used for email/passwordless login)
   //   // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out to disable)
   // }
-})
+});
 
-export { handler as auth }
+export { handler as auth };

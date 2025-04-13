@@ -24,4 +24,4 @@ export default function StyledComponentsRegistry({
       {children}
     </StyleSheetManager>
   );
-} 
+}

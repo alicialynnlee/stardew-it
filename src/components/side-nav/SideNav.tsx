@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import * as Styled from './SideNav.styled';
 
@@ -33,4 +32,4 @@ const SideNav: React.FC = () => {
   );
 };
 
-export default SideNav; 
+export default SideNav;

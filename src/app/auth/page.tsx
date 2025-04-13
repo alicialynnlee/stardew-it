@@ -52,7 +52,6 @@ export default function AuthPage() {
     setError(null);
 
     try {
-
       if (password !== confirmPassword) {
         setError('Passwords do not match');
         return;
@@ -105,7 +104,9 @@ export default function AuthPage() {
         </Styled.AuthToggle>
 
         {error && (
-          <Styled.Message $type={error.includes('successful') ? 'success' : 'error'}>
+          <Styled.Message
+            $type={error.includes('successful') ? 'success' : 'error'}
+          >
             {error}
           </Styled.Message>
         )}
@@ -149,11 +150,15 @@ export default function AuthPage() {
         </Styled.InputGroup>
 
         <Styled.SubmitButton type="submit" disabled={loading}>
-          {loading 
-            ? (isSignIn ? 'Signing in...' : 'Signing up...') 
-            : (isSignIn ? 'Sign In' : 'Sign Up')}
+          {loading
+            ? isSignIn
+              ? 'Signing in...'
+              : 'Signing up...'
+            : isSignIn
+              ? 'Sign In'
+              : 'Sign Up'}
         </Styled.SubmitButton>
       </Styled.AuthForm>
     </Styled.AuthContainer>
   );
-} 
+}

@@ -28,45 +28,67 @@ export function useFarms(userId: string) {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     fetchFarms();
   }, [fetchFarms]);
 
-  const addNewFarm = useCallback(async (farmName: string): Promise<{ success: boolean; error?: string; fieldErrors?: any; farm?: Farm }> => {
-    let result: { success: boolean; error?: string; fieldErrors?: any; farm?: Farm } = { success: false };
+  const addNewFarm = useCallback(
+    async (
+      farmName: string
+    ): Promise<{
+      success: boolean;
+      error?: string;
+      fieldErrors?: any;
+      farm?: Farm;
+    }> => {
+      let result: {
+        success: boolean;
+        error?: string;
+        fieldErrors?: any;
+        farm?: Farm;
+      } = { success: false };
 
-    await new Promise<void>((resolve) => {
+      await new Promise<void>((resolve) => {
         startTransitionAdd(async () => {
-            result = await addFarm(farmName, userId);
-            if (result.success && result.farm) {
-                setFarms((prev) => [...prev, result.farm!].sort((a, b) => a.name.localeCompare(b.name)));
-            } else {
-                setError(result.error ?? 'Failed to add farm.');
-            }
-            resolve();
+          result = await addFarm(farmName, userId);
+          if (result.success && result.farm) {
+            setFarms((prev) =>
+              [...prev, result.farm!].sort((a, b) =>
+                a.name.localeCompare(b.name)
+              )
+            );
+          } else {
+            setError(result.error ?? 'Failed to add farm.');
+          }
+          resolve();
         });
-    });
+      });
 
-    return result;
-  }, []);
+      return result;
+    },
+    [userId]
+  );
 
-  const deleteFarm = useCallback(async (farmId: string): Promise<{ success: boolean; error?: string }> => {
-    let result: { success: boolean; error?: string } = { success: false };
+  const deleteFarm = useCallback(
+    async (farmId: string): Promise<{ success: boolean; error?: string }> => {
+      let result: { success: boolean; error?: string } = { success: false };
 
-    await new Promise<void>((resolve) => {
+      await new Promise<void>((resolve) => {
         startTransitionDelete(async () => {
-            result = await deleteFarmAction(farmId, userId);
-            if (result.success) {
-                setFarms((prev) => prev.filter((farm) => farm.id !== farmId));
-            }
-            resolve();
+          result = await deleteFarmAction(farmId, userId);
+          if (result.success) {
+            setFarms((prev) => prev.filter((farm) => farm.id !== farmId));
+          }
+          resolve();
         });
-    });
+      });
 
-    return result;
-  }, []);
+      return result;
+    },
+    [userId]
+  );
 
   return {
     farms,
