@@ -3,17 +3,22 @@
 import { createGlobalStyle } from 'styled-components';
 import { charcoalBlack, whiteSmoke } from './colors';
 
+// TODO: Add dark mode support
+// @media (prefers-color-scheme: dark) {
+//   :root {
+//     --background: ${charcoalBlack};
+//     --foreground: ${whiteSmoke};
+//   }
+// }
+// @media (prefers-color-scheme: dark) {
+//   html {
+//     color-scheme: dark;
+//   }
+// }
 const GlobalStyles = createGlobalStyle`
   :root {
     --background: ${whiteSmoke};
     --foreground: ${charcoalBlack};
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --background: ${charcoalBlack};
-      --foreground: ${whiteSmoke};
-    }
   }
 
   html,
@@ -41,12 +46,6 @@ const GlobalStyles = createGlobalStyle`
   a {
     color: inherit;
     text-decoration: none;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    html {
-      color-scheme: dark;
-    }
   }
 `;
 

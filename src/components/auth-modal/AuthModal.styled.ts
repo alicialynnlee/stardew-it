@@ -1,7 +1,8 @@
+import { barnRed, charcoalBlack, whiteSmoke } from '@/styles/colors';
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  max-width: 400px;
+/*
+max-width: 400px;
   margin: 50px auto;
   padding: 30px;
   border: 1px solid #ddd;
@@ -13,15 +14,29 @@ export const Container = styled.div`
     margin-bottom: 25px;
     color: #333;
   }
+*/
+
+export const Container = styled.div`
+  background-color: ${whiteSmoke};
+  border: 1px solid ${charcoalBlack};
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 3.6rem 1.6rem;
+  padding: 3.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
 `;
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 0.8rem;
 `;
 
-export const InputGroup = styled.div`
+/*
+
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -41,11 +56,25 @@ export const InputGroup = styled.div`
       box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
     }
   }
-  
+*/
+export const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  input {
+    padding: 0.5rem;
+    border: 1px solid ${charcoalBlack};
+    border-radius: 4px;
+    font-size: 1rem;
+  }
 `;
 
-export const Button = styled.button`
-  padding: 12px;
+/*
+padding: 12px;
   background-color: #0070f3;
   color: white;
   border: none;
@@ -61,10 +90,16 @@ export const Button = styled.button`
     background-color: #ccc;
     cursor: not-allowed;
   }
+*/
+export const Button = styled.button`
+  padding: 0.5rem;
+  border: 1px solid ${charcoalBlack};
+  border-radius: 4px;
+  font-size: 1rem;
 `;
 
-export const LinkText = styled.p`
-  margin-top: 20px;
+/*
+margin-top: 20px;
   font-size: 0.9rem;
   color: #555;
   a {
@@ -74,9 +109,14 @@ export const LinkText = styled.p`
       text-decoration: underline;
     }
   }
-`;
+*/
 
-export const ErrorMessage = styled.p`
+export const LinkText = styled.p`
+  a {
+    color: ${barnRed};
+  }
+`;
+/*
   color: #ff4d4f;
   background-color: #fff1f0;
   border: 1px solid #ffccc7;
@@ -84,9 +124,12 @@ export const ErrorMessage = styled.p`
   border-radius: 4px;
   margin-bottom: 15px;
   text-align: center;
+*/
+export const ErrorMessage = styled.p`
+
 `;
 
-export const SuccessMessage = styled.p`
+/*
   color: #52c41a;
   background-color: #f6ffed;
   border: 1px solid #b7eb8f;
@@ -94,6 +137,9 @@ export const SuccessMessage = styled.p`
   border-radius: 4px;
   margin-bottom: 15px;
   text-align: center;
+*/
+export const SuccessMessage = styled.p`
+  
 `;
 
 

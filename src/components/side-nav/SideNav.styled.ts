@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { whiteSmoke } from '@/app/styles/colors';
+import { whiteSmoke } from '@/styles/colors';
 
 export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
   height: 100vh;

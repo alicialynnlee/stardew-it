@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { whiteSmoke } from '@/app/styles/colors';
+import { charcoalBlack, whiteSmoke } from '@/styles/colors';
 export const Navbar = styled.nav`
   display: flex;
   justify-content: space-between;
@@ -20,24 +20,14 @@ export const AuthActions = styled.div`
   gap: 1rem;
   align-items: center;
   font-size: 1rem;
-  button, a {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-  }
-  button {
-    cursor: pointer;
-  }
 `;
 
 export const AuthButton = styled.button`
-  background-color: #007bff;
-  color: #fff;
-  border: none;
+  background: transparent;
+  color: ${charcoalBlack};
+  border: 1px solid ${charcoalBlack};
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
-`
+`;
 
 

@@ -9,8 +9,12 @@ declare module "next-auth" {
     user: {
       /** The user's id. */
       id: string;
-      /** The user's username. */
-      username: string;
+      /** The user's email. */
+      email: string;
+      /** The user's name. */
+      name: string;
+      /** The user's image. */
+      image?: string;
     } & DefaultSession["user"]; // Keep the default properties
   }
 
@@ -31,7 +35,7 @@ declare module "next-auth/jwt" {
     /** OpenID ID Token */
     id?: string; // Add the id property to the JWT token
     /** Custom username field */
-    username?: string; // Add the username property to the JWT token
+    name?: string; // Add the username property to the JWT token
     // Add other custom properties to the token here if needed
   }
 } 

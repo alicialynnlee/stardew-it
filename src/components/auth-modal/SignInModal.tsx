@@ -3,15 +3,15 @@
 import { useState, FormEvent } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation'; // Use next/navigation for App Router
-import * as Styled from '../signup.styled';
+import * as Styled from './AuthModal.styled';
 
-export default function SignInPage() {
+export default function SignInModal({ onSubmit, toSignUpModal }: { onSubmit: () => void, toSignUpModal: () => void }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams?.get('callbackUrl') || '/'; // Redirect back or to home
   const error = searchParams?.get('error');
 
-  const [username, setUsername] = useState('');
+  // Sign In Specific State
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(error ? 'Invalid credentials. Please try again.' : null);
@@ -24,29 +24,31 @@ export default function SignInPage() {
     try {
       const result = await signIn('credentials', {
         redirect: false, // Handle redirect manually
-        username,
+        email,
         password,
-        callbackUrl: callbackUrl, // Pass the intended redirect URL
       });
 
       if (result?.error) {
-        console.error('Sign in error:', result.error);
-        setFormError('Invalid email or password.'); // Show specific error
-        setLoading(false);
+        if (result.error === 'CredentialsSignin') {
+          setFormError('Invalid email or password.');
+        } else {
+          setFormError(`Error: ${result.error}`);
+        }
       } else if (result?.ok) {
         // Sign in was successful
-        console.log('Sign in successful, redirecting to:', callbackUrl);
-        router.push(callbackUrl); // Redirect upon success
-        // router.refresh(); // Optional: refresh server components
+        console.log('Sign in successful');
+        onSubmit();
+        router.refresh(); 
       } else {
-          // Handle other potential non-error, non-ok outcomes if necessary
-           console.log('Sign in result:', result);
-           setFormError('An unexpected error occurred during sign in.');
-           setLoading(false);
+        // Handle other potential non-error, non-ok outcomes if necessary
+        console.log('Sign in result:', result);
+        setFormError('An unexpected error occurred during sign in.');
       }
     } catch (error) {
       console.error('Sign in exception:', error);
       setFormError('An unexpected error occurred.');
+      setLoading(false);
+    } finally {
       setLoading(false);
     }
   };
@@ -57,12 +59,12 @@ export default function SignInPage() {
       <Styled.Form onSubmit={handleSubmit}>
         {formError && <Styled.ErrorMessage>{formError}</Styled.ErrorMessage>}
         <Styled.InputGroup>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="email">Email</label>
           <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
             disabled={loading}
           />
@@ -83,7 +85,7 @@ export default function SignInPage() {
         </Styled.Button>
       </Styled.Form>
        <Styled.LinkText>
-          Don't have an account? <a href="/auth/signup">Sign Up</a>
+          Don't have an account? <button onClick={toSignUpModal}>Sign Up</button>
        </Styled.LinkText>
     </Styled.Container>
   );
