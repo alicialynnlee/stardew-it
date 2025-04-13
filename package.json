@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development DEBUG=* next dev --port 3000",
+    "dev": "NODE_ENV=development next dev --port 3000",
+    "dev:turbo": "NODE_ENV=development next dev --turbo --port 3000",
+    "dev:debug": "NODE_ENV=development DEBUG=* next dev --no-turbo --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

@@ -2,10 +2,10 @@
 'use client'; // Hooks run on the client
 
 import { useState, useEffect, useCallback, useTransition } from 'react';
-import { getFarms, addFarm, deleteFarm } from '@/app/actions/farmActions';
+import { getFarms, addFarm, deleteFarmAction } from '@/app/actions/farmActions';
 import type { Farm } from '@prisma/client';
 
-export function useFarms() {
+export function useFarms(userId: string) {
   const [farms, setFarms] = useState<Farm[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +16,7 @@ export function useFarms() {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await getFarms();
+      const result = await getFarms(userId);
       if (result.success && result.farms) {
         setFarms(result.farms);
       } else {
@@ -31,17 +31,19 @@ export function useFarms() {
   }, []);
 
   useEffect(() => {
-    fetchFarms(); // Fetch on initial mount
+    fetchFarms();
   }, [fetchFarms]);
 
-  const addNewFarm = useCallback(async (formData: FormData): Promise<{ success: boolean; error?: string; fieldErrors?: any; farm?: Farm }> => {
+  const addNewFarm = useCallback(async (farmName: string): Promise<{ success: boolean; error?: string; fieldErrors?: any; farm?: Farm }> => {
     let result: { success: boolean; error?: string; fieldErrors?: any; farm?: Farm } = { success: false };
 
     await new Promise<void>((resolve) => {
         startTransitionAdd(async () => {
-            result = await addFarm(formData);
+            result = await addFarm(farmName, userId);
             if (result.success && result.farm) {
                 setFarms((prev) => [...prev, result.farm!].sort((a, b) => a.name.localeCompare(b.name)));
+            } else {
+                setError(result.error ?? 'Failed to add farm.');
             }
             resolve();
         });
@@ -55,7 +57,7 @@ export function useFarms() {
 
     await new Promise<void>((resolve) => {
         startTransitionDelete(async () => {
-            result = await deleteFarm(farmId);
+            result = await deleteFarmAction(farmId, userId);
             if (result.success) {
                 setFarms((prev) => prev.filter((farm) => farm.id !== farmId));
             }

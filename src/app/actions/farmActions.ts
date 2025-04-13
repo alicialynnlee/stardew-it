@@ -1,17 +1,13 @@
 'use server';
 
-import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import type { Farm } from '@prisma/client';
 
 // --- Action to Fetch Current User's Farms ---
-export async function getFarms(): Promise<{ success: boolean; farms?: Farm[]; error?: string }> {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return { success: false, error: 'Unauthorized: User not logged in.' };
+export async function getFarms(userId: string): Promise<{ success: boolean; farms?: Farm[]; error?: string }> {
+  if (!userId) {
+    return { success: false, error: 'Unauthorized: User not found.' };
   }
-  const userId = session.user.id;
-
   try {
     const farms = await prisma.farm.findMany({
       where: { userId: userId },
@@ -26,20 +22,14 @@ export async function getFarms(): Promise<{ success: boolean; farms?: Farm[]; er
 
 // --- Action to Add a New Farm for the Current User ---
 export async function addFarm(
-    formData: FormData
+    farmName: string,
+    userId: string
 ): Promise<{ success: boolean; farm?: Farm; error?: string; fieldErrors?: { name?: string[] } }> {
-    const session = await auth();
-    if (!session?.user?.id) {
-        return { success: false, error: 'Unauthorized: User not logged in.' };
+    if (!userId) {
+        return { success: false, error: 'Unauthorized: User not found.' };
     }
-    const userId = session.user.id;
-
-    const rawFormData = {
-      name: formData.get('newFarmName'),
-    };
-
     // Validate input is string and not empty
-    if (typeof rawFormData.name !== 'string' || rawFormData.name.trim() === '') {
+    if (typeof farmName !== 'string' || farmName.trim() === '') {
         return {
             success: false,
             error: 'Invalid input.',
@@ -50,11 +40,11 @@ export async function addFarm(
     try {
         const newFarm = await prisma.farm.create({
             data: {
-                name: rawFormData.name,
+                name: farmName,
                 userId: userId,
             },
         });
-        console.log('New farm created:', newFarm);
+        console.info('New farm created:', newFarm);
         return { success: true, farm: newFarm };
     } catch (error) {
         console.error('Error adding farm:', error);
@@ -62,18 +52,15 @@ export async function addFarm(
     }
 }
 
-export async function deleteFarm(farmId: string) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        return { success: false, error: 'Unauthorized: User not logged in.' };
+export async function deleteFarmAction(farmId: string, userId: string) {
+    if (!userId) {
+        return { success: false, error: 'Unauthorized: User not found.' };
     }
-    const userId = session.user.id;
-
     try {
         await prisma.farm.delete({
             where: { id: farmId, userId: userId },
         });
-        console.log('Farm deleted:', farmId);
+        console.info('Farm deleted:', farmId);
         return { success: true };
     } catch (error) {
         console.error('Error deleting farm:', error);

@@ -30,9 +30,9 @@ const handler = NextAuth({
                     where: { email },
                 });
                 // Hash the password
-                const passwordsMatch = await bcrypt.compare(password, user.password);
-                if (passwordsMatch) {
-                    console.log("Credentials user found and password matched:", user.email);
+                const passwordsMatch = await bcrypt.compare(password, user?.password || '');
+                if (passwordsMatch && user) {
+                    console.info("Credentials user found and password matched:", user.email);
                     return {
                       id: user.id,
                       email: user.email,

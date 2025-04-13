@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { whiteSmoke } from '@/styles/colors';
 
 export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
-  height: 100vh;
+  min-height: 100%;
   width: 17rem;
   background-color: ${whiteSmoke};
   border-right: 1px solid #e9ecef;

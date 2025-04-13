@@ -17,3 +17,12 @@ export const FarmSelectorList = styled.ul<{ $isDropdownOpen: boolean }>`
     display: ${props => props.$isDropdownOpen ? 'block' : 'none'};
 `;
 
+export const FarmSelectorListItem = styled.li`
+    border: 1px solid ${charcoalBlack};
+    padding: 0.5rem;
+`;
+export const ListItemWithButton = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+

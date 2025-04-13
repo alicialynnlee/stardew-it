@@ -23,7 +23,7 @@ export default function RootLayout({
           <GlobalStyles />
           <AuthProvider>
             <Navbar />
-            <div style={{ display: 'flex', minHeight: '100vh' }}>
+            <div style={{ display: 'flex', minHeight: 'calc(100vh - 5rem)' }}>
               <SideNav />
               <main className="flex-grow">{children}</main>
             </div>

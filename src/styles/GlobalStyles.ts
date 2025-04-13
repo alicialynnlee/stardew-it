@@ -25,6 +25,8 @@ const GlobalStyles = createGlobalStyle`
   body {
     max-width: 100vw;
     overflow-x: hidden;
+    height: 100%;
+    margin: 0;
   }
 
   body {
@@ -37,6 +39,12 @@ const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
+  main {
+    padding: 2rem;
+    flex: 1;
+    width: 100%;
+  }
+
   * {
     box-sizing: border-box;
     padding: 0;
@@ -46,6 +54,10 @@ const GlobalStyles = createGlobalStyle`
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  button[type="button"] {
+    cursor: pointer;
   }
 `;
 
