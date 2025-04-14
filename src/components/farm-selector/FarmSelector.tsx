@@ -2,26 +2,29 @@
 
 import { useFarms } from '@/app/hooks/useFarms';
 import * as Styled from './FarmSelector.styled';
-import { useCallback, useState } from 'react';
-import type { Farm } from '@prisma/client';
+import { useCallback, useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 // TODO: Add error handling
-export default function FarmSelector({ userId }: { userId: string }) {
+export default function FarmSelector() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
   const {
     farms,
-    // error: fetchError,
+    // isLoading,
+    // error,
     addNewFarm,
     deleteFarm,
-  } = useFarms(userId);
-  const [selectedFarm, setSelectedFarm] = useState<Farm | null>(null);
+    selectedFarmId,
+    setSelectedFarm,
+  } = useFarms(userId ?? '');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [newFarm, setNewFarm] = useState('');
   // const [newFarmError, setNewFarmError] = useState('');
-  // Update options when initialOptions change.  Crucial for external updates.
 
-  const handleOptionChange = useCallback(
-    (value: string) => {
-      setSelectedFarm(farms.find((farm) => farm.id === value) || null);
+  const handleSelectFarm = useCallback(
+    (farmId: string) => {
+      setSelectedFarm(farmId);
     },
     [farms]
   );
@@ -33,6 +36,8 @@ export default function FarmSelector({ userId }: { userId: string }) {
     if (!result.success) {
       console.error(result.error);
       // setNewFarmError(result.error || '');
+    } else {
+      setSelectedFarm(result.farm?.id ?? '');
     }
 
     setNewFarm('');
@@ -40,9 +45,10 @@ export default function FarmSelector({ userId }: { userId: string }) {
 
   const handleDeleteFarm = async (farmId: string) => {
     const result = await deleteFarm(farmId);
-    if (result.success && selectedFarm?.id === farmId) {
-      setSelectedFarm(null);
-    } else {
+    // If the deleted farm was the selected farm, reset the selected farm
+    if (result.success && selectedFarmId === farmId) {
+      setSelectedFarm('');
+    } else if (result.error) {
       console.error(result.error);
     }
   };
@@ -52,13 +58,14 @@ export default function FarmSelector({ userId }: { userId: string }) {
         type="button"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
-        {selectedFarm?.name || 'Select a farm...'}
+        {farms.find((farm) => farm.id === selectedFarmId)?.name ||
+          'Select a farm...'}
       </Styled.FarmSelectorButton>
       <Styled.FarmSelectorList $isDropdownOpen={isDropdownOpen}>
         {farms.map((farm) => (
           <Styled.FarmSelectorListItem key={farm.id}>
             <Styled.ListItemWithButton>
-              <button type="button" onClick={() => handleOptionChange(farm.id)}>
+              <button type="button" onClick={() => handleSelectFarm(farm.id)}>
                 {farm.name}
               </button>
               <button type="button" onClick={() => handleDeleteFarm(farm.id)}>

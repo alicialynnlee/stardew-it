@@ -49,12 +49,13 @@ model User {
   email             String   @unique
   password    String
   registrationDate  DateTime @default(now())
+  farms             Farm[]
+  selectedFarmId    String?
   
   // Required by NextAuth
   emailVerified     DateTime?  
   accounts          Account[]
   sessions          Session[]
-  farms             Farm[]
 
   @@map("users")
 }
@@ -69,10 +70,53 @@ model VerificationToken {
 }
 
 model Farm {
-  id     String @id @default(cuid())
-  name   String
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String      @id @default(cuid())
+  name      String
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks     FarmTask[]
 
   @@map("farms")
+}
+
+model Task {
+  id          String       @id @default(cuid())
+  name        String
+  bundleId    String
+  bundle      Bundle      @relation(fields: [bundleId], references: [id])
+  farmTasks   FarmTask[]  // Required by Prisma for the relation to work
+
+  @@map("tasks")
+}
+
+model Room {
+  id          String    @id @default(cuid())
+  name        String
+  bundles     Bundle[]
+
+  @@map("rooms")
+}
+
+model Bundle {
+  id            String   @id @default(cuid())
+  name          String
+  tasksRequired Int
+  reward        String?
+  roomId        String
+  room          Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  tasks         Task[]
+
+  @@map("bundles")
+}
+
+model FarmTask {
+  id          String    @id @default(cuid())
+  farm        Farm      @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  farmId      String
+  task        Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId      String
+  completed   Boolean   @default(false)
+
+  @@unique([farmId, taskId])
+  @@map("farm_tasks")
 }

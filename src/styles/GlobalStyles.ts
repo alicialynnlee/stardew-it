@@ -56,7 +56,7 @@ const GlobalStyles = createGlobalStyle`
     text-decoration: none;
   }
 
-  button[type="button"] {
+  button {
     cursor: pointer;
   }
 `;

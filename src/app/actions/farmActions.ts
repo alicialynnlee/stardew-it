@@ -45,6 +45,7 @@ export async function addFarm(
   }
 
   try {
+    // add farm to database
     const newFarm = await prisma.farm.create({
       data: {
         name: farmName,
@@ -52,6 +53,21 @@ export async function addFarm(
       },
     });
     console.info('New farm created:', newFarm);
+    // get all tasks
+    const tasks = await prisma.task.findMany({
+      select: { id: true },
+    });
+    if (tasks.length > 0) {
+      // add farmtasks
+      const farmTasks = tasks.map((task) => ({
+        taskId: task.id,
+        farmId: newFarm.id,
+        completed: false,
+      }));
+      await prisma.farmTask.createMany({
+        data: farmTasks,
+      });
+    }
     return { success: true, farm: newFarm };
   } catch (error) {
     console.error('Error adding farm:', error);
@@ -72,5 +88,68 @@ export async function deleteFarmAction(farmId: string, userId: string) {
   } catch (error) {
     console.error('Error deleting farm:', error);
     return { success: false, error: 'Failed to delete farm.' };
+  }
+}
+
+export async function getSelectedFarm(userId: string): Promise<{
+  success: boolean;
+  farmId?: string;
+  error?: string;
+}> {
+  if (!userId) {
+    return { success: false, error: 'Unauthorized: User not found.' };
+  }
+  const farm = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { selectedFarmId: true },
+  });
+  if (!farm || !farm.selectedFarmId) {
+    return { success: false, error: 'Farm not found.' };
+  }
+  return { success: true, farmId: farm.selectedFarmId };
+}
+
+export async function setSelectedFarmAction(
+  farmId: string,
+  userId: string
+): Promise<{
+  success: boolean;
+  error?: string;
+}> {
+  if (!userId) {
+    return { success: false, error: 'Unauthorized: User not found.' };
+  }
+  if (typeof farmId !== 'string' || farmId.trim() === '' || farmId === null) {
+    try {
+      const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: { selectedFarmId: null },
+      });
+      console.info('Selected farm reset:', updatedUser);
+      return { success: true };
+    } catch (error) {
+      console.error('Error resetting selected farm:', error);
+      return { success: false, error: 'Failed to reset selected farm.' };
+    }
+  }
+
+  // validate farmId is a valid farmId
+  const farm = await prisma.farm.findUnique({
+    where: { id: farmId, userId: userId },
+  });
+  if (!farm) {
+    return { success: false, error: 'Invalid farm.' };
+  }
+
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { selectedFarmId: farmId },
+    });
+    console.info('Selected farm updated:', updatedUser);
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating selected farm:', error);
+    return { success: false, error: 'Failed to update selected farm.' };
   }
 }

@@ -13,8 +13,6 @@ declare module 'next-auth' {
       email: string;
       /** The user's name. */
       name: string;
-      /** The user's image. */
-      image?: string;
     } & DefaultSession['user']; // Keep the default properties
   }
 

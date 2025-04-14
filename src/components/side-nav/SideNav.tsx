@@ -19,7 +19,7 @@ const SideNav: React.FC = () => {
           <Link href="/">Home</Link>
         </Styled.NavItem>
         <Styled.NavItem>
-          <Link href="/tasks">Tasks</Link>
+          <Link href="/tracker">Tracker</Link>
         </Styled.NavItem>
         <Styled.NavItem>
           <Link href="/calendar">Calendar</Link>

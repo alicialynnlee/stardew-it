@@ -1,8 +1,13 @@
-// app/hooks/useFarms.ts
-'use client'; // Hooks run on the client
+'use client';
 
 import { useState, useEffect, useCallback, useTransition } from 'react';
-import { getFarms, addFarm, deleteFarmAction } from '@/app/actions/farmActions';
+import {
+  getFarms,
+  addFarm,
+  deleteFarmAction,
+  setSelectedFarmAction,
+  getSelectedFarm,
+} from '@/app/actions/farmActions';
 import type { Farm } from '@prisma/client';
 
 export function useFarms(userId: string) {
@@ -11,6 +16,7 @@ export function useFarms(userId: string) {
   const [error, setError] = useState<string | null>(null);
   const [isAdding, startTransitionAdd] = useTransition();
   const [isDeleting, startTransitionDelete] = useTransition();
+  const [selectedFarmId, setSelectedFarmId] = useState<string | null>(null);
 
   const fetchFarms = useCallback(async () => {
     setIsLoading(true);
@@ -33,6 +39,19 @@ export function useFarms(userId: string) {
   useEffect(() => {
     fetchFarms();
   }, [fetchFarms]);
+
+  const fetchSelectedFarm = useCallback(async () => {
+    const result = await getSelectedFarm(userId);
+    if (result.success && result.farmId) {
+      setSelectedFarmId(result.farmId);
+    } else {
+      setSelectedFarmId(null);
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    fetchSelectedFarm();
+  }, [fetchSelectedFarm]);
 
   const addNewFarm = useCallback(
     async (
@@ -90,6 +109,18 @@ export function useFarms(userId: string) {
     [userId]
   );
 
+  const setSelectedFarm = useCallback(
+    async (farmId: string): Promise<{ success: boolean; error?: string }> => {
+      const result = await setSelectedFarmAction(farmId, userId);
+      if (!result.success) {
+        setError(result.error ?? 'Failed to set selected farm.');
+      }
+      setSelectedFarmId(farmId);
+      return result;
+    },
+    [userId]
+  );
+
   return {
     farms,
     isLoading,
@@ -99,5 +130,7 @@ export function useFarms(userId: string) {
     isAddingFarm: isAdding,
     deleteFarm,
     isDeletingFarm: isDeleting,
+    setSelectedFarm,
+    selectedFarmId,
   };
 }

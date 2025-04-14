@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { charcoalBlack, whiteSmoke } from '@/styles/colors';
+
 export const Navbar = styled.nav`
   display: flex;
   justify-content: space-between;
@@ -8,6 +9,11 @@ export const Navbar = styled.nav`
   background-color: ${whiteSmoke};
   border-bottom: 1px solid #e9ecef;
   height: 5rem;
+`;
+
+export const HomeContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export const Home = styled.div`

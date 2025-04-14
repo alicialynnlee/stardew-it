@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import * as Styled from './Navbar.styled';
 import FarmSelector from '../farm-selector/FarmSelector';
+import Image from 'next/image';
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -11,9 +12,19 @@ export default function Navbar() {
   if (status === 'loading') {
     return (
       <Styled.Navbar>
-        <div>
-          <Link href="/">MyApp</Link>
-        </div>
+        <Styled.HomeContainer>
+          <Link href="/">
+            <div>
+              <Image
+                src="/favicon.png"
+                alt="Stardew It"
+                width={48}
+                height={48}
+              />
+              Stardew It
+            </div>
+          </Link>
+        </Styled.HomeContainer>
         <Styled.AuthActions>
           <span>Loading...</span>
         </Styled.AuthActions>
@@ -24,13 +35,20 @@ export default function Navbar() {
   return (
     <Styled.Navbar>
       <div>
-        <Link href="/">MyApp</Link>
+        <Link href="/">
+          <Styled.HomeContainer>
+            <Image src="/favicon.png" alt="Stardew It" width={48} height={48} />
+            Stardew It
+          </Styled.HomeContainer>
+        </Link>
       </div>
       <Styled.AuthActions>
         {session ? (
           <>
-            <FarmSelector userId={session.user?.id} />
-            <span>Hi {session.user?.name || 'User'}!</span>
+            <FarmSelector />
+            <span>
+              Hi {session.user?.name || session.user?.email || 'User'}!
+            </span>
             <Styled.AuthButton onClick={() => signOut()}>
               Sign Out
             </Styled.AuthButton>

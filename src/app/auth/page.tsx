@@ -149,6 +149,20 @@ export default function AuthPage() {
           />
         </Styled.InputGroup>
 
+        {!isSignIn && (
+          <Styled.InputGroup>
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              disabled={loading}
+            />
+          </Styled.InputGroup>
+        )}
+
         <Styled.SubmitButton type="submit" disabled={loading}>
           {loading
             ? isSignIn
