@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions, getServerSession } from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from './prisma';
 
@@ -8,7 +8,7 @@ import { prisma } from './prisma';
 import Credentials from 'next-auth/providers/credentials'; // For email/password
 import bcrypt from 'bcryptjs';
 
-const handler = NextAuth({
+const authOptions: NextAuthOptions = {
   debug: process.env.NODE_ENV === 'development',
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -99,6 +99,13 @@ const handler = NextAuth({
   //   // verifyRequest: '/auth/verify-request', // (used for email/passwordless login)
   //   // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out to disable)
   // }
-});
+};
 
+const handler = NextAuth(authOptions);
 export { handler as auth };
+
+// helper to use in server components
+export async function getCurrentUser() {
+  const session = await getServerSession(authOptions);
+  return session?.user;
+}

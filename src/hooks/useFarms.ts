@@ -7,7 +7,7 @@ import {
   deleteFarmAction,
   setSelectedFarmAction,
   getSelectedFarm,
-} from '@/app/actions/farmActions';
+} from '@/actions/farmActions';
 import type { Farm } from '@prisma/client';
 
 export function useFarms(userId: string) {

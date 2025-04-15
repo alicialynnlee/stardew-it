@@ -1,6 +1,6 @@
 'use client';
 
-import { useFarms } from '@/app/hooks/useFarms';
+import { useFarms } from '@/hooks/useFarms';
 import * as Styled from './FarmSelector.styled';
 import { useCallback, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -24,7 +24,11 @@ export default function FarmSelector() {
 
   const handleSelectFarm = useCallback(
     (farmId: string) => {
-      setSelectedFarm(farmId);
+      if (!farmId || farmId === '') {
+        setSelectedFarm('');
+      } else {
+        setSelectedFarm(farmId);
+      }
     },
     [farms]
   );
@@ -71,6 +75,11 @@ export default function FarmSelector() {
               <button type="button" onClick={() => handleDeleteFarm(farm.id)}>
                 Delete
               </button>
+              {selectedFarmId === farm.id && (
+                <button type="button" onClick={() => handleSelectFarm('')}>
+                  Unselect
+                </button>
+              )}
             </Styled.ListItemWithButton>
           </Styled.FarmSelectorListItem>
         ))}

@@ -1,60 +1,20 @@
-'use client';
+import TrackerClient from './TrackerClient';
+import { getCurrentUser } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 
-import Link from 'next/link';
-import { useTasks } from '@/app/hooks/useTasks';
-import { useSession } from 'next-auth/react';
+export default async function TrackerPage() {
+  const user = await getCurrentUser();
 
-import { useFarms } from '@/app/hooks/useFarms';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import * as Styled from './tracker.styled';
+  if (!user?.id) {
+    return <TrackerClient userId={null} selectedFarmId={null} />;
+  }
 
-export default function TrackerPage() {
-  const { data: session } = useSession();
-  const { selectedFarmId } = useFarms(session?.user?.id ?? '');
-  const { rooms, isLoading, error } = useTasks(selectedFarmId);
-  // const [newFarmError, setNewFarmError] = useState('');
+  const userRecord = await prisma.user.findUnique({ where: { id: user.id } });
+  const selectedFarmId = userRecord?.selectedFarmId;
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (!selectedFarmId) {
+    return <TrackerClient userId={user.id} selectedFarmId={null} />;
+  }
 
-  return (
-    <div>
-      {!session && (
-        <Styled.WarningBanner>
-          <span>
-            ⚠️ You must be <Link href="/auth">signed in</Link> and have a farm
-            selected to save your progress.
-          </span>
-        </Styled.WarningBanner>
-      )}
-
-      {session && !selectedFarmId && (
-        <Styled.WarningBanner>
-          <span>
-            ⚠️ Please select a farm from the navigation bar to track your
-            progress.
-          </span>
-        </Styled.WarningBanner>
-      )}
-
-      <h1>Tracker</h1>
-      {rooms.map((room) => (
-        <div key={room.id}>
-          <h2>{room.name}</h2>
-          {room.bundles.map((bundle) => (
-            <div key={bundle.id}>
-              <h3>{bundle.name}</h3>
-              {bundle.tasks.map((task) => (
-                <div key={task.id}>
-                  <input type="checkbox" checked={task.completed} />
-                  <h4>{task.name}</h4>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
-  );
+  return <TrackerClient userId={user.id} selectedFarmId={selectedFarmId} />;
 }
