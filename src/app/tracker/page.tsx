@@ -2,19 +2,22 @@ import TrackerClient from './TrackerClient';
 import { getCurrentUser } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
-export default async function TrackerPage() {
+interface Props {
+  searchParams: { farmId?: string };
+}
+
+export default async function TrackerPage({ searchParams }: Props) {
   const user = await getCurrentUser();
 
   if (!user?.id) {
     return <TrackerClient userId={null} selectedFarmId={null} />;
   }
 
-  const userRecord = await prisma.user.findUnique({ where: { id: user.id } });
-  const selectedFarmId = userRecord?.selectedFarmId;
-
-  if (!selectedFarmId) {
+  if (!searchParams.farmId) {
     return <TrackerClient userId={user.id} selectedFarmId={null} />;
   }
 
-  return <TrackerClient userId={user.id} selectedFarmId={selectedFarmId} />;
+  return (
+    <TrackerClient userId={user.id} selectedFarmId={searchParams.farmId} />
+  );
 }

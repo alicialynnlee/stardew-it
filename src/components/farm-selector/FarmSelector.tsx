@@ -4,6 +4,7 @@ import { useFarms } from '@/hooks/useFarms';
 import * as Styled from './FarmSelector.styled';
 import { useCallback, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 // TODO: Add error handling
 export default function FarmSelector() {
@@ -20,14 +21,21 @@ export default function FarmSelector() {
   } = useFarms(userId ?? '');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [newFarm, setNewFarm] = useState('');
+  const router = useRouter();
+  const searchParams = useSearchParams();
   // const [newFarmError, setNewFarmError] = useState('');
 
   const handleSelectFarm = useCallback(
     (farmId: string) => {
       if (!farmId || farmId === '') {
         setSelectedFarm('');
+        router.push('/tracker');
       } else {
         setSelectedFarm(farmId);
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('farmId', farmId);
+
+        router.push(`/tracker?${params.toString()}`);
       }
     },
     [farms]
@@ -41,7 +49,7 @@ export default function FarmSelector() {
       console.error(result.error);
       // setNewFarmError(result.error || '');
     } else {
-      setSelectedFarm(result.farm?.id ?? '');
+      handleSelectFarm(result.farm?.id ?? '');
     }
 
     setNewFarm('');
