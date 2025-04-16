@@ -1,64 +1,61 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
-import * as Styled from './Navbar.styled';
-import FarmSelector from '../farm-selector/FarmSelector';
 import Image from 'next/image';
+import { useSession, signOut } from 'next-auth/react';
+import { AppBar, Box, Button, Toolbar } from '@mui/material';
+import FarmSelector from '../farm-selector/FarmSelector';
 
 export default function Navbar() {
   const { data: session, status } = useSession();
 
-  if (status === 'loading') {
-    return (
-      <Styled.Navbar>
-        <Styled.HomeContainer>
-          <Link href="/">
-            <div>
-              <Image
-                src="/favicon.png"
-                alt="Stardew It"
-                width={48}
-                height={48}
-              />
-              Stardew It
-            </div>
-          </Link>
-        </Styled.HomeContainer>
-        <Styled.AuthActions>
-          <span>Loading...</span>
-        </Styled.AuthActions>
-      </Styled.Navbar>
-    );
-  }
-
   return (
-    <Styled.Navbar>
-      <div>
-        <Link href="/">
-          <Styled.HomeContainer>
+    <AppBar
+      position="fixed"
+      component="nav"
+      color="default"
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
+      <Toolbar>
+        <Box sx={{ flexGrow: 1 }}>
+          <Box
+            component={Link}
+            href="/"
+            sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+          >
             <Image src="/favicon.png" alt="Stardew It" width={48} height={48} />
             Stardew It
-          </Styled.HomeContainer>
-        </Link>
-      </div>
-      <Styled.AuthActions>
-        {session ? (
-          <>
-            <FarmSelector />
-            <span>
-              Hi {session.user?.name || session.user?.email || 'User'}!
-            </span>
-            <Styled.AuthButton onClick={() => signOut()}>
-              Sign Out
-            </Styled.AuthButton>
-          </>
-        ) : (
-          <Link href="/auth">
-            <Styled.AuthButton>Sign In</Styled.AuthButton>
-          </Link>
-        )}
-      </Styled.AuthActions>
-    </Styled.Navbar>
+          </Box>
+        </Box>
+        <Box display="flex" alignItems="center" gap={1}>
+          {status === 'loading' ? (
+            <span>Loading...</span>
+          ) : session ? (
+            <>
+              <FarmSelector />
+              <span>
+                Hi {session.user?.name || session.user?.email || 'User'}!
+              </span>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={() => signOut()}
+              >
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <Button
+              color="primary"
+              variant="contained"
+              component={Link}
+              href="/auth"
+            >
+              Sign In
+            </Button>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }

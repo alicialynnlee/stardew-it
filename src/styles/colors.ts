@@ -1,7 +1,11 @@
 export const whiteSmoke = '#FAFAFA'; // Clean, soft white base
 export const charcoalBlack = '#1C1C1C'; // Crisp, high contrast
 export const softSunYellow = '#FADA5E'; // Gentle pop, buttons or highlights
+export const lightRed = '#BF766A'; // Light red
 export const barnRed = '#A43C2B'; // Subtle warmth for links or icons
-export const dustySage = '#A3B18A'; // Optional muted green for hover states or borders
+export const darkRed = '#622419'; // Dark red
+export const lighterGreen = '#A3B18A'; // Optional muted green for hover states or borders
+export const dustySage = '#7e8f5f'; // Optional muted green for hover states or borders
+export const darkGreen = '#344e41'; // Dark green
 export const warmBeige = '#EAE1D1'; // Light earthy border if needed
 export const ashGray = '#6E6E6E'; // For subtext or notes

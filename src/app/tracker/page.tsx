@@ -9,21 +9,20 @@ interface Props {
 
 export default async function TrackerPage({ searchParams }: Props) {
   const user = await getCurrentUser();
+  const { farmId: paramFarmId } = await searchParams;
 
   if (!user?.id) {
     return <TrackerClient userId={null} selectedFarmId={null} />;
   }
 
-  if (!searchParams.farmId) {
+  if (!paramFarmId) {
     const userRecord = await prisma.user.findUnique({ where: { id: user.id } });
     const selectedFarmId = userRecord?.selectedFarmId;
     if (selectedFarmId) {
       redirect(`/tracker?farmId=${selectedFarmId}`);
     }
-  } else if (searchParams.farmId) {
-    return (
-      <TrackerClient userId={user.id} selectedFarmId={searchParams.farmId} />
-    );
+  } else if (paramFarmId) {
+    return <TrackerClient userId={user.id} selectedFarmId={paramFarmId} />;
   }
 
   return <TrackerClient userId={user.id} selectedFarmId={null} />;

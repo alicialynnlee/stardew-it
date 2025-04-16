@@ -3,6 +3,7 @@
 import { useTasks } from '@/hooks/useTasks';
 import Link from 'next/link';
 import * as Styled from './tracker.styled';
+import { useRooms } from '@/hooks/useRooms';
 
 export default function TrackerClient({
   userId,
@@ -11,11 +12,20 @@ export default function TrackerClient({
   userId: string | null;
   selectedFarmId: string | null;
 }) {
-  const { roomCollection, farmTaskCompletion, isLoading, error, updateTask } =
-    useTasks(selectedFarmId);
+  const {
+    roomCollection,
+    isLoading: roomsLoading,
+    error: roomsError,
+  } = useRooms();
+  const {
+    farmTaskCompletion,
+    isLoading: tasksLoading,
+    error: tasksError,
+    updateTask,
+  } = useTasks(selectedFarmId);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (roomsLoading) return <div>Loading...</div>;
+  if (roomsError) return <div>Error: {error}</div>;
 
   return (
     <div>
@@ -36,6 +46,9 @@ export default function TrackerClient({
         </Styled.WarningBanner>
       )}
 
+      {roomsLoading && <div>Loading...</div>}
+      {roomsError && <div>Error: {roomsError}</div>}
+
       <h1>Tracker</h1>
       {roomCollection.map((room) => (
         <Styled.RoomContainer key={room.roomId}>
@@ -50,7 +63,7 @@ export default function TrackerClient({
                 <Styled.TaskContainer key={taskId.taskId}>
                   <input
                     type="checkbox"
-                    checked={farmTaskCompletion.get(taskId.taskId) || false}
+                    checked={farmTaskCompletion.get(taskId.taskId)}
                     onChange={(e) =>
                       updateTask(taskId.taskId, e.target.checked)
                     }
