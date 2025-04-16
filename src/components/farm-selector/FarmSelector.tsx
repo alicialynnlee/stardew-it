@@ -2,7 +2,7 @@
 
 import { useFarms } from '@/hooks/useFarms';
 import * as Styled from './FarmSelector.styled';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
