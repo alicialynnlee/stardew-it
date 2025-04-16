@@ -38,13 +38,16 @@ export default function TrackerClient({
 
       <h1>Tracker</h1>
       {roomCollection.map((room) => (
-        <div key={room.roomId}>
+        <Styled.RoomContainer key={room.roomId}>
           <h2>{room.roomName}</h2>
           {room.bundleIds.map((bundle) => (
             <div key={bundle.bundleId}>
-              <h3>{bundle.name}</h3>
+              <h3>
+                {bundle.name}
+                {bundle.tasksRequired && ` (${bundle.tasksRequired})`}
+              </h3>
               {bundle.taskIds.map((taskId) => (
-                <div key={taskId.taskId}>
+                <Styled.TaskContainer key={taskId.taskId}>
                   <input
                     type="checkbox"
                     checked={farmTaskCompletion.get(taskId.taskId) || false}
@@ -53,11 +56,11 @@ export default function TrackerClient({
                     }
                   />
                   <h4>{taskId.name}</h4>
-                </div>
+                </Styled.TaskContainer>
               ))}
             </div>
           ))}
-        </div>
+        </Styled.RoomContainer>
       ))}
     </div>
   );
