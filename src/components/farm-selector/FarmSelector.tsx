@@ -5,6 +5,9 @@ import * as Styled from './FarmSelector.styled';
 import { useCallback, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { MenuItem, Select, TextField } from '@mui/material';
+import { InputLabel } from '@mui/material';
+import { FormControl } from '@mui/material';
 
 // TODO: Add error handling
 export default function FarmSelector() {
@@ -65,59 +68,52 @@ export default function FarmSelector() {
     }
   };
   return (
-    <Styled.FarmSelector>
-      <Styled.FarmSelectorButton
-        type="button"
-        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+    <FormControl fullWidth>
+      <InputLabel id="farm-selector-label">Farm</InputLabel>
+      <Select
+        labelId="farm-selector-label"
+        id="farm-selector"
+        value={selectedFarmId}
+        label="Farm"
+        onChange={(e) => handleSelectFarm(e.target.value as string)}
       >
-        {farms.find((farm) => farm.id === selectedFarmId)?.name ||
-          'Select a farm...'}
-      </Styled.FarmSelectorButton>
-      <Styled.FarmSelectorList $isDropdownOpen={isDropdownOpen}>
+        <MenuItem value="">
+          <em>Select a farm...</em>
+        </MenuItem>
         {farms.map((farm) => (
-          <Styled.FarmSelectorListItem key={farm.id}>
-            <Styled.ListItemWithButton>
-              <button type="button" onClick={() => handleSelectFarm(farm.id)}>
-                {farm.name}
-              </button>
-              <button type="button" onClick={() => handleDeleteFarm(farm.id)}>
-                Delete
-              </button>
-              {selectedFarmId === farm.id && (
-                <button type="button" onClick={() => handleSelectFarm('')}>
-                  Unselect
-                </button>
-              )}
-            </Styled.ListItemWithButton>
-          </Styled.FarmSelectorListItem>
-        ))}
-        <li>
-          <Styled.ListItemWithButton>
-            <input
-              type="text"
-              placeholder="Add a new farm"
-              value={newFarm}
-              onChange={(e) => setNewFarm(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleAddNewFarm();
-                }
-                if (e.key === 'Escape') {
-                  setIsDropdownOpen(false);
-                  setNewFarm('');
-                }
-              }}
-            />
-            <button
-              type="button"
-              onClick={handleAddNewFarm}
-              disabled={!newFarm.trim()}
-            >
-              Add
+          <MenuItem key={farm.id} value={farm.id}>
+            {farm.name}
+            <button type="button" onClick={() => handleDeleteFarm(farm.id)}>
+              Delete
             </button>
-          </Styled.ListItemWithButton>
-        </li>
-      </Styled.FarmSelectorList>
-    </Styled.FarmSelector>
+          </MenuItem>
+        ))}
+        <Styled.ListItemWithButton>
+          <TextField
+            id="outlined-basic"
+            label="Add a new farm"
+            variant="outlined"
+            value={newFarm}
+            onChange={(e) => setNewFarm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleAddNewFarm();
+              }
+              if (e.key === 'Escape') {
+                setIsDropdownOpen(false);
+                setNewFarm('');
+              }
+            }}
+          />
+          <button
+            type="button"
+            onClick={handleAddNewFarm}
+            disabled={!newFarm.trim()}
+          >
+            Add
+          </button>
+        </Styled.ListItemWithButton>
+      </Select>
+    </FormControl>
   );
 }
