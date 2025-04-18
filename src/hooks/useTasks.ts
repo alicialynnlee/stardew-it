@@ -2,49 +2,18 @@
 
 import { useState, useEffect, useCallback, useTransition, useRef } from 'react';
 import debounce from 'lodash/debounce';
-import { getFarmTasks, getRooms, updateFarmTask } from '@/actions/taskActions';
-import type { RoomIdCollection, FarmTaskCompletion } from '@/types/tasks';
+import { getFarmTasks, updateFarmTask } from '@/actions/taskActions';
+import type { FarmTaskCompletion } from '@/types/tasks';
+import { Farm } from '@prisma/client';
+import { ResponseNoData } from '@/types/response';
 
 export function useTasks(selectedFarmId: string | null) {
-  const [roomCollection, setRoomCollection] = useState<RoomIdCollection>([]);
   const [farmTaskCompletion, setFarmTaskCompletion] =
     useState<FarmTaskCompletion>(new Map());
   const pendingUpdatesRef = useRef<FarmTaskCompletion>(new Map());
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-
-  const fetchAllRooms = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await getRooms();
-      if (result.success && result.data) {
-        const rooms = result.data;
-        const roomCollection: RoomIdCollection = rooms.map((room) => ({
-          roomId: room.id,
-          roomName: room.name,
-          bundleIds: room.bundles.map((bundle) => ({
-            bundleId: bundle.id,
-            name: bundle.name,
-            tasksRequired: bundle.tasksRequired,
-            reward: bundle?.reward,
-            taskIds: bundle.tasks.map((task) => ({
-              taskId: task.id,
-              name: task.name,
-            })),
-          })),
-        }));
-        setRoomCollection(roomCollection);
-      } else if (!result.success) {
-        setError(result.error ?? 'Could not fetch rooms');
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not fetch rooms');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
 
   const fetchFarmTasks = useCallback(async () => {
     setIsLoading(true);
@@ -74,52 +43,43 @@ export function useTasks(selectedFarmId: string | null) {
   }, [selectedFarmId]);
 
   useEffect(() => {
-    fetchAllRooms();
-  }, []);
-
-  useEffect(() => {
     if (selectedFarmId) {
       fetchFarmTasks();
     }
   }, [selectedFarmId]);
 
-  // Debounced sync function
-  const debouncedTaskUpdate = useCallback(
-    debounce(async () => {
+  const updateTask = useCallback(
+    async (taskId: string, completed: boolean): Promise<ResponseNoData> => {
       if (!selectedFarmId) {
-        return;
+        return {
+          success: false,
+          error: 'No farm selected',
+        };
       }
-      const updates = Array.from(pendingUpdatesRef.current.entries());
 
-      // Reset pending updates before sending
-      pendingUpdatesRef.current.clear();
+      let result: ResponseNoData = {
+        success: false,
+        error: 'Failed to update task',
+      };
 
-      await Promise.all(
-        updates.map(([taskId, completed]) =>
-          updateFarmTask(selectedFarmId, taskId, completed)
-        )
-      );
-    }, 1000), // debounce interval in ms
-    []
+      await new Promise<void>((resolve) => {
+        startTransition(async () => {
+          result = await updateFarmTask(selectedFarmId, taskId, completed);
+          if (result.success) {
+            fetchFarmTasks();
+          } else {
+            setError(result.error ?? 'Failed to add farm.');
+          }
+          resolve();
+        });
+      });
+
+      return result;
+    },
+    [selectedFarmId]
   );
 
-  const updateTask = (taskId: string, completed: boolean) => {
-    setFarmTaskCompletion((prev) => {
-      const newMap = new Map(prev);
-      newMap.set(taskId, completed);
-
-      // Store pending update
-      pendingUpdatesRef.current.set(taskId, completed);
-
-      // Trigger debounced sync
-      debouncedTaskUpdate();
-
-      return newMap;
-    });
-  };
-
   return {
-    roomCollection,
     farmTaskCompletion,
     isLoading,
     isPending,
