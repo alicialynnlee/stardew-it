@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import StyledComponentsRegistry from './registry';
 import GlobalStyles from '@/styles/GlobalStyles';
-import { Navbar, SideNav, AuthProvider } from '@/components';
-import MuiThemeProvider from '@/styles/mui-theme-provider';
-import { Box, CssBaseline, Toolbar } from '@mui/material';
+import { Navbar, SideNav, AuthProvider } from '@/app/components';
 
 export const metadata: Metadata = {
   title: 'Stardew It',
@@ -33,17 +31,11 @@ export default function RootLayout({
         <StyledComponentsRegistry>
           <GlobalStyles />
           <AuthProvider>
-            <MuiThemeProvider>
-              <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
-                <Navbar />
-                <SideNav />
-                <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                  <Toolbar />
-                  {children}
-                </Box>
-              </Box>
-            </MuiThemeProvider>
+            <Navbar />
+            <div style={{ display: 'flex', minHeight: 'calc(100vh - 5rem)' }}>
+              <SideNav />
+              <main className="flex-grow">{children}</main>
+            </div>
           </AuthProvider>
         </StyledComponentsRegistry>
       </body>

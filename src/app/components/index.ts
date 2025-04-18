@@ -2,3 +2,4 @@ export { default as SideNav } from './side-nav/SideNav';
 export { default as Navbar } from './top-nav/Navbar';
 export { default as AuthProvider } from './AuthProvider';
 export { default as FarmSelector } from './farm-selector/FarmSelector';
+export { default as Calendar } from './calendar/Calendar';
