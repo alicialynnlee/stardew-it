@@ -3,49 +3,61 @@ import { whiteSmoke } from '@/styles/colors';
 
 export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
   min-height: 100%;
-  width: 17rem;
+  width: ${(props) => (props.$isOpen ? '17rem' : '5.3rem')};
   background-color: ${whiteSmoke};
   border-right: 1px solid #e9ecef;
-  padding: 2rem 1rem;
-  transform: translateX(${(props) => (props.$isOpen ? '0' : '-100%')});
-  transition: transform 0.3s ease-in-out;
+  padding: 2rem;
+  transition: width 0.3s ease-in-out;
   z-index: 1000;
 `;
 
 export const NavList = styled.ul`
   list-style: none;
-  padding: 0;
-  margin: 2rem 0;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+export const LinkLabel = styled.span<{ $isOpen: boolean }>`
+  position: absolute;
+  margin-left: 30px;
+  line-height: 20px;
+  visibility: ${(props) => (props.$isOpen ? `visible` : `hidden`)};
+  transition: all 0.2s allow-discrete;
 `;
 
 export const NavItem = styled.li`
-  margin: 1rem 0;
-
   a {
     text-decoration: none;
     display: flex;
     align-items: center;
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
+    padding: 1rem 0;
+    border-radius: 8px;
+    gap: 1rem;
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      svg {
+        transition: transform 0.3s;
+        transform: scale(1.3);
+      }
+      font-weight: 600;
     }
   }
 `;
 
-export const CloseButton = styled.button`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+export const CloseButton = styled.button<{ $isOpen: boolean }>`
   background: none;
   border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
 
   &:hover {
-    opacity: 0.8;
+    svg {
+      transition: transform 0.3s;
+      transform: scale(1.3);
+    }
   }
 `;

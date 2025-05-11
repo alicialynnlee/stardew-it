@@ -5,6 +5,13 @@ import * as Styled from './FarmSelector.styled';
 import { useCallback, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import {
+  CaretDownIcon,
+  CrossCircledIcon,
+  PlusCircledIcon,
+  TrashIcon,
+} from '@radix-ui/react-icons';
+import { Button, Flex, IconButton, TextField } from '@radix-ui/themes';
 
 // TODO: Add error handling
 export default function FarmSelector() {
@@ -66,41 +73,63 @@ export default function FarmSelector() {
   };
   return (
     <Styled.FarmSelector>
-      <Styled.FarmSelectorButton
-        type="button"
+      <Button
+        className="farm-selector-open-button"
+        variant="soft"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         {farms.find((farm) => farm.id === selectedFarmId)?.name ||
           'Select a farm...'}
-      </Styled.FarmSelectorButton>
-      <Styled.FarmSelectorList $isDropdownOpen={isDropdownOpen}>
-        {farms.map((farm) => (
-          <Styled.FarmSelectorListItem key={farm.id}>
-            <Styled.ListItemWithButton>
-              <button type="button" onClick={() => handleSelectFarm(farm.id)}>
-                {farm.name}
-              </button>
-              <button type="button" onClick={() => handleDeleteFarm(farm.id)}>
-                Delete
-              </button>
-              {selectedFarmId === farm.id && (
-                <button type="button" onClick={() => handleSelectFarm('')}>
-                  Unselect
-                </button>
-              )}
-            </Styled.ListItemWithButton>
-          </Styled.FarmSelectorListItem>
-        ))}
-        <li>
-          <Styled.ListItemWithButton>
-            <input
-              type="text"
-              placeholder="Add a new farm"
-              value={newFarm}
-              onChange={(e) => setNewFarm(e.target.value)}
+        <CaretDownIcon />
+      </Button>
+      <Styled.DropdownContainer $isDropdownOpen={isDropdownOpen}>
+        <Styled.FarmSelectorList>
+          {farms.map((farm) => (
+            <Button
+              variant="ghost"
+              color="gray"
+              onClick={() => handleSelectFarm(farm.id)}
+              key={farm.id}
+            >
+              {farm.name}
+              <Flex gapX="1">
+                {selectedFarmId === farm.id && (
+                  <IconButton
+                    size="1"
+                    variant="ghost"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectFarm('');
+                    }}
+                  >
+                    <CrossCircledIcon />
+                  </IconButton>
+                )}
+                <IconButton
+                  size="1"
+                  variant="ghost"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteFarm(farm.id);
+                  }}
+                >
+                  <TrashIcon width="15" height="15" />
+                </IconButton>
+              </Flex>
+            </Button>
+          ))}
+          <Button variant="ghost" color="gray" disabled>
+            <TextField.Root
+              placeholder="Add a new farm..."
+              onChange={(e) => {
+                e.stopPropagation();
+                setNewFarm(e.target.value);
+              }}
               onKeyDown={(e) => {
+                e.stopPropagation();
                 if (e.key === 'Enter') {
                   handleAddNewFarm();
+                  setNewFarm('');
                 }
                 if (e.key === 'Escape') {
                   setIsDropdownOpen(false);
@@ -108,16 +137,21 @@ export default function FarmSelector() {
                 }
               }}
             />
-            <button
-              type="button"
-              onClick={handleAddNewFarm}
+            <IconButton
+              size="1"
+              variant="ghost"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddNewFarm();
+                setNewFarm('');
+              }}
               disabled={!newFarm.trim()}
             >
-              Add
-            </button>
-          </Styled.ListItemWithButton>
-        </li>
-      </Styled.FarmSelectorList>
+              <PlusCircledIcon height="15" width="15" />
+            </IconButton>
+          </Button>
+        </Styled.FarmSelectorList>
+      </Styled.DropdownContainer>
     </Styled.FarmSelector>
   );
 }

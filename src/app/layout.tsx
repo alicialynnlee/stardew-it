@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import StyledComponentsRegistry from './registry';
 import GlobalStyles from '@/styles/GlobalStyles';
+import { Theme } from '@radix-ui/themes';
+import '@radix-ui/themes/styles.css';
 import { Navbar, SideNav, AuthProvider } from '@/components';
 
 export const metadata: Metadata = {
@@ -20,6 +22,8 @@ export const metadata: Metadata = {
   },
 };
 
+// TODO: handle dark mode
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,14 +33,16 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <StyledComponentsRegistry>
-          <GlobalStyles />
-          <AuthProvider>
-            <Navbar />
-            <div style={{ display: 'flex', minHeight: 'calc(100vh - 5rem)' }}>
-              <SideNav />
-              <main className="flex-grow">{children}</main>
-            </div>
-          </AuthProvider>
+          <Theme appearance="light" accentColor="grass">
+            <GlobalStyles />
+            <AuthProvider>
+              <Navbar />
+              <div style={{ display: 'flex', minHeight: 'calc(100vh - 5rem)' }}>
+                <SideNav />
+                <main className="flex-grow">{children}</main>
+              </div>
+            </AuthProvider>
+          </Theme>
         </StyledComponentsRegistry>
       </body>
     </html>

@@ -4,6 +4,8 @@ import { useTasks } from '@/hooks/useTasks';
 import Link from 'next/link';
 import * as Styled from './tracker.styled';
 import { useRooms } from '@/hooks/useRooms';
+import { Box, Callout } from '@radix-ui/themes';
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 
 export default function TrackerClient({
   userId,
@@ -25,26 +27,29 @@ export default function TrackerClient({
   } = useTasks(selectedFarmId);
 
   if (roomsLoading) return <div>Loading...</div>;
-  if (roomsError) return <div>Error: {error}</div>;
+  if (roomsError) return <div>Error: {roomsError}</div>;
 
   return (
     <div>
-      {!userId && (
-        <Styled.WarningBanner>
-          <span>
-            ⚠️ You must be <Link href="/auth">signed in</Link> and have a farm
-            selected to save your progress.
-          </span>
-        </Styled.WarningBanner>
-      )}
-      {userId && !selectedFarmId && (
-        <Styled.WarningBanner>
-          <span>
-            ⚠️ Please select a farm from the navigation bar to track your
-            progress.
-          </span>
-        </Styled.WarningBanner>
-      )}
+      <Box py="3">
+        {(!userId || (userId && !selectedFarmId)) && (
+          <Callout.Root color="orange">
+            <Callout.Icon>
+              <ExclamationTriangleIcon />
+            </Callout.Icon>
+            <Callout.Text>
+              {userId ? (
+                `Please select a farm from the navigation bar to track your progress.`
+              ) : (
+                <>
+                  You must be <Link href="/auth">signed in</Link> and have a
+                  farm selected to save your progress.
+                </>
+              )}
+            </Callout.Text>
+          </Callout.Root>
+        )}
+      </Box>
 
       {roomsLoading && <div>Loading...</div>}
       {roomsError && <div>Error: {roomsError}</div>}

@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
-import * as Styled from './Navbar.styled';
-import FarmSelector from '../farm-selector/FarmSelector';
 import Image from 'next/image';
+import { useSession, signOut } from 'next-auth/react';
+import FarmSelector from '../farm-selector/FarmSelector';
+import * as Styled from './Navbar.styled';
+import { Button } from '@radix-ui/themes';
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -25,9 +26,7 @@ export default function Navbar() {
             </div>
           </Link>
         </Styled.HomeContainer>
-        <Styled.AuthActions>
-          <span>Loading...</span>
-        </Styled.AuthActions>
+        <Button loading />
       </Styled.Navbar>
     );
   }
@@ -49,13 +48,11 @@ export default function Navbar() {
             <span>
               Hi {session.user?.name || session.user?.email || 'User'}!
             </span>
-            <Styled.AuthButton onClick={() => signOut()}>
-              Sign Out
-            </Styled.AuthButton>
+            <Button onClick={() => signOut()}>Sign Out</Button>
           </>
         ) : (
           <Link href="/auth">
-            <Styled.AuthButton>Sign In</Styled.AuthButton>
+            <Button>Sign In</Button>
           </Link>
         )}
       </Styled.AuthActions>

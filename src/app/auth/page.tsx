@@ -3,6 +3,8 @@
 import { useState, FormEvent } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Form } from 'radix-ui';
+import { Button, Container, Tabs } from '@radix-ui/themes';
 import * as Styled from './auth.styled';
 
 export default function AuthPage() {
@@ -84,95 +86,99 @@ export default function AuthPage() {
   };
 
   return (
-    <Styled.AuthContainer>
-      <Styled.AuthForm onSubmit={isSignIn ? handleSignIn : handleSignUp}>
-        <Styled.AuthToggle>
-          <Styled.ToggleButton
-            type="button"
-            $active={isSignIn}
-            onClick={() => setIsSignIn(true)}
-          >
-            Sign In
-          </Styled.ToggleButton>
-          <Styled.ToggleButton
-            type="button"
-            $active={!isSignIn}
-            onClick={() => setIsSignIn(false)}
-          >
-            Sign Up
-          </Styled.ToggleButton>
-        </Styled.AuthToggle>
-
-        {error && (
-          <Styled.Message
-            $type={error.includes('successful') ? 'success' : 'error'}
-          >
-            {error}
-          </Styled.Message>
-        )}
-
-        {!isSignIn && (
-          <Styled.InputGroup>
-            <label htmlFor="name">Username</label>
+    <Container size="1" py="4" px="6">
+      <Styled.AuthForm>
+        <Tabs.Root>
+          <Tabs.List>
+            <Tabs.Trigger
+              style={{ width: '50%' }}
+              value="signin"
+              onClick={() => setIsSignIn(true)}
+            >
+              Sign In
+            </Tabs.Trigger>
+            <Tabs.Trigger
+              style={{ width: '50%' }}
+              value="signup"
+              onClick={() => setIsSignIn(false)}
+            >
+              Sign Up
+            </Tabs.Trigger>
+          </Tabs.List>
+        </Tabs.Root>
+        <Form.Root onSubmit={isSignIn ? handleSignIn : handleSignUp}>
+          {!isSignIn && (
+            <Styled.Field name="username">
+              <Form.Label>Username</Form.Label>
+              <Form.Control asChild>
+                <input
+                  type="text"
+                  required
+                  placeholder="alicia"
+                  onChange={(e) => setName(e.target.value)}
+                  disabled={loading}
+                />
+              </Form.Control>
+              <Form.Message match="valueMissing">
+                Please provide a name
+              </Form.Message>
+            </Styled.Field>
+          )}
+          <Styled.Field name="email">
+            <Form.Label>Email</Form.Label>
+            <Form.Control asChild>
+              <input
+                required
+                type="email"
+                placeholder="alicia@hotmail.com"
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
+              />
+            </Form.Control>
+            <Form.Message match="valueMissing">
+              Please enter your email.
+            </Form.Message>
+            <Form.Message match="typeMismatch">
+              Please provide a valid email.
+            </Form.Message>
+          </Styled.Field>
+          <Styled.Field name="password">
+            <Form.Label>Password</Form.Label>
             <input
-              id="name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required={!isSignIn}
-              disabled={loading}
-            />
-          </Styled.InputGroup>
-        )}
-
-        <Styled.InputGroup>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </Styled.InputGroup>
-
-        <Styled.InputGroup>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </Styled.InputGroup>
-
-        {!isSignIn && (
-          <Styled.InputGroup>
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
             />
-          </Styled.InputGroup>
-        )}
-
-        <Styled.SubmitButton type="submit" disabled={loading}>
-          {loading
-            ? isSignIn
-              ? 'Signing in...'
-              : 'Signing up...'
-            : isSignIn
-              ? 'Sign In'
-              : 'Sign Up'}
-        </Styled.SubmitButton>
+            <Form.Message match="valueMissing">
+              Please enter a password.
+            </Form.Message>
+            <Form.Message match="tooShort">
+              Password must be at least 6 characters.
+            </Form.Message>
+          </Styled.Field>
+          {!isSignIn && (
+            <Styled.Field name="confirmpassword">
+              <Form.Label>Confirm Password</Form.Label>
+              <input
+                required
+                type="password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                disabled={loading}
+              />
+              <Form.Message match="valueMissing">
+                Please confirm your password.
+              </Form.Message>
+            </Styled.Field>
+          )}
+          <Form.Submit asChild>
+            <Button style={{ width: '100%' }} loading={loading}>
+              {isSignIn ? 'Sign In' : 'Sign Up'}
+            </Button>
+          </Form.Submit>
+          {error && <Form.FormMessage>{error}</Form.FormMessage>}
+        </Form.Root>
       </Styled.AuthForm>
-    </Styled.AuthContainer>
+    </Container>
   );
 }

@@ -3,23 +3,23 @@
 import { createGlobalStyle } from 'styled-components';
 import { charcoalBlack, whiteSmoke } from './colors';
 
-// TODO: Add dark mode support
-// @media (prefers-color-scheme: dark) {
-//   :root {
-//     --background: ${charcoalBlack};
-//     --foreground: ${whiteSmoke};
-//   }
-// }
-// @media (prefers-color-scheme: dark) {
-//   html {
-//     color-scheme: dark;
-//   }
-// }
 const GlobalStyles = createGlobalStyle`
   :root {
     --background: ${whiteSmoke};
     --foreground: ${charcoalBlack};
   }
+
+  /* @media (prefers-color-scheme: dark) {
+    :root {
+      --background: ${charcoalBlack};
+      --foreground: ${whiteSmoke};
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    html {
+      color-scheme: dark;
+    }
+  } */
 
   html,
   body {
@@ -58,6 +58,19 @@ const GlobalStyles = createGlobalStyle`
 
   button {
     cursor: pointer;
+  }
+  
+  // radix
+  .radix-themes {
+    --cursor-button: pointer;
+    --cursor-checkbox: pointer;
+    --cursor-disabled: default;
+    --cursor-link: pointer;
+    --cursor-menu-item: pointer;
+    --cursor-radio: pointer;
+    --cursor-slider-thumb: grab;
+    --cursor-slider-thumb-active: grabbing;
+    --cursor-switch: pointer;
   }
 `;
 

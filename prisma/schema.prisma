@@ -80,11 +80,12 @@ model Farm {
 }
 
 model Task {
-  id          String       @id @default(cuid())
-  name        String
-  bundleId    String
-  bundle      Bundle      @relation(fields: [bundleId], references: [id])
-  farmTasks   FarmTask[]  // Required by Prisma for the relation to work
+  id              String       @id @default(cuid())
+  name            String
+  bundleId        String
+  bundle          Bundle      @relation(fields: [bundleId], references: [id])
+  farmTasks       FarmTask[]  // Required by Prisma for the relation to work
+  calendarEvents  CalendarEvent[]
 
   @@map("tasks")
 }
@@ -119,4 +120,13 @@ model FarmTask {
 
   @@unique([farmId, taskId])
   @@map("farm_tasks")
+}
+
+model CalendarEvent {
+  id            String    @id @default(cuid())
+  date          String
+  name          String
+  description   String?
+  taskId        String
+  task          Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
 }

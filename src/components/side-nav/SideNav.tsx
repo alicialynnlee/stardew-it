@@ -1,32 +1,53 @@
 'use client';
 
 import Link from 'next/link';
+import {
+  CalendarIcon,
+  Cross2Icon,
+  HomeIcon,
+  MixerHorizontalIcon,
+} from '@radix-ui/react-icons';
 import * as Styled from './SideNav.styled';
+import { useState } from 'react';
 
-// TODO: Implement side nav toggle
+const NAV_ITEMS = [
+  {
+    label: 'Home',
+    icon: HomeIcon,
+    href: '/',
+  },
+  {
+    label: 'Tracker',
+    icon: MixerHorizontalIcon,
+    href: '/tracker',
+  },
+  {
+    label: 'Calendar',
+    icon: CalendarIcon,
+    href: '/calendar',
+  },
+];
 const SideNav: React.FC = () => {
-  // const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
 
-  // const toggleSideNav = () => {
-  //   setIsOpen(!isOpen);
-  // };
+  const toggleSideNav = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
-    <Styled.SideNavContainer $isOpen={true}>
-      <Styled.CloseButton onClick={() => {}}>&times;</Styled.CloseButton>
+    <Styled.SideNavContainer $isOpen={isOpen}>
+      <Styled.CloseButton onClick={toggleSideNav} $isOpen={isOpen}>
+        <Cross2Icon width={20} height={20} />
+      </Styled.CloseButton>
       <Styled.NavList>
-        <Styled.NavItem>
-          <Link href="/">Home</Link>
-        </Styled.NavItem>
-        <Styled.NavItem>
-          <Link href="/tracker">Tracker</Link>
-        </Styled.NavItem>
-        <Styled.NavItem>
-          <Link href="/calendar">Calendar</Link>
-        </Styled.NavItem>
-        <Styled.NavItem>
-          <Link href="/settings">Settings</Link>
-        </Styled.NavItem>
+        {NAV_ITEMS.map((item) => (
+          <Styled.NavItem key={item.label}>
+            <Link href={item.href}>
+              <item.icon width={20} height={20} />
+              <Styled.LinkLabel $isOpen={isOpen}>{item.label}</Styled.LinkLabel>
+            </Link>
+          </Styled.NavItem>
+        ))}
       </Styled.NavList>
     </Styled.SideNavContainer>
   );
