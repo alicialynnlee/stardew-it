@@ -23,7 +23,11 @@ export default function CalendarPage() {
             <ChevronLeftIcon width="20" height="20" />
           </IconButton>
         )}
-        <Text size="4" weight="bold">
+        <Text
+          size="4"
+          weight="bold"
+          style={{ minWidth: '8rem', textAlign: 'center' }}
+        >
           {months[selectedMonthIndex]}
         </Text>
         {selectedMonthIndex + 1 < months.length && (

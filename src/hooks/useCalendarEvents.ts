@@ -7,12 +7,7 @@ import type { CalendarEventData } from '@/types/calendar';
 
 export function useCalendarEvents() {
   const [calendarEvents, setCalendarEvents] = useState<CalendarEventData>(
-    new Map([
-      ['Spring', Array(29).fill(null)],
-      ['Summer', Array(29).fill(null)],
-      ['Fall', Array(29).fill(null)],
-      ['Winter', Array(29).fill(null)],
-    ])
+    new Map()
   );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,10 +19,15 @@ export function useCalendarEvents() {
       const result = await getCalendarEvents();
       if (result.success && result.data) {
         const calendarEventsData = result.data;
-
+        const currCalendarEvents = new Map([
+          ['Spring', Array(29).fill(null)],
+          ['Summer', Array(29).fill(null)],
+          ['Fall', Array(29).fill(null)],
+          ['Winter', Array(29).fill(null)],
+        ]);
         calendarEventsData.forEach((event: CalendarEvent) => {
           const date = event.date.split(' ');
-          const monthMap = calendarEvents.get(date[0]);
+          const monthMap = currCalendarEvents.get(date[0]);
           if (!monthMap || !date[0]) {
             setError('Could not find month map');
             return;
@@ -39,6 +39,7 @@ export function useCalendarEvents() {
             monthMap[day] = [event];
           }
         });
+        setCalendarEvents(currCalendarEvents);
       } else if (!result.success) {
         setError(result.error ?? 'Could not fetch calendar events');
       }

@@ -33,7 +33,12 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <StyledComponentsRegistry>
-          <Theme appearance="light" accentColor="grass">
+          <Theme
+            appearance="inherit"
+            accentColor="grass"
+            grayColor="slate"
+            scaling="100%"
+          >
             <GlobalStyles />
             <AuthProvider>
               <Navbar />

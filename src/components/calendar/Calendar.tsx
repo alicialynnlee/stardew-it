@@ -3,7 +3,7 @@
 import type { CalendarEvent } from '@prisma/client';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import * as Styled from './Calendar.styled';
-import { Box, Button, Card, Grid, Text } from '@radix-ui/themes';
+import { Box, Grid, Spinner, Text } from '@radix-ui/themes';
 
 export default function Calendar({
   selectedMonth,
@@ -12,7 +12,7 @@ export default function Calendar({
 }: {
   selectedMonth: string;
   selectedDay: number;
-  changeSelectedDay: (dayIndex: number) => {};
+  changeSelectedDay: (dayIndex: number) => void;
 }) {
   const { calendarEvents, isLoading, error } = useCalendarEvents();
 
@@ -53,8 +53,10 @@ export default function Calendar({
       <Grid columns="7" rows="4" style={{ border: '0.1px solid' }}>
         {Array.from({ length: 28 }, (_, i) => i + 1).map((day) => {
           const tasks = getTaskForDate(selectedMonth, day);
+          const monthTasks =
+            day === 28 ? getTaskForDate(selectedMonth, 29) : null;
           return (
-            <Box key={day} style={{ border: '0.1px solid' }}>
+            <Box key={day} p="1" style={{ border: '0.1px solid' }}>
               <Styled.DayIndex
                 onClick={() => changeSelectedDay(day)}
                 $isSelected={day === selectedDay}
@@ -65,12 +67,11 @@ export default function Calendar({
                 tasks.map((t) => (
                   <Styled.TaskLabel key={t.id}>{t.name}</Styled.TaskLabel>
                 ))}
-              {day === 28 &&
-                getTaskForDate(selectedMonth, 29)?.map((t) => (
-                  <Styled.TaskLabel key={t.id} $isMonthTask>
-                    {`${t.name}`}
-                  </Styled.TaskLabel>
-                ))}
+              {monthTasks?.map((t) => (
+                <Styled.TaskLabel key={t.id} $isMonthTask>
+                  {t.name}
+                </Styled.TaskLabel>
+              ))}
             </Box>
           );
         })}

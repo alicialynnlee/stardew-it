@@ -17,7 +17,6 @@ export const DayIndex = styled.button<{ $isSelected?: boolean }>`
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  margin: 0.25rem;
   border: none;
   background-color: ${({ $isSelected }) =>
     $isSelected ? `var(--accent-9)` : `var(--background)`};

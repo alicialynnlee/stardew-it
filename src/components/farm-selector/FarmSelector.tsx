@@ -85,42 +85,55 @@ export default function FarmSelector() {
       <Styled.DropdownContainer $isDropdownOpen={isDropdownOpen}>
         <Styled.FarmSelectorList>
           {farms.map((farm) => (
-            <Button
-              variant="ghost"
-              color="gray"
-              onClick={() => handleSelectFarm(farm.id)}
+            <Flex
+              gapX="1"
+              align="center"
+              justify="between"
+              style={{ width: '100%' }}
               key={farm.id}
             >
-              {farm.name}
-              <Flex gapX="1">
-                {selectedFarmId === farm.id && (
-                  <IconButton
-                    size="1"
-                    variant="ghost"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSelectFarm('');
-                    }}
-                  >
-                    <CrossCircledIcon />
-                  </IconButton>
-                )}
+              <Button
+                variant="ghost"
+                color="gray"
+                onClick={() => handleSelectFarm(farm.id)}
+                style={{ flex: '1', margin: '0' }}
+              >
+                {farm.name}
+              </Button>
+
+              {selectedFarmId === farm.id && (
                 <IconButton
                   size="1"
                   variant="ghost"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDeleteFarm(farm.id);
+                    handleSelectFarm('');
                   }}
                 >
-                  <TrashIcon width="15" height="15" />
+                  <CrossCircledIcon />
                 </IconButton>
-              </Flex>
-            </Button>
+              )}
+              <IconButton
+                size="1"
+                variant="ghost"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteFarm(farm.id);
+                }}
+              >
+                <TrashIcon width="15" height="15" />
+              </IconButton>
+            </Flex>
           ))}
-          <Button variant="ghost" color="gray" disabled>
+          <Flex
+            gapX="1"
+            align="center"
+            justify="between"
+            style={{ width: '100%' }}
+          >
             <TextField.Root
               placeholder="Add a new farm..."
+              style={{ flex: '1' }}
               onChange={(e) => {
                 e.stopPropagation();
                 setNewFarm(e.target.value);
@@ -149,7 +162,7 @@ export default function FarmSelector() {
             >
               <PlusCircledIcon height="15" width="15" />
             </IconButton>
-          </Button>
+          </Flex>
         </Styled.FarmSelectorList>
       </Styled.DropdownContainer>
     </Styled.FarmSelector>

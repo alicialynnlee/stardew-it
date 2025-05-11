@@ -10,7 +10,12 @@ export const FarmSelector = styled.div`
 
 export const DropdownContainer = styled.div<{ $isDropdownOpen: boolean }>`
   position: absolute;
-  display: ${(props) => (props.$isDropdownOpen ? 'block' : 'none')};
+  visibility: ${(props) => (props.$isDropdownOpen ? 'visible' : 'hidden')};
+  transform: ${(props) =>
+    props.$isDropdownOpen ? 'translateY(0)' : 'translateY(-30px)'};
+  transition-property: transform;
+  transition-duration: 0.3s;
+  transition-delay: 0s;
   border-radius: 4px;
   border: 1px solid rgb(0, 0, 0, 0.2);
   background-color: var(--background);
