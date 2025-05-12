@@ -37,14 +37,16 @@ const SideNav: React.FC = () => {
   return (
     <Styled.SideNavContainer $isOpen={isOpen}>
       <Styled.CloseButton onClick={toggleSideNav} $isOpen={isOpen}>
-        <Cross2Icon width={20} height={20} />
+        <Cross2Icon width={18} height={18} />
       </Styled.CloseButton>
       <Styled.NavList>
         {NAV_ITEMS.map((item) => (
           <Styled.NavItem key={item.label}>
             <Link href={item.href}>
-              <item.icon width={20} height={20} />
-              <Styled.LinkLabel $isOpen={isOpen}>{item.label}</Styled.LinkLabel>
+              <item.icon width={18} height={18} />
+              <Styled.LinkLabel size="2" $isOpen={isOpen}>
+                {item.label}
+              </Styled.LinkLabel>
             </Link>
           </Styled.NavItem>
         ))}

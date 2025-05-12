@@ -1,3 +1,4 @@
+import { DAYS, MONTHS } from '@/constants/calendar';
 import type { CalendarEvent } from '@prisma/client';
 
 /**
@@ -7,3 +8,7 @@ import type { CalendarEvent } from '@prisma/client';
  * Value: Array of CalendarEvents
  */
 type CalendarEventData = Map<string, Array<Array<CalendarEvent> | null>>;
+
+type Month = (typeof MONTHS)[number];
+type DayNum = (typeof DAYS)[number];
+type Day = `${Month} ${DayNum}`;

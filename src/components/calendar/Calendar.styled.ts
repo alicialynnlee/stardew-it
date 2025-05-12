@@ -1,16 +1,53 @@
 import { dustySage, lighterGreen, lightRed } from '@/styles/colors';
+import { Card, Text } from '@radix-ui/themes';
 import styled from 'styled-components';
 
-export const CalendarWrapper = styled.div`
-  padding: 2rem;
+export const CalendarWrapper = styled(Card)`
+  padding: 0;
+`;
+
+export const MonthHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+
+  .hide {
+    visibility: hidden;
+  }
+
+  span {
+    min-width: 6rem;
+    text-align: center;
+  }
+`;
+
+export const DayLabelGrid = styled.div`
   display: grid;
-  gap: 0.5rem;
+  grid-template-columns: repeat(7, 1fr);
+  background-color: var(--gray-a2);
+  box-shadow: var(--shadow-2);
+
+  span {
+    text-align: center;
+    padding: 0.5rem;
+  }
 `;
 
 export const DaysGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0.5rem;
+  grid-template-rows: repeat(4, 1fr);
+  background-color: var(--gray-4);
+  gap: 1px;
+`;
+
+export const DayBox = styled.div`
+  padding: 0.5rem;
+  background-color: var(--gray-1);
+  height: 7rem;
 `;
 
 export const DayIndex = styled.button<{ $isSelected?: boolean }>`
@@ -21,17 +58,6 @@ export const DayIndex = styled.button<{ $isSelected?: boolean }>`
   background-color: ${({ $isSelected }) =>
     $isSelected ? `var(--accent-9)` : `var(--background)`};
   color: ${({ $isSelected }) => $isSelected && `var(--background)`};
-`;
-
-export const DayBox = styled.div<{ $isSelected?: boolean }>`
-  border: 1px solid #eee;
-  padding: 0.5rem;
-  min-height: 60px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  font-size: 0.85rem;
-  position: relative;
-  ${({ $isSelected }) => $isSelected && `background-color: ${lighterGreen};`}
 `;
 
 export const TaskLabel = styled.div<{ $isMonthTask?: boolean }>`

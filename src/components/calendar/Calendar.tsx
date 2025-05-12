@@ -3,16 +3,29 @@
 import type { CalendarEvent } from '@prisma/client';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import * as Styled from './Calendar.styled';
-import { Box, Grid, Spinner, Text } from '@radix-ui/themes';
+import {
+  Box,
+  Card,
+  Flex,
+  Grid,
+  IconButton,
+  Spinner,
+  Text,
+} from '@radix-ui/themes';
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import { DAYS, DAYS_OF_WEEK, MONTHS } from '@/constants/calendar';
+import { Day } from '@/types/calendar';
 
 export default function Calendar({
   selectedMonth,
   selectedDay,
   changeSelectedDay,
+  changeSelectedMonth,
 }: {
-  selectedMonth: string;
-  selectedDay: number;
-  changeSelectedDay: (dayIndex: number) => void;
+  selectedMonth: number;
+  selectedDay: Day | null;
+  changeSelectedDay: (day: Day | null) => void;
+  changeSelectedMonth: (monthIndex: number) => void;
 }) {
   const { calendarEvents, isLoading, error } = useCalendarEvents();
 
@@ -33,33 +46,54 @@ export default function Calendar({
 
   return (
     <Styled.CalendarWrapper>
-      <Grid columns="7" rows="1">
-        {Array.from([
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
-          'Saturday',
-          'Sunday  ',
-        ]).map((day) => {
+      <Styled.MonthHeader>
+        <IconButton
+          title={MONTHS[selectedMonth - 1]}
+          size="1"
+          color="gray"
+          variant="surface"
+          highContrast
+          className={selectedMonth > 0 ? '' : 'hide'}
+          onClick={() => changeSelectedMonth(selectedMonth - 1)}
+        >
+          <ChevronLeftIcon width="20" height="20" />
+        </IconButton>
+        <Text size="4" weight="bold">
+          {MONTHS[selectedMonth]}
+        </Text>
+        <IconButton
+          title={MONTHS[selectedMonth + 1]}
+          size="1"
+          color="gray"
+          variant="surface"
+          highContrast
+          className={selectedMonth + 1 < MONTHS.length ? '' : `hide`}
+          onClick={() => changeSelectedMonth(selectedMonth + 1)}
+        >
+          <ChevronRightIcon width="20" height="20" />
+        </IconButton>
+      </Styled.MonthHeader>
+      <Styled.DayLabelGrid>
+        {DAYS_OF_WEEK.map((day) => {
           return (
             <Text key={day} size="1" weight="medium">
               {day}
             </Text>
           );
         })}
-      </Grid>
-      <Grid columns="7" rows="4" style={{ border: '0.1px solid' }}>
-        {Array.from({ length: 28 }, (_, i) => i + 1).map((day) => {
-          const tasks = getTaskForDate(selectedMonth, day);
+      </Styled.DayLabelGrid>
+      <Styled.DaysGrid>
+        {DAYS.map((day) => {
+          const tasks = getTaskForDate(MONTHS[selectedMonth], day);
           const monthTasks =
-            day === 28 ? getTaskForDate(selectedMonth, 29) : null;
+            day === 28 ? getTaskForDate(MONTHS[selectedMonth], 29) : null;
           return (
-            <Box key={day} p="1" style={{ border: '0.1px solid' }}>
+            <Styled.DayBox key={day}>
               <Styled.DayIndex
-                onClick={() => changeSelectedDay(day)}
-                $isSelected={day === selectedDay}
+                onClick={() =>
+                  changeSelectedDay(`${MONTHS[selectedMonth]} ${day}`)
+                }
+                $isSelected={`${MONTHS[selectedMonth]} ${day}` === selectedDay}
               >
                 {day}
               </Styled.DayIndex>
@@ -72,10 +106,10 @@ export default function Calendar({
                   {t.name}
                 </Styled.TaskLabel>
               ))}
-            </Box>
+            </Styled.DayBox>
           );
         })}
-      </Grid>
+      </Styled.DaysGrid>
     </Styled.CalendarWrapper>
   );
 }

@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { whiteSmoke } from '@/styles/colors';
+import { Text } from '@radix-ui/themes';
 
 export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
   min-height: 100%;
   width: ${(props) => (props.$isOpen ? '17rem' : '5.3rem')};
   background-color: ${whiteSmoke};
   border-right: 1px solid #e9ecef;
-  padding: 2rem;
+  padding: 1.5rem;
   transition: width 0.3s ease-in-out;
   z-index: 1000;
 `;
@@ -19,7 +20,7 @@ export const NavList = styled.ul`
   gap: 1rem;
 `;
 
-export const LinkLabel = styled.span<{ $isOpen: boolean }>`
+export const LinkLabel = styled(Text)<{ $isOpen: boolean }>`
   position: absolute;
   margin-left: 30px;
   line-height: 20px;
@@ -32,17 +33,14 @@ export const NavItem = styled.li`
     text-decoration: none;
     display: flex;
     align-items: center;
-    padding: 1rem 0;
+    padding: 0.5rem;
     border-radius: 8px;
-    gap: 1rem;
-    transition: background-color 0.2s;
+    gap: 0.5rem;
+    transition: all 0.3s;
 
     &:hover {
-      svg {
-        transition: transform 0.3s;
-        transform: scale(1.3);
-      }
-      font-weight: 600;
+      background-color: var(--accent-a3);
+      color: var(--accent-a12);
     }
   }
 `;
@@ -50,14 +48,15 @@ export const NavItem = styled.li`
 export const CloseButton = styled.button<{ $isOpen: boolean }>`
   background: none;
   border: none;
-  width: 100%;
-  display: flex;
-  flex-direction: row-reverse;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transform: ${(props) =>
+    props.$isOpen
+      ? `translateX(12rem) rotate(0);`
+      : `translateX(0) rotate(45deg);`};
+  transition: all 0.3s ease-in-out;
 
   &:hover {
-    svg {
-      transition: transform 0.3s;
-      transform: scale(1.3);
-    }
+    color: var(--accent-a12);
   }
 `;
