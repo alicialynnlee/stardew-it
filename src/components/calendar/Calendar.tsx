@@ -15,17 +15,20 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { DAYS, DAYS_OF_WEEK, MONTHS } from '@/constants/calendar';
 import { Day } from '@/types/calendar';
+import { FarmTaskCompletion } from '@/types/tasks';
 
 export default function Calendar({
   selectedMonth,
   selectedDay,
   changeSelectedDay,
   changeSelectedMonth,
+  farmTaskCompletion,
 }: {
   selectedMonth: number;
   selectedDay: Day | null;
   changeSelectedDay: (day: Day | null) => void;
   changeSelectedMonth: (monthIndex: number) => void;
+  farmTaskCompletion?: FarmTaskCompletion;
 }) {
   const { calendarEvents, isLoading, error } = useCalendarEvents();
 
@@ -41,7 +44,7 @@ export default function Calendar({
     if (!dayArray) {
       return null;
     }
-    return dayArray;
+    return dayArray.filter((day) => !farmTaskCompletion?.get(day.taskId));
   };
 
   return (

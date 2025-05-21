@@ -1,21 +1,29 @@
-'use client';
+import { getCurrentUser } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
+import CalendarClient from './CalendarClient';
+import { redirect } from 'next/navigation';
 
-import { Calendar } from '@/components';
-import { Day } from '@/types/calendar';
-import { useState } from 'react';
+interface Props {
+  searchParams: { farmId?: string };
+}
 
-export default function CalendarPage() {
-  const [selectedMonthIndex, setSelectedMonthIndex] = useState(0);
-  const [selectedDay, setSelectedDay] = useState<Day | null>(null);
+export default async function CalendarPage({ searchParams }: Props) {
+  const user = await getCurrentUser();
+  const { farmId: paramFarmId } = await searchParams;
 
-  return (
-    <div>
-      <Calendar
-        selectedMonth={selectedMonthIndex}
-        selectedDay={selectedDay}
-        changeSelectedDay={(dayIndex) => setSelectedDay(dayIndex)}
-        changeSelectedMonth={(monthIndex) => setSelectedMonthIndex(monthIndex)}
-      />
-    </div>
-  );
+  if (!user?.id) {
+    return <CalendarClient userId={null} selectedFarmId={null} />;
+  }
+
+  if (!paramFarmId) {
+    const userRecord = await prisma.user.findUnique({ where: { id: user.id } });
+    const selectedFarmId = userRecord?.selectedFarmId;
+    if (selectedFarmId) {
+      redirect(`/calendar?farmId=${selectedFarmId}`);
+    }
+  } else if (paramFarmId) {
+    return <CalendarClient userId={user.id} selectedFarmId={paramFarmId} />;
+  }
+
+  return <CalendarClient userId={user.id} selectedFarmId={null} />;
 }

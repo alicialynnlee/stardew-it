@@ -21,6 +21,7 @@ export const DropdownContainer = styled.div<{ $isDropdownOpen: boolean }>`
   background-color: var(--background);
   padding: 0.5rem 1rem;
   width: 15rem;
+  z-index: 2;
 `;
 
 export const FarmSelectorList = styled.ul`

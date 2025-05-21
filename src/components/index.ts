@@ -4,3 +4,4 @@ export { default as AuthProvider } from './AuthProvider';
 export { default as FarmSelector } from './farm-selector/FarmSelector';
 export { default as Calendar } from './calendar/Calendar';
 export { default as Button } from './button/Button';
+export { default as WarningBanner } from './banners/WarningBanner';

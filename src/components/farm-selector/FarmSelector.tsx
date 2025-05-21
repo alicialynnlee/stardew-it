@@ -4,7 +4,7 @@ import { useFarms } from '@/hooks/useFarms';
 import * as Styled from './FarmSelector.styled';
 import { useCallback, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
   CaretDownIcon,
   CrossCircledIcon,
@@ -29,6 +29,7 @@ export default function FarmSelector() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [newFarm, setNewFarm] = useState('');
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   // const [newFarmError, setNewFarmError] = useState('');
 
@@ -36,13 +37,15 @@ export default function FarmSelector() {
     (farmId: string) => {
       if (!farmId || farmId === '') {
         setSelectedFarm('');
+        setIsDropdownOpen(false);
         router.push('/tracker');
       } else {
         setSelectedFarm(farmId);
+        setIsDropdownOpen(false);
         const params = new URLSearchParams(searchParams.toString());
         params.set('farmId', farmId);
-
-        router.push(`/tracker?${params.toString()}`);
+        const path = pathname === '/calendar' ? pathname : '/tracker';
+        router.push(`${path}?${params.toString()}`);
       }
     },
     [farms]
