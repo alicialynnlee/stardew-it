@@ -1,10 +1,11 @@
 'use client';
 
-import { WarningBanner } from '@/components';
+import { ProgressCircle, RoomDrawer, WarningBanner } from '@/components';
 import { useTasks } from '@/hooks/useTasks';
 import { useRooms } from '@/hooks/useRooms';
-import { Box } from '@radix-ui/themes';
-import * as Styled from './tracker.styled';
+import { Box, Button, Card, Flex, Grid, Tabs, Text } from '@radix-ui/themes';
+import { BundleId } from '@/types/tasks';
+import { useState } from 'react';
 
 export default function TrackerClient({
   userId,
@@ -25,8 +26,19 @@ export default function TrackerClient({
     updateTask,
   } = useTasks(selectedFarmId);
 
+  const [activeRoom, setActiveRoom] = useState('all');
+
   if (roomsLoading) return <div>Loading...</div>;
   if (roomsError) return <div>Error: {roomsError}</div>;
+
+  const getPercentageComplete = (bundle: BundleId) => {
+    const required = bundle.tasksRequired;
+    const completed = bundle.taskIds.filter((taskId) =>
+      farmTaskCompletion.get(taskId.taskId)
+    ).length;
+    return (completed / required) * 100;
+  };
+
   return (
     <div>
       <Box py="3">
@@ -43,33 +55,76 @@ export default function TrackerClient({
 
       {roomsLoading && <div>Loading...</div>}
       {roomsError && <div>Error: {roomsError}</div>}
-
-      <h1>Tracker</h1>
-      {roomCollection.map((room) => (
-        <Styled.RoomContainer key={room.roomId}>
-          <h2>{room.roomName}</h2>
-          {room.bundleIds.map((bundle) => (
-            <div key={bundle.bundleId}>
-              <h3>
-                {bundle.name}
-                {bundle.tasksRequired && ` (${bundle.tasksRequired})`}
-              </h3>
-              {bundle.taskIds.map((taskId) => (
-                <Styled.TaskContainer key={taskId.taskId}>
-                  <input
-                    type="checkbox"
-                    checked={farmTaskCompletion.get(taskId.taskId)}
-                    onChange={(e) =>
-                      updateTask(taskId.taskId, e.target.checked)
-                    }
-                  />
-                  <h4>{taskId.name}</h4>
-                </Styled.TaskContainer>
-              ))}
-            </div>
+      <h1>My Task Tracker</h1>
+      <Tabs.Root defaultValue="all" value={activeRoom}>
+        <Tabs.List>
+          <Tabs.Trigger
+            value="all"
+            key="trigger-all"
+            onClick={() => setActiveRoom('all')}
+          >
+            All Rooms
+          </Tabs.Trigger>
+          {roomCollection.map((room) => (
+            <Tabs.Trigger
+              value={room.roomId}
+              key={`trigger-${room.roomId}`}
+              onClick={() => setActiveRoom(room.roomId)}
+            >
+              {room.roomName}
+            </Tabs.Trigger>
           ))}
-        </Styled.RoomContainer>
-      ))}
+        </Tabs.List>
+        <Flex gap="5" direction="column">
+          <Tabs.Content value="all" key="content-all">
+            {roomCollection.map((room) => (
+              <Button
+                key={room.roomId}
+                size="4"
+                variant="outline"
+                color="gray"
+                style={{
+                  margin: '1rem 0',
+                  width: '100%',
+                  height: '76px',
+                  justifyContent: 'start',
+                }}
+                onClick={() => setActiveRoom(room.roomId)}
+              >
+                <Text weight="bold" size="5" wrap="nowrap">
+                  {room.roomName}
+                </Text>
+                <Grid columns={room.bundleIds.length.toString()} gap="1">
+                  {room.bundleIds.map((bundle) => (
+                    <Flex
+                      direction="column"
+                      align="center"
+                      style={{ textAlign: 'center' }}
+                    >
+                      <ProgressCircle
+                        size={24}
+                        percentage={getPercentageComplete(bundle)}
+                      />
+                      <Text size="1" weight="light" color="gray">
+                        {bundle.name}
+                      </Text>
+                    </Flex>
+                  ))}
+                </Grid>
+              </Button>
+            ))}
+          </Tabs.Content>
+          {roomCollection.map((room) => (
+            <Tabs.Content value={room.roomId} key={`content-${room.roomId}`}>
+              <RoomDrawer
+                room={room}
+                farmTaskCompletion={farmTaskCompletion}
+                updateTask={updateTask}
+              />
+            </Tabs.Content>
+          ))}
+        </Flex>
+      </Tabs.Root>
     </div>
   );
 }

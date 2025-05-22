@@ -102,7 +102,7 @@ export default function Calendar({
               </Styled.DayIndex>
               {tasks &&
                 tasks.map((t) => (
-                  <Styled.TaskLabel key={t.id}>{t.name}</Styled.TaskLabel>
+                  <Styled.TaskLabel key={t.id}>{t.name} </Styled.TaskLabel>
                 ))}
               {monthTasks?.map((t) => (
                 <Styled.TaskLabel key={t.id} $isMonthTask>

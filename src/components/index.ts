@@ -5,3 +5,6 @@ export { default as FarmSelector } from './farm-selector/FarmSelector';
 export { default as Calendar } from './calendar/Calendar';
 export { default as Button } from './button/Button';
 export { default as WarningBanner } from './banners/WarningBanner';
+export { default as RoomDrawer } from './tracker-components/RoomDrawer';
+export { default as ProgressBar } from './progress-bar/ProgressBar';
+export { default as ProgressCircle } from './progress-bar/ProgressCircle';
