@@ -49,14 +49,14 @@ export default function ProgressCircle({
             strokeWidth={strokeWidth}
             strokeDasharray={circumference}
             strokeDashoffset={offset}
-            color={'var(--accent-9)'}
+            color={'var(--custom-9)'}
           ></CircleProgress>
         </g>
       </Svg>
       <CheckMark
         width={size - 6}
         height={size - 6}
-        color={percentage >= 100 ? `var(--accent-9)` : `var(--gray-4)`}
+        color={percentage >= 100 ? `var(--custom-9)` : `var(--gray-4)`}
       />
     </Flex>
   );

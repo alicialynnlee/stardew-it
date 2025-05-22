@@ -38,4 +38,4 @@ interface RoomId {
  */
 type RoomIdCollection = RoomId[];
 
-export type { RoomIdCollection, RoomId, BundleId, FarmTaskCompletion };
+export type { RoomIdCollection, RoomId, BundleId, TaskId, FarmTaskCompletion };

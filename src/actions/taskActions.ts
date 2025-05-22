@@ -2,7 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 
-import type { FarmTask } from '@prisma/client';
+import type { FarmTask, Task } from '@prisma/client';
 import type { ResponseData, ResponseNoData } from '@/types/response';
 
 export async function getFarmTasks(
@@ -42,5 +42,23 @@ export async function updateFarmTask(
   } catch (error) {
     console.error('Failed to update farm task:', error);
     return { success: false, error: 'Failed to update farm task' };
+  }
+}
+
+export async function getTaskDetails(
+  taskId: string
+): Promise<ResponseData<Task>> {
+  try {
+    // get farm tasks
+    const task = await prisma.task.findUnique({
+      where: { id: taskId },
+    });
+    if (!task) {
+      return { success: false, error: 'No task found' };
+    }
+    return { success: true, data: task };
+  } catch (error) {
+    console.error('Failed to get task details:', error);
+    return { success: false, error: 'Failed to get task details' };
   }
 }

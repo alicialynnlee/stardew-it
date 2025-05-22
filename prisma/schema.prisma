@@ -85,7 +85,7 @@ model Task {
   bundleId        String
   bundle          Bundle      @relation(fields: [bundleId], references: [id])
   farmTasks       FarmTask[]  // Required by Prisma for the relation to work
-  calendarEvents  CalendarEvent[]
+  calendarEvents  CalendarEvent[]   @relation("TaskCalendarEvents")
 
   @@map("tasks")
 }
@@ -127,6 +127,5 @@ model CalendarEvent {
   date          String
   name          String
   description   String?
-  taskId        String
-  task          Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  tasks         Task[]             @relation("TaskCalendarEvents")
 }

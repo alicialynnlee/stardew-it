@@ -4,8 +4,8 @@ import { useState, useEffect, useCallback, useTransition, useRef } from 'react';
 import debounce from 'lodash/debounce';
 import { getFarmTasks, updateFarmTask } from '@/actions/taskActions';
 import type { FarmTaskCompletion } from '@/types/tasks';
-import { Farm } from '@prisma/client';
-import { ResponseNoData } from '@/types/response';
+import { Farm, Task } from '@prisma/client';
+import { ResponseData, ResponseNoData } from '@/types/response';
 
 export function useTasks(selectedFarmId: string | null) {
   const [farmTaskCompletion, setFarmTaskCompletion] =
@@ -79,11 +79,20 @@ export function useTasks(selectedFarmId: string | null) {
     [selectedFarmId]
   );
 
+  const getTaskDetails = useCallback(
+    async (taskId: string): Promise<ResponseData<Task>> => {
+      const result = await getTaskDetails(taskId);
+      return result;
+    },
+    []
+  );
+
   return {
     farmTaskCompletion,
     isLoading,
     isPending,
     error,
     updateTask,
+    getTaskDetails,
   };
 }

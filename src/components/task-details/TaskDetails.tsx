@@ -1,48 +1,74 @@
 'use client';
 
+import { FarmTaskCompletion, TaskId } from '@/types/tasks';
 import { Cross2Icon } from '@radix-ui/react-icons';
-import { Dialog } from 'radix-ui';
+import * as Styled from './TaskDetails.styled';
+import { Text, Dialog } from '@radix-ui/themes';
+import { useState } from 'react';
+import { useTasks } from '@/hooks/useTasks';
+import { Task } from '@prisma/client';
 
-export default function TaskDetails() {
+export default function TaskDetails({
+  task,
+  farmTaskCompletion,
+  updateTask,
+}: {
+  task: TaskId;
+  farmTaskCompletion: FarmTaskCompletion;
+  updateTask: (taskId: string, completed: boolean) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [taskDetails, setTaskDetails] = useState<Task | null>(null);
+  const { getTaskDetails } = useTasks(null);
+
+  const handleToggle = async () => {
+    if (!isOpen) {
+      try {
+        const result = await getTaskDetails(task.taskId);
+        if (result.success && result.data) {
+          setTaskDetails(result.data);
+          setIsOpen(true);
+        }
+      } catch {
+        setTaskDetails(null);
+      }
+    } else {
+      setIsOpen(false);
+      setTaskDetails(null);
+    }
+  };
+
   return (
     <Dialog.Root>
-      <Dialog.Portal>
-        <Dialog.Overlay className="DialogOverlay" />
-        <Dialog.Content className="DialogContent">
-          <Dialog.Title className="DialogTitle">Edit profile</Dialog.Title>
-          <Dialog.Description className="DialogDescription">
-            Make changes to your profile here. Click save when you're done.
-          </Dialog.Description>
-          <fieldset className="Fieldset">
-            <label className="Label" htmlFor="name">
-              Name
-            </label>
-            <input className="Input" id="name" defaultValue="Pedro Duarte" />
-          </fieldset>
-          <fieldset className="Fieldset">
-            <label className="Label" htmlFor="username">
-              Username
-            </label>
-            <input className="Input" id="username" defaultValue="@peduarte" />
-          </fieldset>
-          <div
-            style={{
-              display: 'flex',
-              marginTop: 25,
-              justifyContent: 'flex-end',
-            }}
+      <Dialog.Trigger>
+        <Styled.TaskLabel
+          key={task.taskId}
+          variant="outline"
+          color="gray"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <input
+            type="checkbox"
+            checked={farmTaskCompletion.get(task.taskId)}
+            onChange={(e) => updateTask(task.taskId, e.target.checked)}
+          />
+          <Text size="2">{task.name}</Text>
+        </Styled.TaskLabel>
+      </Dialog.Trigger>
+      <Dialog.Content className="DialogContent">
+        <Dialog.Close>
+          <Styled.CloseButton
+            radius="full"
+            variant="soft"
+            color="gray"
+            aria-label="Close"
           >
-            <Dialog.Close asChild>
-              <button className="Button green">Save changes</button>
-            </Dialog.Close>
-          </div>
-          <Dialog.Close asChild>
-            <button className="IconButton" aria-label="Close">
-              <Cross2Icon />
-            </button>
-          </Dialog.Close>
-        </Dialog.Content>
-      </Dialog.Portal>
+            <Cross2Icon />
+          </Styled.CloseButton>
+        </Dialog.Close>
+        <Dialog.Title>{task.name}</Dialog.Title>
+        <Dialog.Description>bundle: {taskDetails?.bundleId}</Dialog.Description>
+      </Dialog.Content>
     </Dialog.Root>
   );
 }

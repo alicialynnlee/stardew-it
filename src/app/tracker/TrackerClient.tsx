@@ -1,11 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import { ProgressCircle, RoomDrawer, WarningBanner } from '@/components';
 import { useTasks } from '@/hooks/useTasks';
 import { useRooms } from '@/hooks/useRooms';
-import { Box, Button, Card, Flex, Grid, Tabs, Text } from '@radix-ui/themes';
 import { BundleId } from '@/types/tasks';
-import { useState } from 'react';
+import { Box, Button, Flex, Grid, Tabs, Text } from '@radix-ui/themes';
+import { ChevronRightIcon } from '@radix-ui/react-icons';
 
 export default function TrackerClient({
   userId,
@@ -86,7 +87,7 @@ export default function TrackerClient({
                 style={{
                   margin: '1rem 0',
                   width: '100%',
-                  height: '76px',
+                  height: '96px',
                   justifyContent: 'start',
                 }}
                 onClick={() => setActiveRoom(room.roomId)}
@@ -94,9 +95,14 @@ export default function TrackerClient({
                 <Text weight="bold" size="5" wrap="nowrap">
                   {room.roomName}
                 </Text>
-                <Grid columns={room.bundleIds.length.toString()} gap="1">
+                <Grid
+                  columns={room.bundleIds.length.toString()}
+                  gap="1"
+                  style={{ flexGrow: '1' }}
+                >
                   {room.bundleIds.map((bundle) => (
                     <Flex
+                      key={bundle.bundleId}
                       direction="column"
                       align="center"
                       style={{ textAlign: 'center' }}
@@ -111,6 +117,7 @@ export default function TrackerClient({
                     </Flex>
                   ))}
                 </Grid>
+                <ChevronRightIcon />
               </Button>
             ))}
           </Tabs.Content>

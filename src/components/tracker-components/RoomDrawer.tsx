@@ -1,10 +1,8 @@
 'use client';
 
 import { FarmTaskCompletion, RoomId } from '@/types/tasks';
-import { Card } from '@radix-ui/themes';
-import { Accordion } from 'radix-ui';
+import { Box, Text } from '@radix-ui/themes';
 import BundleDrawer from './BundleDrawer';
-import * as Styled from './TrackerComonents.styled';
 
 export default function RoomDrawer({
   room,
@@ -16,25 +14,18 @@ export default function RoomDrawer({
   updateTask: (taskId: string, completed: boolean) => void;
 }) {
   return (
-    <Card
-      key={room.roomId}
-      size="4"
-      variant="surface"
-      style={{ margin: '1rem 0' }}
-    >
-      <Styled.DropdownHeader>
-        <h2>{room.roomName}</h2>
-      </Styled.DropdownHeader>
-      <Accordion.Root type="multiple">
-        {room.bundleIds.map((bundle) => (
-          <BundleDrawer
-            key={bundle.bundleId}
-            bundle={bundle}
-            farmTaskCompletion={farmTaskCompletion}
-            updateTask={updateTask}
-          />
-        ))}
-      </Accordion.Root>
-    </Card>
+    <Box key={room.roomId} my="4">
+      <Text weight="bold" size="6">
+        {room.roomName}
+      </Text>
+      {room.bundleIds.map((bundle) => (
+        <BundleDrawer
+          key={bundle.bundleId}
+          bundle={bundle}
+          farmTaskCompletion={farmTaskCompletion}
+          updateTask={updateTask}
+        />
+      ))}
+    </Box>
   );
 }

@@ -1,11 +1,12 @@
 'use client';
 
 import { BundleId, FarmTaskCompletion } from '@/types/tasks';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { ChevronDownIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
-import * as Styled from './TrackerComonents.styled';
-import { Text } from '@radix-ui/themes';
+import * as Styled from './TrackerComponents.styled';
+import { Box, Card, Flex, Text } from '@radix-ui/themes';
 import ProgressBar from '../progress-bar/ProgressBar';
+import TaskDetails from '../task-details/TaskDetails';
 
 export default function BundleDrawer({
   bundle,
@@ -26,29 +27,30 @@ export default function BundleDrawer({
 
   const [isOpen, setIsOpen] = useState(true);
   return (
-    <div key={bundle.bundleId}>
-      <Styled.DropdownHeader onClick={() => setIsOpen(!isOpen)}>
-        <Text size="4">
-          {bundle.name} {bundle.tasksRequired && ` (${bundle.tasksRequired})`}
-        </Text>
-        <ChevronDownIcon
+    <Styled.BundleContainer key={bundle.bundleId}>
+      <Styled.DropdownHeader>
+        <ChevronRightIcon
           className={`chevron ${isOpen && 'open'}`}
           aria-hidden
+          onClick={() => setIsOpen(!isOpen)}
         />
+        <Flex direction="column" width="100%">
+          <Text size="4">
+            {bundle.name} {bundle.tasksRequired && ` (${bundle.tasksRequired})`}
+          </Text>
+          <ProgressBar width={getPercentageComplete()} />
+          <Styled.TaskContainer $isOpen={isOpen}>
+            {bundle.taskIds.map((task) => (
+              <TaskDetails
+                key={task.taskId}
+                task={task}
+                farmTaskCompletion={farmTaskCompletion}
+                updateTask={updateTask}
+              />
+            ))}
+          </Styled.TaskContainer>
+        </Flex>
       </Styled.DropdownHeader>
-      <Styled.TaskContainer $isOpen={isOpen}>
-        <ProgressBar width={getPercentageComplete()} />
-        {bundle.taskIds.map((task) => (
-          <Styled.TaskLabel key={task.taskId}>
-            <input
-              type="checkbox"
-              checked={farmTaskCompletion.get(task.taskId)}
-              onChange={(e) => updateTask(task.taskId, e.target.checked)}
-            />
-            <Text size="2">{task.name}</Text>
-          </Styled.TaskLabel>
-        ))}
-      </Styled.TaskContainer>
-    </div>
+    </Styled.BundleContainer>
   );
 }

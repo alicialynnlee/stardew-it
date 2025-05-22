@@ -9,7 +9,7 @@ export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
   border-right: 1px solid #e9ecef;
   padding: 1.5rem;
   transition: width 0.3s ease-in-out;
-  z-index: 1000;
+  z-index: 2;
 `;
 
 export const NavList = styled.ul`
