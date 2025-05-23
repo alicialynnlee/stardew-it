@@ -1,3 +1,5 @@
+import { Bundle, CalendarEvent } from '@prisma/client';
+
 /**
  * Defines the FarmTaskCompletion type.
  * key: taskId
@@ -11,6 +13,16 @@ type FarmTaskCompletion = Map<string, boolean>;
 interface TaskId {
   taskId: string;
   name: string;
+}
+
+/**
+ * Defines the structure for task details.
+ */
+interface TaskDetails {
+  id: string;
+  name: string;
+  bundle: Bundle;
+  calendarEvents: CalendarEvent[];
 }
 
 /**
@@ -38,4 +50,11 @@ interface RoomId {
  */
 type RoomIdCollection = RoomId[];
 
-export type { RoomIdCollection, RoomId, BundleId, TaskId, FarmTaskCompletion };
+export type {
+  RoomIdCollection,
+  RoomId,
+  BundleId,
+  TaskId,
+  FarmTaskCompletion,
+  TaskDetails,
+};

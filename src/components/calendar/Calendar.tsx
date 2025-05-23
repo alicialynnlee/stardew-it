@@ -3,15 +3,7 @@
 import type { CalendarEvent } from '@prisma/client';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import * as Styled from './Calendar.styled';
-import {
-  Box,
-  Card,
-  Flex,
-  Grid,
-  IconButton,
-  Spinner,
-  Text,
-} from '@radix-ui/themes';
+import { IconButton, Text } from '@radix-ui/themes';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { DAYS, DAYS_OF_WEEK, MONTHS } from '@/constants/calendar';
 import { Day } from '@/types/calendar';

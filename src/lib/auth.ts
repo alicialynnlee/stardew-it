@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import NextAuth, { NextAuthOptions, getServerSession } from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from './prisma';

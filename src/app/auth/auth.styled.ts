@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Form } from 'radix-ui';
-import { barnRed, lightRed } from '@/styles/colors';
+import { lightRed } from '@/styles/colors';
 
 export const Field = styled(Form.Field)`
   display: flex;

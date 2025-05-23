@@ -54,7 +54,7 @@ export function useCalendarEvents() {
 
   useEffect(() => {
     fetchCalendarEvents();
-  }, []);
+  }, [fetchCalendarEvents]);
 
   return {
     calendarEvents,

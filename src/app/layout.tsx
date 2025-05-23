@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import StyledComponentsRegistry from './registry';
 import GlobalStyles from '@/styles/GlobalStyles';
-import { Theme, ThemePanel } from '@radix-ui/themes';
+import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import { Navbar, SideNav, AuthProvider } from '@/components';
 

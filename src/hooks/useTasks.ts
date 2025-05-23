@@ -1,16 +1,17 @@
 'use client';
 
-import { useState, useEffect, useCallback, useTransition, useRef } from 'react';
-import debounce from 'lodash/debounce';
-import { getFarmTasks, updateFarmTask } from '@/actions/taskActions';
-import type { FarmTaskCompletion } from '@/types/tasks';
-import { Farm, Task } from '@prisma/client';
+import { useState, useEffect, useCallback, useTransition } from 'react';
+import {
+  getFarmTasks,
+  updateFarmTask,
+  getTaskDetails as getTaskDetailsAction,
+} from '@/actions/taskActions';
+import type { FarmTaskCompletion, TaskDetails } from '@/types/tasks';
 import { ResponseData, ResponseNoData } from '@/types/response';
 
 export function useTasks(selectedFarmId: string | null) {
   const [farmTaskCompletion, setFarmTaskCompletion] =
     useState<FarmTaskCompletion>(new Map());
-  const pendingUpdatesRef = useRef<FarmTaskCompletion>(new Map());
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -46,7 +47,7 @@ export function useTasks(selectedFarmId: string | null) {
     if (selectedFarmId) {
       fetchFarmTasks();
     }
-  }, [selectedFarmId]);
+  }, [selectedFarmId, fetchFarmTasks]);
 
   const updateTask = useCallback(
     async (taskId: string, completed: boolean): Promise<ResponseNoData> => {
@@ -76,12 +77,12 @@ export function useTasks(selectedFarmId: string | null) {
 
       return result;
     },
-    [selectedFarmId]
+    [selectedFarmId, fetchFarmTasks]
   );
 
   const getTaskDetails = useCallback(
-    async (taskId: string): Promise<ResponseData<Task>> => {
-      const result = await getTaskDetails(taskId);
+    async (taskId: string): Promise<ResponseData<TaskDetails>> => {
+      const result = await getTaskDetailsAction(taskId);
       return result;
     },
     []

@@ -48,7 +48,7 @@ export default function FarmSelector() {
         router.push(`${path}?${params.toString()}`);
       }
     },
-    [farms]
+    [pathname, router, searchParams, setSelectedFarm]
   );
 
   const handleAddNewFarm = async () => {

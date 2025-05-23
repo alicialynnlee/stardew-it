@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { charcoalBlack, whiteSmoke } from '@/styles/colors';
 
 export const FarmSelector = styled.div`
   .farm-selector-open-button {

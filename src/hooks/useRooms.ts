@@ -43,7 +43,7 @@ export function useRooms() {
 
   useEffect(() => {
     fetchAllRooms();
-  }, []);
+  }, [fetchAllRooms]);
 
   return {
     roomCollection,

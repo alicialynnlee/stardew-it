@@ -1,10 +1,10 @@
 'use client';
 
 import { BundleId, FarmTaskCompletion } from '@/types/tasks';
-import { ChevronDownIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import { ChevronRightIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
 import * as Styled from './TrackerComponents.styled';
-import { Box, Card, Flex, Text } from '@radix-ui/themes';
+import { Flex, Text } from '@radix-ui/themes';
 import ProgressBar from '../progress-bar/ProgressBar';
 import TaskDetails from '../task-details/TaskDetails';
 

@@ -1,4 +1,3 @@
-import { Button, Card } from '@radix-ui/themes';
 import styled from 'styled-components';
 
 export const DropdownHeader = styled.div`

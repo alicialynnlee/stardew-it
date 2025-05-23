@@ -1,5 +1,5 @@
-import { dustySage, lighterGreen, lightRed } from '@/styles/colors';
-import { Card, Text } from '@radix-ui/themes';
+import { lightRed } from '@/styles/colors';
+import { Card } from '@radix-ui/themes';
 import styled from 'styled-components';
 
 export const CalendarWrapper = styled(Card)`

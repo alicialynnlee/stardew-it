@@ -1,12 +1,15 @@
 'use client';
 
-import { FarmTaskCompletion, TaskId } from '@/types/tasks';
-import { Cross2Icon } from '@radix-ui/react-icons';
+import {
+  FarmTaskCompletion,
+  TaskDetails as TaskDetailsType,
+  TaskId,
+} from '@/types/tasks';
+import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
 import * as Styled from './TaskDetails.styled';
-import { Text, Dialog } from '@radix-ui/themes';
+import { Text, Dialog, Separator, Button } from '@radix-ui/themes';
 import { useState } from 'react';
 import { useTasks } from '@/hooks/useTasks';
-import { Task } from '@prisma/client';
 
 export default function TaskDetails({
   task,
@@ -18,7 +21,7 @@ export default function TaskDetails({
   updateTask: (taskId: string, completed: boolean) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [taskDetails, setTaskDetails] = useState<Task | null>(null);
+  const [taskDetails, setTaskDetails] = useState<TaskDetailsType | null>(null);
   const { getTaskDetails } = useTasks(null);
 
   const handleToggle = async () => {
@@ -45,7 +48,7 @@ export default function TaskDetails({
           key={task.taskId}
           variant="outline"
           color="gray"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={handleToggle}
         >
           <input
             type="checkbox"
@@ -67,7 +70,33 @@ export default function TaskDetails({
           </Styled.CloseButton>
         </Dialog.Close>
         <Dialog.Title>{task.name}</Dialog.Title>
-        <Dialog.Description>bundle: {taskDetails?.bundleId}</Dialog.Description>
+        <Dialog.Description>
+          Bundle: {taskDetails?.bundle.name}
+          <Separator my="3" size="4" />
+          {taskDetails?.calendarEvents.map((ce) => (
+            <>
+              {ce.date}: {ce.name}
+              <br />
+              {ce.description}
+            </>
+          ))}
+        </Dialog.Description>
+        <Dialog.Close>
+          <Button
+            my="3"
+            onClick={() =>
+              updateTask(task.taskId, !farmTaskCompletion.get(task.taskId))
+            }
+          >
+            Mark{' '}
+            {farmTaskCompletion.get(task.taskId) ? 'Uncompleted' : 'Completed'}
+            {farmTaskCompletion.get(task.taskId) ? (
+              <Cross2Icon />
+            ) : (
+              <CheckIcon />
+            )}
+          </Button>
+        </Dialog.Close>
       </Dialog.Content>
     </Dialog.Root>
   );

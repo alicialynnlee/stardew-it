@@ -2,7 +2,8 @@
 
 import { prisma } from '@/lib/prisma';
 
-import type { FarmTask, Task } from '@prisma/client';
+import type { FarmTask } from '@prisma/client';
+import type { TaskDetails } from '@/types/tasks';
 import type { ResponseData, ResponseNoData } from '@/types/response';
 
 export async function getFarmTasks(
@@ -47,11 +48,15 @@ export async function updateFarmTask(
 
 export async function getTaskDetails(
   taskId: string
-): Promise<ResponseData<Task>> {
+): Promise<ResponseData<TaskDetails>> {
   try {
     // get farm tasks
     const task = await prisma.task.findUnique({
       where: { id: taskId },
+      include: {
+        calendarEvents: true,
+        bundle: true,
+      },
     });
     if (!task) {
       return { success: false, error: 'No task found' };
