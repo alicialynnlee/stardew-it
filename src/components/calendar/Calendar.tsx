@@ -27,7 +27,7 @@ export default function Calendar({
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  const getTaskForDate = (
+  const getCalendarEventsForDate = (
     month: string,
     day: number
   ): Array<CalendarEvent> | null => {
@@ -79,9 +79,14 @@ export default function Calendar({
       </Styled.DayLabelGrid>
       <Styled.DaysGrid>
         {DAYS.map((day) => {
-          const tasks = getTaskForDate(MONTHS[selectedMonth], day);
-          const monthTasks =
-            day === 28 ? getTaskForDate(MONTHS[selectedMonth], 29) : null;
+          const calEvents = getCalendarEventsForDate(
+            MONTHS[selectedMonth],
+            day
+          );
+          const monthEvents =
+            day === 28
+              ? getCalendarEventsForDate(MONTHS[selectedMonth], 29)
+              : null;
           return (
             <Styled.DayBox key={day}>
               <Styled.DayIndex
@@ -92,13 +97,23 @@ export default function Calendar({
               >
                 {day}
               </Styled.DayIndex>
-              {tasks &&
-                tasks.map((t) => (
-                  <Styled.TaskLabel key={t.id}>{t.name} </Styled.TaskLabel>
+              {calEvents &&
+                calEvents.map((ce) => (
+                  <Styled.TaskLabel key={ce.id}>
+                    {ce.name}{' '}
+                    {ce.name === 'Plant' &&
+                      (ce.tasks && ce.tasks.length > 1
+                        ? `(${ce.tasks.length})`
+                        : ce.tasks[0].name)}
+                  </Styled.TaskLabel>
                 ))}
-              {monthTasks?.map((t) => (
-                <Styled.TaskLabel key={t.id} $isMonthTask>
-                  {t.name}
+              {monthEvents?.map((ce) => (
+                <Styled.TaskLabel key={ce.id} $isMonthTask>
+                  {ce.name}{' '}
+                  {ce.name === 'Forage' &&
+                    (ce.tasks && ce.tasks.length > 1
+                      ? `(${ce.tasks.length})`
+                      : ce.tasks[0].name)}
                 </Styled.TaskLabel>
               ))}
             </Styled.DayBox>

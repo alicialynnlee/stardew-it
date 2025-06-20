@@ -2,7 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import type { CalendarEvent } from '@prisma/client';
-import { getCalendarEvents } from '@/actions/calendarActions';
+import {
+  getCalendarEvents,
+  getCalendarEventsForTask,
+} from '@/actions/calendarActions';
 import type { CalendarEventData } from '@/types/calendar';
 
 export function useCalendarEvents() {
@@ -55,6 +58,49 @@ export function useCalendarEvents() {
   useEffect(() => {
     fetchCalendarEvents();
   }, [fetchCalendarEvents]);
+
+  return {
+    calendarEvents,
+    isLoading,
+    error,
+  };
+}
+
+export function useCalendarEventsForTask(taskId: string) {
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchCalendarEventsForTask = useCallback(async () => {
+    if (!taskId) {
+      setCalendarEvents([]);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      const result = await getCalendarEventsForTask(taskId);
+      if (result.success && result.data) {
+        setCalendarEvents(result.data);
+      } else if (!result.success) {
+        setError(result.error ?? 'Could not fetch calendar events for task');
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Could not fetch calendar events for task'
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, [taskId]);
+
+  useEffect(() => {
+    fetchCalendarEventsForTask();
+  }, [fetchCalendarEventsForTask]);
 
   return {
     calendarEvents,

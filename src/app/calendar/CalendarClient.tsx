@@ -1,10 +1,10 @@
 'use client';
 
-import { Calendar, WarningBanner } from '@/components';
+import { Calendar, CalendarPanel, WarningBanner } from '@/components';
 import { useTasks } from '@/hooks/useTasks';
 // import { getCurrentUser } from '@/lib/auth';
 import { Day } from '@/types/calendar';
-import { Box } from '@radix-ui/themes';
+import { Box, Flex } from '@radix-ui/themes';
 import { useState } from 'react';
 
 export default function CalendarClient({
@@ -20,8 +20,8 @@ export default function CalendarClient({
 
   return (
     <div>
-      <Box py="3">
-        {(!userId || (userId && !selectedFarmId)) && (
+      {(!userId || (userId && !selectedFarmId)) && (
+        <Box py="3">
           <WarningBanner
             text={
               userId
@@ -29,15 +29,27 @@ export default function CalendarClient({
                 : 'You must be <Link href="/auth">signed in</Link> and have a farm selected to save your progress.'
             }
           />
-        )}
-      </Box>
-      <Calendar
-        farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
-        selectedMonth={selectedMonthIndex}
-        selectedDay={selectedDay}
-        changeSelectedDay={(dayIndex) => setSelectedDay(dayIndex)}
-        changeSelectedMonth={(monthIndex) => setSelectedMonthIndex(monthIndex)}
-      />
+        </Box>
+      )}
+      <Flex direction="row" align="stretch" height="calc(100vh - 9rem)">
+        <Calendar
+          farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
+          selectedMonth={selectedMonthIndex}
+          selectedDay={selectedDay}
+          changeSelectedDay={(dayIndex) => setSelectedDay(dayIndex)}
+          changeSelectedMonth={(monthIndex) =>
+            setSelectedMonthIndex(monthIndex)
+          }
+        />
+        <CalendarPanel
+          selectedMonth={selectedMonthIndex}
+          selectedDay={selectedDay}
+          changeSelectedDay={(dayIndex) => setSelectedDay(dayIndex)}
+          changeSelectedMonth={(monthIndex) =>
+            setSelectedMonthIndex(monthIndex)
+          }
+        />
+      </Flex>
     </div>
   );
 }

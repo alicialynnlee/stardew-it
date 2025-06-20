@@ -10,6 +10,7 @@ import * as Styled from './TaskDetails.styled';
 import { Text, Dialog, Separator, Button } from '@radix-ui/themes';
 import { useState } from 'react';
 import { useTasks } from '@/hooks/useTasks';
+import { useCalendarEventsForTask } from '@/hooks/useCalendarEvents';
 
 export default function TaskDetails({
   task,
@@ -23,6 +24,11 @@ export default function TaskDetails({
   const [isOpen, setIsOpen] = useState(false);
   const [taskDetails, setTaskDetails] = useState<TaskDetailsType | null>(null);
   const { getTaskDetails } = useTasks(null);
+  const {
+    calendarEvents,
+    isLoading: calendarLoading,
+    error: calendarError,
+  } = useCalendarEventsForTask(task.taskId);
 
   const handleToggle = async () => {
     if (!isOpen) {
@@ -73,13 +79,33 @@ export default function TaskDetails({
         <Dialog.Description>
           Bundle: {taskDetails?.bundle.name}
           <Separator my="3" size="4" />
-          {taskDetails?.calendarEvents.map((ce) => (
-            <>
-              {ce.date}: {ce.name}
-              <br />
-              {ce.description}
-            </>
-          ))}
+          {calendarLoading ? (
+            <Text size="2" color="gray">
+              Loading calendar events...
+            </Text>
+          ) : calendarError ? (
+            <Text size="2" color="red">
+              Error loading calendar events: {calendarError}
+            </Text>
+          ) : calendarEvents.length > 0 ? (
+            calendarEvents.map((ce) => (
+              <div key={ce.id}>
+                <Text size="2" weight="medium">
+                  {ce.date}: {ce.name}
+                </Text>
+                {ce.description && (
+                  <Text size="2" color="gray" as="p">
+                    {ce.description}
+                  </Text>
+                )}
+              </div>
+            ))
+          ) : (
+            <Text size="2" color="gray">
+              No calendar events associated with this task.
+            </Text>
+          )}
+          <Separator my="3" size="4" />
         </Dialog.Description>
         <Dialog.Close>
           <Button

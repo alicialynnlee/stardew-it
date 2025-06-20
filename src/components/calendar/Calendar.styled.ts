@@ -4,6 +4,9 @@ import styled from 'styled-components';
 
 export const CalendarWrapper = styled(Card)`
   padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const MonthHeader = styled.div`
@@ -37,6 +40,7 @@ export const DayLabelGrid = styled.div`
 `;
 
 export const DaysGrid = styled.div`
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(4, 1fr);
@@ -47,7 +51,8 @@ export const DaysGrid = styled.div`
 export const DayBox = styled.div`
   padding: 0.5rem;
   background-color: var(--gray-1);
-  height: 7rem;
+  height: 100%;
+  overflow-y: scroll;
 `;
 
 export const DayIndex = styled.button<{ $isSelected?: boolean }>`

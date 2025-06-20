@@ -3,6 +3,7 @@ export { default as Navbar } from './top-nav/Navbar';
 export { default as AuthProvider } from './AuthProvider';
 export { default as FarmSelector } from './farm-selector/FarmSelector';
 export { default as Calendar } from './calendar/Calendar';
+export { default as CalendarPanel } from './calendar/CalendarPanel';
 export { default as WarningBanner } from './banners/WarningBanner';
 export { default as RoomDrawer } from './tracker-components/RoomDrawer';
 export { default as ProgressBar } from './progress-bar/ProgressBar';
