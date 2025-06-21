@@ -6,7 +6,10 @@ import {
   getCalendarEvents,
   getCalendarEventsForTask,
 } from '@/actions/calendarActions';
-import type { CalendarEventData } from '@/types/calendar';
+import type {
+  CalendarEventData,
+  CalendarEventWithTasks,
+} from '@/types/calendar';
 
 export function useCalendarEvents() {
   const [calendarEvents, setCalendarEvents] = useState<CalendarEventData>(
@@ -21,14 +24,14 @@ export function useCalendarEvents() {
     try {
       const result = await getCalendarEvents();
       if (result.success && result.data) {
-        const calendarEventsData = result.data;
+        const calendarEventsData = result.data as CalendarEventWithTasks[];
         const currCalendarEvents = new Map([
           ['Spring', Array(29).fill(null)],
           ['Summer', Array(29).fill(null)],
           ['Fall', Array(29).fill(null)],
           ['Winter', Array(29).fill(null)],
         ]);
-        calendarEventsData.forEach((event: CalendarEvent) => {
+        calendarEventsData.forEach((event: CalendarEventWithTasks) => {
           const date = event.date.split(' ');
           const monthMap = currCalendarEvents.get(date[0]);
           if (!monthMap || !date[0]) {
@@ -67,7 +70,9 @@ export function useCalendarEvents() {
 }
 
 export function useCalendarEventsForTask(taskId: string) {
-  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
+  const [calendarEvents, setCalendarEvents] = useState<
+    CalendarEventWithTasks[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -83,7 +88,7 @@ export function useCalendarEventsForTask(taskId: string) {
     try {
       const result = await getCalendarEventsForTask(taskId);
       if (result.success && result.data) {
-        setCalendarEvents(result.data);
+        setCalendarEvents(result.data as CalendarEventWithTasks[]);
       } else if (!result.success) {
         setError(result.error ?? 'Could not fetch calendar events for task');
       }

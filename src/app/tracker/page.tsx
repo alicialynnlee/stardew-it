@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 
 interface Props {
-  searchParams: { farmId?: string };
+  searchParams: Promise<{ farmId?: string }>;
 }
 
 export default async function TrackerPage({ searchParams }: Props) {

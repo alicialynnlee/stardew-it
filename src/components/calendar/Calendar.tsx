@@ -1,12 +1,11 @@
 'use client';
 
-import type { CalendarEvent } from '@prisma/client';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import * as Styled from './Calendar.styled';
 import { IconButton, Text } from '@radix-ui/themes';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { DAYS, DAYS_OF_WEEK, MONTHS } from '@/constants/calendar';
-import { Day } from '@/types/calendar';
+import { Day, CalendarEventWithTasks } from '@/types/calendar';
 import { FarmTaskCompletion } from '@/types/tasks';
 
 export default function Calendar({
@@ -30,13 +29,13 @@ export default function Calendar({
   const getCalendarEventsForDate = (
     month: string,
     day: number
-  ): Array<CalendarEvent> | null => {
+  ): Array<CalendarEventWithTasks> | null => {
     const monthArray = calendarEvents.get(month);
     const dayArray = monthArray?.[day];
     if (!dayArray) {
       return null;
     }
-    return dayArray.filter((day) => !farmTaskCompletion?.get(day.taskId));
+    return dayArray; // TODO: filter finished tasks
   };
 
   return (

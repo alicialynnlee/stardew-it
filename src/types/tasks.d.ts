@@ -1,4 +1,15 @@
-import { Bundle, CalendarEvent } from '@prisma/client';
+import { Bundle, CalendarEvent, Room, Task } from '@prisma/client';
+
+// Types for entities with relations included
+type RoomWithBundlesAndTasks = Room & {
+  bundles: (Bundle & {
+    tasks: Task[];
+  })[];
+};
+
+type BundleWithTasks = Bundle & {
+  tasks: Task[];
+};
 
 /**
  * Defines the FarmTaskCompletion type.
@@ -57,4 +68,6 @@ export type {
   TaskId,
   FarmTaskCompletion,
   TaskDetails,
+  RoomWithBundlesAndTasks,
+  BundleWithTasks,
 };

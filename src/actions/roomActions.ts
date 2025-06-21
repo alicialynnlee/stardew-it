@@ -1,11 +1,12 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-
-import type { Room } from '@prisma/client';
 import type { ResponseData } from '@/types/response';
+import type { RoomWithBundlesAndTasks } from '@/types/tasks';
 
-export async function getRooms(): Promise<ResponseData<Room[]>> {
+export async function getRooms(): Promise<
+  ResponseData<RoomWithBundlesAndTasks[]>
+> {
   try {
     const rooms = await prisma.room.findMany({
       include: {
@@ -22,7 +23,7 @@ export async function getRooms(): Promise<ResponseData<Room[]>> {
         name: 'asc',
       },
     });
-    return { success: true, data: rooms };
+    return { success: true, data: rooms as RoomWithBundlesAndTasks[] };
   } catch (error) {
     console.error('Failed to fetch rooms:', error);
     return { success: false, error: 'Failed to fetch rooms' };
