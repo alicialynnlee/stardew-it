@@ -6,7 +6,7 @@
     "dev": "NODE_ENV=development next dev --port 3000",
     "dev:turbo": "NODE_ENV=development next dev --turbo --port 3000",
     "dev:debug": "NODE_ENV=development DEBUG=* next dev --no-turbo --port 3000",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"**/*.{ts,tsx}\""
