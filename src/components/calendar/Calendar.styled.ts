@@ -43,7 +43,7 @@ export const DaysGrid = styled.div`
   flex: 1;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: repeat(4, minmax(0, 1fr));
   background-color: var(--gray-4);
   gap: 1px;
 `;
@@ -51,7 +51,6 @@ export const DaysGrid = styled.div`
 export const DayBox = styled.div`
   padding: 0.5rem;
   background-color: var(--gray-1);
-  height: 100%;
   overflow-y: scroll;
 `;
 

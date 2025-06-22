@@ -23,7 +23,7 @@ export default function CalendarPanel({
   changeSelectedMonth: (monthIndex: number) => void;
   farmTaskCompletion?: FarmTaskCompletion;
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const { calendarEvents, isLoading, error } = useCalendarEvents();
 
   // Calculate upcoming calendar events based on selected month and day
@@ -109,7 +109,7 @@ export default function CalendarPanel({
         </Styled.PanelCard>
         <Styled.ScrollablePanelCard>
           <Text size="2" weight="bold" as="div">
-            Upcoming Tasks
+            Upcoming Events
           </Text>
           {upcomingCalendarEvents.length > 0 ? (
             <Styled.ScrollableContent>
@@ -132,11 +132,6 @@ export default function CalendarPanel({
             </Text>
           )}
         </Styled.ScrollablePanelCard>
-        <Styled.PanelCard>
-          <Text size="2" weight="bold">
-            Task Details
-          </Text>
-        </Styled.PanelCard>
       </Styled.PanelContent>
     </Styled.PanelWrapper>
   );

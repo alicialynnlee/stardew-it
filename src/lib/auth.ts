@@ -94,7 +94,7 @@ const authOptions: NextAuthOptions = {
     signIn: '/auth/signin',
     signOut: '/auth/signout',
   },
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   // signOut: '/auth/signout',
   // error: '/auth/error', // Error code passed in query string as ?error=
   //   // verifyRequest: '/auth/verify-request', // (used for email/passwordless login)
