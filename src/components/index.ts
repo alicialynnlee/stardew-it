@@ -8,3 +8,4 @@ export { default as WarningBanner } from './banners/WarningBanner';
 export { default as RoomDrawer } from './tracker-components/RoomDrawer';
 export { default as ProgressBar } from './progress-bar/ProgressBar';
 export { default as ProgressCircle } from './progress-bar/ProgressCircle';
+export { default as EventDetails } from './event-details/EventDetails';

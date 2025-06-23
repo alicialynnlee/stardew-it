@@ -1,13 +1,11 @@
 'use client';
 
-import type { CalendarEvent } from '@prisma/client';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import * as Styled from './CalendarPanel.styled';
 import { Card, Flex, IconButton, Select, Text } from '@radix-ui/themes';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import { DAYS, MONTHS } from '@/constants/calendar';
-import { Day } from '@/types/calendar';
-import { FarmTaskCompletion } from '@/types/tasks';
+import { CalendarEventWithTasks, Day } from '@/types/calendar';
 import { useState, useMemo } from 'react';
 
 export default function CalendarPanel({
@@ -15,13 +13,17 @@ export default function CalendarPanel({
   selectedDay,
   changeSelectedDay,
   changeSelectedMonth,
-  farmTaskCompletion,
+  selectedEvent,
+  changeSelectedEvent,
+  //farmTaskCompletion,
 }: {
   selectedMonth: number;
   selectedDay: Day | null;
   changeSelectedDay: (day: Day | null) => void;
   changeSelectedMonth: (monthIndex: number) => void;
-  farmTaskCompletion?: FarmTaskCompletion;
+  selectedEvent: CalendarEventWithTasks | null;
+  changeSelectedEvent: (event: CalendarEventWithTasks | null) => void;
+  //farmTaskCompletion?: FarmTaskCompletion;
 }) {
   const [isOpen, setIsOpen] = useState(true);
   const { calendarEvents, isLoading, error } = useCalendarEvents();
@@ -35,7 +37,7 @@ export default function CalendarPanel({
     const selectedDayNumber = parseInt(selectedDay.split(' ')[1]);
 
     // Flatten all calendar events and filter for upcoming ones
-    const filteredEvents: CalendarEvent[] = [];
+    const filteredEvents: CalendarEventWithTasks[] = [];
     const filteredMonths = MONTHS.slice(selectedMonth);
     calendarEvents.forEach((monthEvents, monthName) => {
       if (filteredMonths.includes(monthName)) {
@@ -72,7 +74,7 @@ export default function CalendarPanel({
           <Flex direction="row" gap="1" pt="2">
             <Select.Root
               size="1"
-              defaultValue={selectedMonth.toString()}
+              value={selectedMonth.toString()}
               onValueChange={(value) => {
                 const newMonth = MONTHS[Number(value)];
                 const currentDay = parseInt(selectedDay?.split(' ')[1] ?? '1');
@@ -91,7 +93,7 @@ export default function CalendarPanel({
             </Select.Root>
             <Select.Root
               size="1"
-              defaultValue={selectedDay?.split(' ')[1]?.toString() ?? '1'}
+              value={selectedDay?.split(' ')[1]?.toString() ?? '1'}
               onValueChange={(value) =>
                 changeSelectedDay(`${MONTHS[selectedMonth]} ${Number(value)}`)
               }
@@ -113,8 +115,14 @@ export default function CalendarPanel({
           </Text>
           {upcomingCalendarEvents.length > 0 ? (
             <Styled.ScrollableContent>
-              {upcomingCalendarEvents.map((event) => (
-                <Card key={event.id} size="1" mt="2">
+              {upcomingCalendarEvents.map((event: CalendarEventWithTasks) => (
+                <Card
+                  key={event.id}
+                  size="1"
+                  mt="2"
+                  onClick={() => changeSelectedEvent(event)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <Text size="2" weight="medium" as="div">
                     {event.date}: {event.name}
                   </Text>

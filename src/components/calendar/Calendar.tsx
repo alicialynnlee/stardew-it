@@ -14,12 +14,16 @@ export default function Calendar({
   changeSelectedDay,
   changeSelectedMonth,
   farmTaskCompletion,
+  selectedEvent,
+  changeSelectedEvent,
 }: {
   selectedMonth: number;
   selectedDay: Day | null;
   changeSelectedDay: (day: Day | null) => void;
   changeSelectedMonth: (monthIndex: number) => void;
   farmTaskCompletion?: FarmTaskCompletion;
+  selectedEvent: CalendarEventWithTasks | null;
+  changeSelectedEvent: (event: CalendarEventWithTasks | null) => void;
 }) {
   const { calendarEvents, isLoading, error } = useCalendarEvents();
 
@@ -98,7 +102,12 @@ export default function Calendar({
               </Styled.DayIndex>
               {calEvents &&
                 calEvents.map((ce) => (
-                  <Styled.TaskLabel key={ce.id}>
+                  <Styled.TaskLabel
+                    key={ce.id}
+                    onClick={() =>
+                      changeSelectedEvent(selectedEvent ? null : ce)
+                    }
+                  >
                     {ce.name}{' '}
                     {ce.name === 'Plant' &&
                       (ce.tasks && ce.tasks.length > 1
@@ -107,7 +116,11 @@ export default function Calendar({
                   </Styled.TaskLabel>
                 ))}
               {monthEvents?.map((ce) => (
-                <Styled.TaskLabel key={ce.id} $isMonthTask>
+                <Styled.TaskLabel
+                  key={ce.id}
+                  $isMonthTask
+                  onClick={() => changeSelectedEvent(selectedEvent ? null : ce)}
+                >
                   {ce.name}{' '}
                   {ce.name === 'Forage' &&
                     (ce.tasks && ce.tasks.length > 1

@@ -5,8 +5,6 @@ import styled from 'styled-components';
 export const CalendarWrapper = styled(Card)`
   padding: 0;
   flex: 1;
-  display: flex;
-  flex-direction: column;
 `;
 
 export const MonthHeader = styled.div`
@@ -16,6 +14,7 @@ export const MonthHeader = styled.div`
   justify-content: center;
   align-items: center;
   padding: 1rem;
+  height: 3rem;
 
   .hide {
     visibility: hidden;
@@ -32,6 +31,7 @@ export const DayLabelGrid = styled.div`
   grid-template-columns: repeat(7, 1fr);
   background-color: var(--gray-a2);
   box-shadow: var(--shadow-2);
+  height: 2rem;
 
   span {
     text-align: center;
@@ -40,18 +40,18 @@ export const DayLabelGrid = styled.div`
 `;
 
 export const DaysGrid = styled.div`
-  flex: 1;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(4, 1fr);
   background-color: var(--gray-4);
   gap: 1px;
+  height: calc(100vh - 14rem);
 `;
 
 export const DayBox = styled.div`
   padding: 0.5rem;
   background-color: var(--gray-1);
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 export const DayIndex = styled.button<{ $isSelected?: boolean }>`
@@ -60,7 +60,7 @@ export const DayIndex = styled.button<{ $isSelected?: boolean }>`
   border-radius: 50%;
   border: none;
   background-color: ${({ $isSelected }) =>
-    $isSelected ? `var(--accent-9)` : `var(--background)`};
+    $isSelected ? `var(--accent-9)` : `transparent`};
   color: ${({ $isSelected }) => $isSelected && `var(--background)`};
 `;
 
@@ -70,5 +70,7 @@ export const TaskLabel = styled.div<{ $isMonthTask?: boolean }>`
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-size: 0.75rem;
+  cursor: pointer;
+
   ${({ $isMonthTask }) => $isMonthTask && `background-color: ${lightRed};`}
 `;

@@ -1,9 +1,14 @@
 'use client';
 
-import { Calendar, CalendarPanel, WarningBanner } from '@/components';
+import {
+  Calendar,
+  CalendarPanel,
+  EventDetails,
+  WarningBanner,
+} from '@/components';
 import { useTasks } from '@/hooks/useTasks';
 // import { getCurrentUser } from '@/lib/auth';
-import { Day } from '@/types/calendar';
+import { CalendarEventWithTasks, Day } from '@/types/calendar';
 import { Box, Flex } from '@radix-ui/themes';
 import { useState } from 'react';
 
@@ -17,6 +22,8 @@ export default function CalendarClient({
   const [selectedMonthIndex, setSelectedMonthIndex] = useState(0);
   const [selectedDay, setSelectedDay] = useState<Day | null>('Spring 1');
   const { farmTaskCompletion } = useTasks(selectedFarmId);
+  const [selectedEvent, setSelectedEvent] =
+    useState<CalendarEventWithTasks | null>(null);
 
   return (
     <div>
@@ -40,6 +47,8 @@ export default function CalendarClient({
           changeSelectedMonth={(monthIndex) =>
             setSelectedMonthIndex(monthIndex)
           }
+          selectedEvent={selectedEvent}
+          changeSelectedEvent={(event) => setSelectedEvent(event)}
         />
         <CalendarPanel
           selectedMonth={selectedMonthIndex}
@@ -48,8 +57,16 @@ export default function CalendarClient({
           changeSelectedMonth={(monthIndex) =>
             setSelectedMonthIndex(monthIndex)
           }
+          selectedEvent={selectedEvent}
+          changeSelectedEvent={(event) => setSelectedEvent(event)}
         />
       </Flex>
+      {selectedEvent && (
+        <EventDetails
+          event={selectedEvent}
+          changeSelectedEvent={(event) => setSelectedEvent(event)}
+        />
+      )}
     </div>
   );
 }
