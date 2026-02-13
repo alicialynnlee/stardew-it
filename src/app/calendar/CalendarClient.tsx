@@ -7,9 +7,10 @@ import {
   WarningBanner,
 } from '@/components';
 import { useTasks } from '@/hooks/useTasks';
+import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 // import { getCurrentUser } from '@/lib/auth';
 import { CalendarEventWithTasks, Day } from '@/types/calendar';
-import { Box, Flex } from '@radix-ui/themes';
+import { Box, Flex, Link, Spinner } from '@radix-ui/themes';
 import { useState } from 'react';
 
 export default function CalendarClient({
@@ -21,19 +22,31 @@ export default function CalendarClient({
 }) {
   const [selectedMonthIndex, setSelectedMonthIndex] = useState(0);
   const [selectedDay, setSelectedDay] = useState<Day | null>('Spring 1');
-  const { farmTaskCompletion } = useTasks(selectedFarmId);
+  const { farmTaskCompletion, updateTask } = useTasks(selectedFarmId);
   const [selectedEvent, setSelectedEvent] =
     useState<CalendarEventWithTasks | null>(null);
+  const { calendarEvents, isLoading, error } = useCalendarEvents();
+
+  if (isLoading) return <Spinner />;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
       {(!userId || (userId && !selectedFarmId)) && (
         <Box py="3">
           <WarningBanner
-            text={
-              userId
-                ? 'Please select a farm from the navigation bar to track your progress.'
-                : 'You must be <Link href="/auth">signed in</Link> and have a farm selected to save your progress.'
+            content={
+              userId ? (
+                <>
+                  Please select a farm from the navigation bar to track your
+                  progress.
+                </>
+              ) : (
+                <>
+                  You must be <Link href="/auth">signed in</Link> and have a
+                  farm selected to save your progress.
+                </>
+              )
             }
           />
         </Box>
@@ -49,6 +62,7 @@ export default function CalendarClient({
           }
           selectedEvent={selectedEvent}
           changeSelectedEvent={(event) => setSelectedEvent(event)}
+          calendarEvents={calendarEvents}
         />
         <CalendarPanel
           selectedMonth={selectedMonthIndex}
@@ -59,12 +73,16 @@ export default function CalendarClient({
           }
           selectedEvent={selectedEvent}
           changeSelectedEvent={(event) => setSelectedEvent(event)}
+          farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
+          calendarEvents={calendarEvents}
         />
       </Flex>
       {selectedEvent && (
         <EventDetails
           event={selectedEvent}
           changeSelectedEvent={(event) => setSelectedEvent(event)}
+          farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
+          updateTask={selectedFarmId ? updateTask : undefined}
         />
       )}
     </div>

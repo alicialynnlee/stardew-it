@@ -1,3 +1,4 @@
+import { lighterGreen } from '@/styles/colors';
 import { Card } from '@radix-ui/themes';
 import styled from 'styled-components';
 
@@ -42,4 +43,16 @@ export const ScrollableContent = styled.div`
   flex: 1;
   overflow-y: auto;
   padding-right: 1rem; /* Space for scrollbar */
+`;
+
+export const EventCard = styled(Card)<{ $isCompleted?: boolean }>`
+  cursor: pointer;
+
+  ${({ $isCompleted }) =>
+    $isCompleted &&
+    `
+    opacity: 0.6;
+    background-color: ${lighterGreen};
+    text-decoration: line-through;
+  `}
 `;

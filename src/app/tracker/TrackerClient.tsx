@@ -5,7 +5,16 @@ import { ProgressCircle, RoomDrawer, WarningBanner } from '@/components';
 import { useTasks } from '@/hooks/useTasks';
 import { useRooms } from '@/hooks/useRooms';
 import { BundleId } from '@/types/tasks';
-import { Box, Button, Flex, Grid, Tabs, Text } from '@radix-ui/themes';
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Tabs,
+  Text,
+  Link,
+  Spinner,
+} from '@radix-ui/themes';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 
 export default function TrackerClient({
@@ -29,7 +38,7 @@ export default function TrackerClient({
 
   const [activeRoom, setActiveRoom] = useState('all');
 
-  if (roomsLoading) return <div>Loading...</div>;
+  if (roomsLoading) return <Spinner />;
   if (roomsError) return <div>Error: {roomsError}</div>;
 
   const getPercentageComplete = (bundle: BundleId) => {
@@ -45,17 +54,23 @@ export default function TrackerClient({
       <Box py="3">
         {(!userId || (userId && !selectedFarmId)) && (
           <WarningBanner
-            text={
-              userId
-                ? 'Please select a farm from the navigation bar to track your progress.'
-                : 'You must be <Link href="/auth">signed in</Link> and have a farm selected to save your progress.'
+            content={
+              userId ? (
+                <>
+                  Please select a farm from the navigation bar to track your
+                  progress.
+                </>
+              ) : (
+                <>
+                  You must be <Link href="/auth">signed in</Link> and have a
+                  farm selected to save your progress.
+                </>
+              )
             }
           />
         )}
       </Box>
 
-      {roomsLoading && <div>Loading...</div>}
-      {roomsError && <div>Error: {roomsError}</div>}
       <h1>My Task Tracker</h1>
       <Tabs.Root defaultValue="all" value={activeRoom}>
         <Tabs.List>
