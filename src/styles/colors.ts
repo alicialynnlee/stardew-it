@@ -1,6 +1,10 @@
-export const whiteSmoke = '#FAFAFA'; // Clean, soft white base
+export const whiteSmoke = '#FFF8F0'; // Warm cream base
 export const charcoalBlack = '#1C1C1C'; // Crisp, high contrast
-export const softSunYellow = '#FADA5E'; // Gentle pop, buttons or highlights
+export const softSunYellow = '#F5C542'; // Richer gold for buttons or highlights
+export const parchment = '#F5EDE0'; // Warm parchment for cards/dialogs
+export const warmTan = '#D4C4A8'; // Muted tan accent
+export const woodBrown = '#8B7355'; // Wood border color
+export const navbarBg = '#EDE4D3'; // Warm navbar background
 export const lightRed = '#BF766A'; // Light red
 export const barnRed = '#A43C2B'; // Subtle warmth for links or icons
 export const darkRed = '#622419'; // Dark red

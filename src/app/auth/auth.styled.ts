@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Form } from 'radix-ui';
-import { lightRed } from '@/styles/colors';
+import { lightRed, parchment, woodBrown } from '@/styles/colors';
 
 export const Field = styled(Form.Field)`
   display: flex;
@@ -36,9 +36,10 @@ export const Field = styled(Form.Field)`
 export const AuthForm = styled.div`
   width: 100%;
   padding: 2rem 4rem;
-  background: var(--background);
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: ${parchment};
+  border: 2px solid ${woodBrown};
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
 `;
 
 export const Message = styled.div<{ $type: 'error' | 'success' }>`

@@ -1,19 +1,26 @@
 import styled from 'styled-components';
-import { charcoalBlack, whiteSmoke } from '@/styles/colors';
+import { charcoalBlack, navbarBg, woodBrown } from '@/styles/colors';
 
 export const Navbar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: ${whiteSmoke};
-  border-bottom: 1px solid #e9ecef;
+  background-color: ${navbarBg};
+  border-bottom: 2px solid ${woodBrown};
   height: 5rem;
 `;
 
 export const HomeContainer = styled.div`
   display: flex;
   align-items: center;
+  gap: 0.75rem;
+`;
+
+export const AppTitle = styled.span`
+  font-family: var(--font-heading), 'VT323', monospace;
+  font-size: 1.75rem;
+  line-height: 1;
 `;
 
 export const Home = styled.div`

@@ -1,7 +1,7 @@
 'use client';
 
 import { createGlobalStyle } from 'styled-components';
-import { charcoalBlack, whiteSmoke } from './colors';
+import { charcoalBlack, whiteSmoke, parchment, woodBrown } from './colors';
 
 const GlobalStyles = createGlobalStyle`
   :root {
@@ -147,11 +147,16 @@ const GlobalStyles = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--font-body), 'Nunito', Arial, sans-serif;
     background: var(--background);
     color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), 'VT323', monospace;
+    font-weight: 400;
   }
 
   main {
@@ -218,6 +223,12 @@ const GlobalStyles = createGlobalStyle`
     --accent-surface: var(--custom-surface);
     --accent-indicator: var(--custom-indicator);
     --accent-track: var(--custom-track);
+  }
+
+  .rt-DialogContent {
+    background-color: ${parchment};
+    border: 2px solid ${woodBrown};
+    border-radius: 12px;
   }
 `;
 

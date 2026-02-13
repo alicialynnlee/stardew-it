@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { woodBrown } from '@/styles/colors';
 
 export const DropdownHeader = styled.div`
   display: flex;
@@ -22,8 +23,9 @@ export const TaskContainer = styled.div<{ $isOpen: boolean }>`
 `;
 
 export const BundleContainer = styled.div`
-  box-shadow: var(--shadow-2);
-  border-radius: var(--radius-3);
+  border: 2px solid ${woodBrown};
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
   padding: 1.5rem;
   margin: 1rem 0;
 `;

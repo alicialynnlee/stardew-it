@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { parchment, woodBrown } from '@/styles/colors';
 
 export const FarmSelector = styled.div`
   .farm-selector-open-button {
@@ -15,9 +16,10 @@ export const DropdownContainer = styled.div<{ $isDropdownOpen: boolean }>`
   transition-property: transform;
   transition-duration: 0.3s;
   transition-delay: 0s;
-  border-radius: 4px;
-  border: 1px solid rgb(0, 0, 0, 0.2);
-  background-color: var(--background);
+  border-radius: 12px;
+  border: 2px solid ${woodBrown};
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+  background-color: ${parchment};
   padding: 0.5rem 1rem;
   width: 15rem;
   z-index: 2;

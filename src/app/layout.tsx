@@ -1,9 +1,21 @@
 import type { Metadata } from 'next';
+import { VT323, Nunito } from 'next/font/google';
 import StyledComponentsRegistry from './registry';
 import GlobalStyles from '@/styles/GlobalStyles';
 import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import { Navbar, SideNav, AuthProvider } from '@/components';
+
+const vt323 = VT323({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-heading',
+});
+
+const nunito = Nunito({
+  subsets: ['latin'],
+  variable: '--font-body',
+});
 
 export const metadata: Metadata = {
   title: 'Stardew It',
@@ -31,12 +43,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${vt323.variable} ${nunito.variable}`}>
         <StyledComponentsRegistry>
           <Theme
             appearance="light"
             accentColor="grass"
-            grayColor="slate"
+            grayColor="sand"
             scaling="100%"
           >
             <GlobalStyles />

@@ -1,4 +1,5 @@
 import { lighterGreen } from '@/styles/colors';
+import { woodBrown } from '@/styles/colors';
 import { Card } from '@radix-ui/themes';
 import styled from 'styled-components';
 
@@ -30,6 +31,9 @@ export const PanelContent = styled.div<{ $isOpen: boolean }>`
 
 export const PanelCard = styled(Card)`
   margin-top: 1rem;
+  border: 2px solid ${woodBrown};
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
 `;
 
 export const ScrollablePanelCard = styled(Card)`
@@ -37,6 +41,9 @@ export const ScrollablePanelCard = styled(Card)`
   display: flex;
   flex-direction: column;
   flex: 1;
+  border: 2px solid ${woodBrown};
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
 `;
 
 export const ScrollableContent = styled.div`

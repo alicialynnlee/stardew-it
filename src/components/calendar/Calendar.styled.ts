@@ -1,10 +1,14 @@
-import { lightRed, lighterGreen, dustySage } from '@/styles/colors';
+import { lightRed, lighterGreen, dustySage, woodBrown } from '@/styles/colors';
 import { Card } from '@radix-ui/themes';
 import styled from 'styled-components';
 
 export const CalendarWrapper = styled(Card)`
   padding: 0;
   flex: 1;
+  border: 2px solid ${woodBrown};
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
 `;
 
 export const MonthHeader = styled.div`

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { whiteSmoke } from '@/styles/colors';
+import { navbarBg, woodBrown } from '@/styles/colors';
 import { Text } from '@radix-ui/themes';
 
 export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
   min-height: 100%;
   width: ${(props) => (props.$isOpen ? '17rem' : '5.3rem')};
-  background-color: ${whiteSmoke};
-  border-right: 1px solid #e9ecef;
+  background-color: ${navbarBg};
+  border-right: 2px solid ${woodBrown};
   padding: 1.5rem;
   transition: width 0.3s ease-in-out;
   z-index: 2;

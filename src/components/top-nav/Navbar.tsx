@@ -15,14 +15,14 @@ export default function Navbar() {
       <Styled.Navbar>
         <Styled.HomeContainer>
           <Link href="/">
-            <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <Image
                 src="/favicon.png"
                 alt="Stardew It"
                 width={48}
                 height={48}
               />
-              Stardew It
+              <Styled.AppTitle>Stardew It</Styled.AppTitle>
             </div>
           </Link>
         </Styled.HomeContainer>
@@ -37,7 +37,7 @@ export default function Navbar() {
         <Link href="/">
           <Styled.HomeContainer>
             <Image src="/favicon.png" alt="Stardew It" width={48} height={48} />
-            Stardew It
+            <Styled.AppTitle>Stardew It</Styled.AppTitle>
           </Styled.HomeContainer>
         </Link>
       </div>

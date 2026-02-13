@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { parchment, woodBrown, warmTan, softSunYellow } from '@/styles/colors';
+import { parchment, woodBrown } from '@/styles/colors';
 
 export const HomeWrapper = styled.div`
   max-width: 48rem;
