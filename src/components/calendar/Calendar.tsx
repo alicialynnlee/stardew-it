@@ -1,12 +1,34 @@
 'use client';
 
-import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import * as Styled from './Calendar.styled';
 import { IconButton, Text } from '@radix-ui/themes';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { DAYS, DAYS_OF_WEEK, MONTHS } from '@/constants/calendar';
-import { Day, CalendarEventWithTasks } from '@/types/calendar';
+import {
+  Day,
+  CalendarEventWithTasks,
+  CalendarEventData,
+} from '@/types/calendar';
 import { FarmTaskCompletion } from '@/types/tasks';
+
+function getEventCompletion(
+  event: CalendarEventWithTasks,
+  farmTaskCompletion?: FarmTaskCompletion
+) {
+  if (!farmTaskCompletion || event.tasks.length === 0) {
+    return { completed: 0, total: 0, allDone: false, hasSome: false };
+  }
+  const completed = event.tasks.filter((t) =>
+    farmTaskCompletion.get(t.id)
+  ).length;
+  const total = event.tasks.length;
+  return {
+    completed,
+    total,
+    allDone: completed === total,
+    hasSome: completed > 0 && completed < total,
+  };
+}
 
 export default function Calendar({
   selectedMonth,
@@ -16,6 +38,7 @@ export default function Calendar({
   farmTaskCompletion,
   selectedEvent,
   changeSelectedEvent,
+  calendarEvents,
 }: {
   selectedMonth: number;
   selectedDay: Day | null;
@@ -24,22 +47,55 @@ export default function Calendar({
   farmTaskCompletion?: FarmTaskCompletion;
   selectedEvent: CalendarEventWithTasks | null;
   changeSelectedEvent: (event: CalendarEventWithTasks | null) => void;
+  calendarEvents?: CalendarEventData;
 }) {
-  const { calendarEvents, isLoading, error } = useCalendarEvents();
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   const getCalendarEventsForDate = (
     month: string,
     day: number
   ): Array<CalendarEventWithTasks> | null => {
-    const monthArray = calendarEvents.get(month);
+    const monthArray = calendarEvents?.get(month);
     const dayArray = monthArray?.[day];
     if (!dayArray) {
       return null;
     }
-    return dayArray; // TODO: filter finished tasks
+    return dayArray;
+  };
+
+  const renderEventLabel = (
+    ce: CalendarEventWithTasks,
+    isMonthTask?: boolean
+  ) => {
+    const { allDone, hasSome, completed, total } = getEventCompletion(
+      ce,
+      farmTaskCompletion
+    );
+
+    return (
+      <Styled.TaskLabel
+        key={ce.id}
+        $isMonthTask={isMonthTask}
+        $isCompleted={allDone}
+        $isPartial={hasSome}
+        onClick={() => changeSelectedEvent(selectedEvent ? null : ce)}
+      >
+        {ce.name}{' '}
+        {ce.name === 'Plant' &&
+          (ce.tasks && ce.tasks.length > 1
+            ? `(${ce.tasks.length})`
+            : ce.tasks[0]?.name)}
+        {ce.name === 'Forage' &&
+          isMonthTask &&
+          (ce.tasks && ce.tasks.length > 1
+            ? `(${ce.tasks.length})`
+            : ce.tasks[0]?.name)}
+        {farmTaskCompletion && total > 0 && !allDone && hasSome && (
+          <>
+            {' '}
+            ({completed}/{total})
+          </>
+        )}
+      </Styled.TaskLabel>
+    );
   };
 
   return (
@@ -100,34 +156,8 @@ export default function Calendar({
               >
                 {day}
               </Styled.DayIndex>
-              {calEvents &&
-                calEvents.map((ce) => (
-                  <Styled.TaskLabel
-                    key={ce.id}
-                    onClick={() =>
-                      changeSelectedEvent(selectedEvent ? null : ce)
-                    }
-                  >
-                    {ce.name}{' '}
-                    {ce.name === 'Plant' &&
-                      (ce.tasks && ce.tasks.length > 1
-                        ? `(${ce.tasks.length})`
-                        : ce.tasks[0].name)}
-                  </Styled.TaskLabel>
-                ))}
-              {monthEvents?.map((ce) => (
-                <Styled.TaskLabel
-                  key={ce.id}
-                  $isMonthTask
-                  onClick={() => changeSelectedEvent(selectedEvent ? null : ce)}
-                >
-                  {ce.name}{' '}
-                  {ce.name === 'Forage' &&
-                    (ce.tasks && ce.tasks.length > 1
-                      ? `(${ce.tasks.length})`
-                      : ce.tasks[0].name)}
-                </Styled.TaskLabel>
-              ))}
+              {calEvents?.map((ce) => renderEventLabel(ce))}
+              {monthEvents?.map((ce) => renderEventLabel(ce, true))}
             </Styled.DayBox>
           );
         })}
