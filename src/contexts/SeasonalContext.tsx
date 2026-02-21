@@ -1,16 +1,18 @@
 /**
  * Seasonal Context
  * Provides seasonal theming and utilities to the entire app
+ * Uses selectedDay (game calendar) to determine current season
  */
 
 'use client';
 
-import React, { createContext, useContext, useMemo, useEffect, useState } from 'react';
+import React, { createContext, useContext, useMemo, useEffect, useState, useCallback } from 'react';
 import {
   getCurrentSeason,
   getSeasonalPalette,
   getSeasonalTaskColor,
   generateSeasonalCSSVariables,
+  getSeasonFromSelectedDay,
   SEASONAL_CELEBRATION_EMOJIS,
   Season,
   SeasonalPalette,
@@ -22,22 +24,31 @@ interface SeasonalContextType {
   getTaskColor: (taskType: string) => string;
   celebrationEmoji: string;
   cssVariables: string;
+  selectedDay: string | null;
+  setSelectedDay: (day: string | null) => void;
 }
 
 const SeasonalContext = createContext<SeasonalContextType | undefined>(undefined);
 
 /**
  * SeasonalProvider component - wraps app with seasonal context
+ * Manages selectedDay and derives season from it (defaults to Spring 1)
  */
 export const SeasonalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mounted, setMounted] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<string | null>('Spring 1');
   const [season, setSeason] = useState<Season>('spring');
 
-  // Initialize season after client-side mount to avoid hydration mismatch
+  // Initialize after client-side mount to avoid hydration mismatch
   useEffect(() => {
-    setSeason(getCurrentSeason());
     setMounted(true);
   }, []);
+
+  // Update season whenever selectedDay changes
+  useEffect(() => {
+    const newSeason = getSeasonFromSelectedDay(selectedDay);
+    setSeason(newSeason);
+  }, [selectedDay]);
 
   const value = useMemo<SeasonalContextType>(() => {
     const palette = getSeasonalPalette(season);
@@ -47,40 +58,14 @@ export const SeasonalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       getTaskColor: (taskType: string) => getSeasonalTaskColor(taskType, season),
       celebrationEmoji: SEASONAL_CELEBRATION_EMOJIS[season],
       cssVariables: generateSeasonalCSSVariables(season),
+      selectedDay,
+      setSelectedDay,
     };
-  }, [season]);
+  }, [season, selectedDay]);
 
-  // Apply CSS variables to document root
-  useEffect(() => {
-    if (mounted) {
-      const root = document.documentElement;
-      const vars = generateSeasonalCSSVariables(season);
-      const lines = vars.split('\n').filter(l => l.trim());
-      lines.forEach(line => {
-        const [key, val] = line.trim().split(':');
-        if (key && val) {
-          root.style.setProperty(key.trim(), val.trim().slice(0, -1));
-        }
-      });
-    }
-  }, [season, mounted]);
-
+  // Prevent rendering content until mounted (hydration safety)
   if (!mounted) {
-    // Return a default context to prevent hydration mismatch
-    const defaultPalette = getSeasonalPalette('spring');
-    return (
-      <SeasonalContext.Provider
-        value={{
-          currentSeason: 'spring',
-          palette: defaultPalette,
-          getTaskColor: (taskType: string) => getSeasonalTaskColor(taskType, 'spring'),
-          celebrationEmoji: '🌱✨',
-          cssVariables: generateSeasonalCSSVariables('spring'),
-        }}
-      >
-        {children}
-      </SeasonalContext.Provider>
-    );
+    return <>{children}</>;
   }
 
   return <SeasonalContext.Provider value={value}>{children}</SeasonalContext.Provider>;
@@ -95,6 +80,23 @@ export function useSeasonalContext(): SeasonalContextType {
     throw new Error('useSeasonalContext must be used within SeasonalProvider');
   }
   return context;
+}
+
+/**
+ * Hook to update selected day (game calendar)
+ * Call this from components like CalendarClient to update the app's seasonal theme
+ */
+export function useSetSelectedDay(): (day: string | null) => void {
+  const { setSelectedDay } = useSeasonalContext();
+  return setSelectedDay;
+}
+
+/**
+ * Hook to get current selected day
+ */
+export function useSelectedDay(): string | null {
+  const { selectedDay } = useSeasonalContext();
+  return selectedDay;
 }
 
 /**

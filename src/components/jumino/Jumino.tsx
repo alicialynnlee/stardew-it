@@ -1,13 +1,13 @@
 /**
  * Jumino Mascot Component
- * Cute, helpful farm spirit companion for Stardew-It
+ * Uses the custom favicon image as the mascot with animations
  */
 
 'use client';
 
 import React from 'react';
 import styled from 'styled-components';
-import { getSeasonalPalette } from '@/styles/seasonal';
+import Image from 'next/image';
 
 export type JuminoState = 'idle' | 'celebrating' | 'thinking' | 'working' | 'relaxed';
 export type JuminoSize = 'sm' | 'md' | 'lg';
@@ -47,22 +47,33 @@ const animationKeyframes = `
     0%, 100% { transform: scaleY(1) translateY(0); }
     50% { transform: scaleY(1.05) translateY(-2px); }
   }
+
+  @keyframes juminoPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
 `;
 
-const JuminoSVGWrapper = styled.div<{
+const JuminoImageWrapper = styled.div<{
   $size: JuminoSize;
   $state: JuminoState;
   $animated: boolean;
 }>`
   ${animationKeyframes}
 
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   user-select: none;
+  width: ${props => sizeMap[props.$size]}px;
+  height: ${props => sizeMap[props.$size]}px;
 
-  svg {
-    width: ${props => sizeMap[props.$size]}px;
-    height: ${props => sizeMap[props.$size]}px;
+  img {
+    width: 100%;
+    height: 100%;
     display: block;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 
     ${props => {
       switch (props.$state) {
@@ -74,6 +85,8 @@ const JuminoSVGWrapper = styled.div<{
           return props.$animated ? 'animation: juminoNod 1.5s ease-in-out infinite;' : '';
         case 'working':
           return props.$animated ? 'animation: juminoBob 2s ease-in-out infinite;' : '';
+        case 'relaxed':
+          return props.$animated ? 'animation: juminoPulse 2.5s ease-in-out infinite;' : '';
         default:
           return '';
       }
@@ -86,61 +99,8 @@ const JuminoSVGWrapper = styled.div<{
 `;
 
 /**
- * Jumino SVG Component - Renders the cute mascot character
- */
-const JuminoSVG = React.memo(({ size }: { size: JuminoSize }) => {
-  const palette = getSeasonalPalette();
-  
-  return (
-    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      {/* Body (rounded rectangle) */}
-      <rect x="16" y="24" width="32" height="28" rx="4" fill={palette.primary} stroke="#2D2D2D" strokeWidth="1.5" />
-      
-      {/* Head (circle) */}
-      <circle cx="32" cy="16" r="12" fill={palette.primary} stroke="#2D2D2D" strokeWidth="1.5" />
-      
-      {/* Left Eye */}
-      <circle cx="27" cy="14" r="2.5" fill="#2D2D2D" />
-      <circle cx="27" cy="13" r="1" fill="#FFFFFF" opacity="0.7" />
-      
-      {/* Right Eye */}
-      <circle cx="37" cy="14" r="2.5" fill="#2D2D2D" />
-      <circle cx="37" cy="13" r="1" fill="#FFFFFF" opacity="0.7" />
-      
-      {/* Left Glasses Frame */}
-      <circle cx="27" cy="14" r="4.5" fill="none" stroke="#B8A574" strokeWidth="1.2" />
-      
-      {/* Right Glasses Frame */}
-      <circle cx="37" cy="14" r="4.5" fill="none" stroke="#B8A574" strokeWidth="1.2" />
-      
-      {/* Glasses Bridge */}
-      <line x1="31.5" y1="14" x2="32.5" y2="14" stroke="#B8A574" strokeWidth="1.2" strokeLinecap="round" />
-      
-      {/* Left Glasses Shine */}
-      <circle cx="25" cy="12" r="1.5" fill="#E6C966" opacity="0.8" />
-      
-      {/* Right Glasses Shine */}
-      <circle cx="39" cy="12" r="1.5" fill="#E6C966" opacity="0.8" />
-      
-      {/* Mouth (smile) */}
-      <path d="M 27 21 Q 32 23 37 21" stroke="#2D2D2D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      
-      {/* Optional cheek blush */}
-      <circle cx="20" cy="18" r="2" fill="#FFB7C5" opacity="0.4" />
-      <circle cx="44" cy="18" r="2" fill="#FFB7C5" opacity="0.4" />
-      
-      {/* Body detail - buttons */}
-      <circle cx="32" cy="32" r="1.5" fill="#2D2D2D" opacity="0.3" />
-      <circle cx="32" cy="40" r="1.5" fill="#2D2D2D" opacity="0.3" />
-    </svg>
-  );
-});
-
-JuminoSVG.displayName = 'JuminoSVG';
-
-/**
  * Jumino Component
- * Displays an animated mascot with different states
+ * Displays the cute mascot character with animated states
  */
 export const Jumino: React.FC<JuminoProps> = ({
   state = 'idle',
@@ -149,8 +109,10 @@ export const Jumino: React.FC<JuminoProps> = ({
   className,
   onClick,
 }) => {
+  const pixelSize = sizeMap[size];
+
   return (
-    <JuminoSVGWrapper
+    <JuminoImageWrapper
       $size={size}
       $state={state}
       $animated={animated}
@@ -159,8 +121,15 @@ export const Jumino: React.FC<JuminoProps> = ({
       role="img"
       aria-label={`Jumino mascot - ${state} state`}
     >
-      <JuminoSVG size={size} />
-    </JuminoSVGWrapper>
+      <Image
+        src="/favicon.png"
+        alt="Jumino mascot"
+        width={pixelSize}
+        height={pixelSize}
+        priority
+        unoptimized // Preserve pixelated aesthetic
+      />
+    </JuminoImageWrapper>
   );
 };
 

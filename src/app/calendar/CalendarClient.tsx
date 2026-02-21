@@ -8,10 +8,11 @@ import {
 } from '@/components';
 import { useTasks } from '@/hooks/useTasks';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
+import { useSetSelectedDay } from '@/contexts/SeasonalContext';
 // import { getCurrentUser } from '@/lib/auth';
 import { CalendarEventWithTasks, Day } from '@/types/calendar';
 import { Box, Flex, Link, Spinner } from '@radix-ui/themes';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function CalendarClient({
   userId,
@@ -22,10 +23,18 @@ export default function CalendarClient({
 }) {
   const [selectedMonthIndex, setSelectedMonthIndex] = useState(0);
   const [selectedDay, setSelectedDay] = useState<Day | null>('Spring 1');
+  const setSeasonalSelectedDay = useSetSelectedDay();
   const { farmTaskCompletion, updateTask } = useTasks(selectedFarmId);
   const [selectedEvent, setSelectedEvent] =
     useState<CalendarEventWithTasks | null>(null);
   const { calendarEvents, isLoading, error } = useCalendarEvents();
+
+  // Sync selectedDay with seasonal context to update seasonal colors
+  useEffect(() => {
+    if (selectedDay) {
+      setSeasonalSelectedDay(selectedDay);
+    }
+  }, [selectedDay, setSeasonalSelectedDay]);
 
   if (isLoading) return <Spinner />;
   if (error) return <div>Error: {error}</div>;

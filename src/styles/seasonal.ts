@@ -18,6 +18,22 @@ export function getCurrentSeason(): Season {
 }
 
 /**
+ * Get season from selectedDay (game calendar)
+ * Format: "Spring 1", "Summer 15", "Fall 28", "Winter 1", etc.
+ */
+export function getSeasonFromSelectedDay(selectedDay: string | null): Season {
+  if (!selectedDay) return 'spring'; // Default to Spring
+
+  const season = selectedDay.split(' ')[0].toLowerCase();
+  if (season === 'spring') return 'spring';
+  if (season === 'summer') return 'summer';
+  if (season === 'fall') return 'fall';
+  if (season === 'winter') return 'winter';
+
+  return 'spring'; // Fallback
+}
+
+/**
  * Seasonal color palettes with Spring/Summer/Fall/Winter variations
  * Each season has its own aesthetic while maintaining core brand values
  */
