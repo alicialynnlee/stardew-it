@@ -18,18 +18,20 @@ export type TaskType = typeof TASK_TYPES[keyof typeof TASK_TYPES];
 
 /**
  * Color mapping for each task type
- * Uses distinct colors from the Stardew Valley aesthetic
+ * Uses Ivy's seasonal design system - colors adapt to current season
+ * Spring: Fresh pastels, Summer: Bright warm, Fall: Harvest warm, Winter: Cool frost tones
  */
 export const TASK_TYPE_COLORS: Record<TaskType, string> = {
-  [TASK_TYPES.FORAGING]: '#90EE90', // Light Green - nature/plants
-  [TASK_TYPES.FARMING]: '#F0E68C', // Khaki - crops/farm work
-  [TASK_TYPES.FISHING]: '#87CEEB', // Sky Blue - water
-  [TASK_TYPES.MINING]: '#D3D3D3', // Light Gray - stone/minerals
-  [TASK_TYPES.ANIMALS]: '#FFB6C1', // Light Pink - pets/animals
-  [TASK_TYPES.COOKING]: '#FFD700', // Gold - food/cooking
-  [TASK_TYPES.SOCIALIZING]: '#DDA0DD', // Plum - people/socializing
-  [TASK_TYPES.COMBAT]: '#DC143C', // Crimson - combat/danger
-  [TASK_TYPES.OTHER]: '#D3D3D3', // Light Gray - miscellaneous
+  // Default colors (Spring - brand colors). Seasonal variants handled in seasonal.ts
+  [TASK_TYPES.FORAGING]: '#A8D86F', // Fresh green - nature/plants (Jumino brand green)
+  [TASK_TYPES.FARMING]: '#D4A574', // Warm brown - crops/farm work
+  [TASK_TYPES.FISHING]: '#87CEEB', // Sky blue - water/tranquility
+  [TASK_TYPES.MINING]: '#B8A5D6', // Soft purple - earth/mystery
+  [TASK_TYPES.ANIMALS]: '#F4B6D9', // Soft pink - nurture/care
+  [TASK_TYPES.COOKING]: '#F5B766', // Warm orange - creativity/warmth
+  [TASK_TYPES.SOCIALIZING]: '#F07070', // Soft red - connection/warmth
+  [TASK_TYPES.COMBAT]: '#8B5A5A', // Muted dark red - challenge/intensity
+  [TASK_TYPES.OTHER]: '#C4C4C4', // Soft gray - neutral/flexible
 };
 
 /**

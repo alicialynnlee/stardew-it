@@ -6,6 +6,7 @@ import { useSession, signOut } from 'next-auth/react';
 import FarmSelector from '../farm-selector/FarmSelector';
 import * as Styled from './Navbar.styled';
 import { Button } from '@radix-ui/themes';
+import Jumino from '../jumino/Jumino';
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -16,12 +17,7 @@ export default function Navbar() {
         <Styled.HomeContainer>
           <Link href="/">
             <div>
-              <Image
-                src="/favicon.png"
-                alt="Stardew It"
-                width={48}
-                height={48}
-              />
+              <Jumino size="sm" state="idle" />
               Stardew It
             </div>
           </Link>
@@ -36,7 +32,7 @@ export default function Navbar() {
       <div>
         <Link href="/">
           <Styled.HomeContainer>
-            <Image src="/favicon.png" alt="Stardew It" width={48} height={48} />
+            <Jumino size="sm" state="idle" />
             Stardew It
           </Styled.HomeContainer>
         </Link>
