@@ -1,4 +1,5 @@
-import { lightRed, lighterGreen, dustySage } from '@/styles/colors';
+import { lighterGreen, dustySage } from '@/styles/colors';
+import { getTaskTypeColor } from '@/constants/taskTypes';
 import { Card } from '@radix-ui/themes';
 import styled from 'styled-components';
 
@@ -65,18 +66,17 @@ export const DayIndex = styled.button<{ $isSelected?: boolean }>`
 `;
 
 export const TaskLabel = styled.div<{
-  $isMonthTask?: boolean;
+  $taskType?: string;
   $isCompleted?: boolean;
   $isPartial?: boolean;
 }>`
   margin-top: 0.3rem;
-  background-color: #cce5ff;
+  background-color: ${({ $taskType }) => getTaskTypeColor($taskType)};
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-size: 0.75rem;
   cursor: pointer;
-
-  ${({ $isMonthTask }) => $isMonthTask && `background-color: ${lightRed};`}
+  color: #1C1C1C;
 
   ${({ $isCompleted }) =>
     $isCompleted &&
