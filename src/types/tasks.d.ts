@@ -24,6 +24,7 @@ type FarmTaskCompletion = Map<string, boolean>;
 interface TaskId {
   taskId: string;
   name: string;
+  type?: string;
 }
 
 /**

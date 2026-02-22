@@ -62,18 +62,20 @@ export default function Calendar({
   };
 
   const renderEventLabel = (
-    ce: CalendarEventWithTasks,
-    isMonthTask?: boolean
+    ce: CalendarEventWithTasks
   ) => {
     const { allDone, hasSome, completed, total } = getEventCompletion(
       ce,
       farmTaskCompletion
     );
+    
+    // Get the task type from the first task in the event (they should all be the same type)
+    const taskType = ce.tasks && ce.tasks.length > 0 ? ce.tasks[0].type : 'other';
 
     return (
       <Styled.TaskLabel
         key={ce.id}
-        $isMonthTask={isMonthTask}
+        $taskType={taskType}
         $isCompleted={allDone}
         $isPartial={hasSome}
         onClick={() => changeSelectedEvent(selectedEvent ? null : ce)}
@@ -84,7 +86,6 @@ export default function Calendar({
             ? `(${ce.tasks.length})`
             : ce.tasks[0]?.name)}
         {ce.name === 'Forage' &&
-          isMonthTask &&
           (ce.tasks && ce.tasks.length > 1
             ? `(${ce.tasks.length})`
             : ce.tasks[0]?.name)}
@@ -157,7 +158,7 @@ export default function Calendar({
                 {day}
               </Styled.DayIndex>
               {calEvents?.map((ce) => renderEventLabel(ce))}
-              {monthEvents?.map((ce) => renderEventLabel(ce, true))}
+              {monthEvents?.map((ce) => renderEventLabel(ce))}
             </Styled.DayBox>
           );
         })}

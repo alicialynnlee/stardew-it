@@ -20,6 +20,20 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Project Documentation
+
+### Design System
+📖 **[DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md)** - Complete design system documentation
+- Seasonal color palettes for all 4 seasons
+- Component specifications
+- Jumino mascot design & animations
+- Implementation guidelines
+- Quick reference for developers
+
+### Implementation Guides
+- **TASK_TYPING_IMPLEMENTATION.md** - Task type system with colors
+- **IMPLEMENTATION_SUMMARY.md** - Architecture and setup notes
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

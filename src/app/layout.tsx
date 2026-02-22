@@ -4,6 +4,7 @@ import GlobalStyles from '@/styles/GlobalStyles';
 import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import { Navbar, SideNav, AuthProvider } from '@/components';
+import SeasonalProvider from '@/contexts/SeasonalContext';
 
 export const metadata: Metadata = {
   title: 'Stardew It',
@@ -40,13 +41,15 @@ export default function RootLayout({
             scaling="100%"
           >
             <GlobalStyles />
-            <AuthProvider>
-              <Navbar />
-              <div style={{ display: 'flex', minHeight: 'calc(100vh - 5rem)' }}>
-                <SideNav />
-                <main className="flex-grow">{children}</main>
-              </div>
-            </AuthProvider>
+            <SeasonalProvider>
+              <AuthProvider>
+                <Navbar />
+                <div style={{ display: 'flex', minHeight: 'calc(100vh - 5rem)' }}>
+                  <SideNav />
+                  <main className="flex-grow">{children}</main>
+                </div>
+              </AuthProvider>
+            </SeasonalProvider>
           </Theme>
         </StyledComponentsRegistry>
       </body>
