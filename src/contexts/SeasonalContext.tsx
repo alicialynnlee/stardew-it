@@ -35,14 +35,8 @@ const SeasonalContext = createContext<SeasonalContextType | undefined>(undefined
  * Manages selectedDay and derives season from it (defaults to Spring 1)
  */
 export const SeasonalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mounted, setMounted] = useState(false);
   const [selectedDay, setSelectedDay] = useState<string | null>('Spring 1');
   const [season, setSeason] = useState<Season>('spring');
-
-  // Initialize after client-side mount to avoid hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Update season whenever selectedDay changes
   useEffect(() => {
@@ -62,11 +56,6 @@ export const SeasonalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setSelectedDay,
     };
   }, [season, selectedDay]);
-
-  // Prevent rendering content until mounted (hydration safety)
-  if (!mounted) {
-    return <>{children}</>;
-  }
 
   return <SeasonalContext.Provider value={value}>{children}</SeasonalContext.Provider>;
 };
