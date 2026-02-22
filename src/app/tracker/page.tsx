@@ -22,6 +22,13 @@ export default async function TrackerPage({ searchParams }: Props) {
       redirect(`/tracker?farmId=${selectedFarmId}`);
     }
   } else if (paramFarmId) {
+    // Verify the farm belongs to this user before rendering
+    const farm = await prisma.farm.findUnique({
+      where: { id: paramFarmId, userId: user.id },
+    });
+    if (!farm) {
+      redirect('/tracker');
+    }
     return <TrackerClient userId={user.id} selectedFarmId={paramFarmId} />;
   }
 
