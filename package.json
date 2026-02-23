@@ -9,7 +9,8 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write \"**/*.{ts,tsx}\""
+    "format": "prettier --write \"**/*.{ts,tsx}\"",
+    "seed:calendar-update": "npx tsx prisma/seed-calendar-update.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
