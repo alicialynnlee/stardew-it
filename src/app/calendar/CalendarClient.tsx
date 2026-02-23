@@ -76,11 +76,6 @@ export default function CalendarClient({
         <CalendarPanel
           viewingSeasonIndex={viewingSeasonIndex}
           selectedDay={selectedDay}
-          changeSelectedDay={(dayIndex) => setSelectedDay(dayIndex)}
-          changeViewingSeasonIndex={(seasonIndex) =>
-            setViewingSeasonIndex(seasonIndex)
-          }
-          selectedEvent={selectedEvent}
           changeSelectedEvent={(event) => setSelectedEvent(event)}
           farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
           calendarEvents={calendarEvents}
