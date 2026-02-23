@@ -10,7 +10,7 @@ import {
 } from '@/actions/farmActions';
 import type { Farm } from '@prisma/client';
 
-export function useFarms(userId: string) {
+export function useFarms() {
   const [farms, setFarms] = useState<Farm[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +22,7 @@ export function useFarms(userId: string) {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await getFarms(userId);
+      const result = await getFarms();
       if (result.success && result.farms) {
         setFarms(result.farms);
       } else {
@@ -34,20 +34,20 @@ export function useFarms(userId: string) {
     } finally {
       setIsLoading(false);
     }
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     fetchFarms();
   }, [fetchFarms]);
 
   const fetchSelectedFarm = useCallback(async () => {
-    const result = await getSelectedFarm(userId);
+    const result = await getSelectedFarm();
     if (result.success && result.farmId) {
       setSelectedFarmId(result.farmId);
     } else {
       setSelectedFarmId(null);
     }
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     fetchSelectedFarm();
@@ -71,7 +71,7 @@ export function useFarms(userId: string) {
 
       await new Promise<void>((resolve) => {
         startTransitionAdd(async () => {
-          result = await addFarm(farmName, userId);
+          result = await addFarm(farmName);
           if (result.success && result.farm) {
             setFarms((prev) =>
               [...prev, result.farm!].sort((a, b) =>
@@ -87,7 +87,7 @@ export function useFarms(userId: string) {
 
       return result;
     },
-    [userId]
+    []
   );
 
   const deleteFarm = useCallback(
@@ -96,7 +96,7 @@ export function useFarms(userId: string) {
 
       await new Promise<void>((resolve) => {
         startTransitionDelete(async () => {
-          result = await deleteFarmAction(farmId, userId);
+          result = await deleteFarmAction(farmId);
           if (result.success) {
             setFarms((prev) => prev.filter((farm) => farm.id !== farmId));
           }
@@ -106,19 +106,19 @@ export function useFarms(userId: string) {
 
       return result;
     },
-    [userId]
+    []
   );
 
   const setSelectedFarm = useCallback(
     async (farmId: string): Promise<{ success: boolean; error?: string }> => {
-      const result = await setSelectedFarmAction(farmId, userId);
+      const result = await setSelectedFarmAction(farmId);
       if (!result.success) {
         setError(result.error ?? 'Failed to set selected farm.');
       }
       setSelectedFarmId(farmId);
       return result;
     },
-    [userId]
+    []
   );
 
   return {

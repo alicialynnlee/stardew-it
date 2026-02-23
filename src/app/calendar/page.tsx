@@ -22,6 +22,13 @@ export default async function CalendarPage({ searchParams }: Props) {
       redirect(`/calendar?farmId=${selectedFarmId}`);
     }
   } else if (paramFarmId) {
+    // Verify the farm belongs to this user before rendering
+    const farm = await prisma.farm.findUnique({
+      where: { id: paramFarmId, userId: user.id },
+    });
+    if (!farm) {
+      redirect('/calendar');
+    }
     return <CalendarClient userId={user.id} selectedFarmId={paramFarmId} />;
   }
 

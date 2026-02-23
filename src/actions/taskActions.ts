@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { getCurrentUser } from '@/lib/auth';
 
 import type { FarmTask } from '@prisma/client';
 import type { TaskDetails } from '@/types/tasks';
@@ -9,12 +10,21 @@ import type { ResponseData, ResponseNoData } from '@/types/response';
 export async function getFarmTasks(
   selectedFarmId: string
 ): Promise<ResponseData<FarmTask[]>> {
+  const user = await getCurrentUser();
+  if (!user?.id) {
+    return { success: false, error: 'Unauthorized.' };
+  }
   try {
-    // get user's selected farm
     if (!selectedFarmId) {
       return { success: false, error: 'Farm not found.' };
     }
-    // get farm tasks
+    // Verify farm belongs to user
+    const farm = await prisma.farm.findUnique({
+      where: { id: selectedFarmId, userId: user.id },
+    });
+    if (!farm) {
+      return { success: false, error: 'Unauthorized: Farm not found.' };
+    }
     const farmTasks = await prisma.farmTask.findMany({
       where: { farmId: selectedFarmId },
     });
@@ -30,11 +40,21 @@ export async function updateFarmTask(
   taskId: string,
   completed: boolean
 ): Promise<ResponseNoData> {
+  const user = await getCurrentUser();
+  if (!user?.id) {
+    return { success: false, error: 'Unauthorized.' };
+  }
   try {
     if (!selectedFarmId) {
       return { success: false, error: 'Farm not found.' };
     }
-    // update farm task
+    // Verify farm belongs to user
+    const farm = await prisma.farm.findUnique({
+      where: { id: selectedFarmId, userId: user.id },
+    });
+    if (!farm) {
+      return { success: false, error: 'Unauthorized: Farm not found.' };
+    }
     await prisma.farmTask.update({
       where: { farmId_taskId: { farmId: selectedFarmId, taskId } },
       data: { completed },
@@ -50,7 +70,6 @@ export async function getTaskDetails(
   taskId: string
 ): Promise<ResponseData<TaskDetails>> {
   try {
-    // get farm tasks
     const task = await prisma.task.findUnique({
       where: { id: taskId },
       include: {

@@ -43,8 +43,9 @@ export async function POST(request: Request) {
     });
 
     if (existingUser) {
+      // Use a generic message to prevent user enumeration
       return NextResponse.json(
-        { message: 'User already exists' },
+        { message: 'Registration failed. Please try again.' },
         { status: 400 }
       );
     }

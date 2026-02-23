@@ -3,7 +3,6 @@
 import { useFarms } from '@/hooks/useFarms';
 import * as Styled from './FarmSelector.styled';
 import { useCallback, useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
   CaretDownIcon,
@@ -15,8 +14,6 @@ import { Button, Flex, IconButton, TextField } from '@radix-ui/themes';
 
 // TODO: Add error handling
 export default function FarmSelector() {
-  const { data: session } = useSession();
-  const userId = session?.user?.id;
   const {
     farms,
     // isLoading,
@@ -25,7 +22,7 @@ export default function FarmSelector() {
     deleteFarm,
     selectedFarmId,
     setSelectedFarm,
-  } = useFarms(userId ?? '');
+  } = useFarms();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [newFarm, setNewFarm] = useState('');
   const router = useRouter();
