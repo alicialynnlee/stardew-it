@@ -148,8 +148,8 @@ export type SeasonalTaskTypeColors = (typeof SEASONAL_TASK_TYPE_COLORS)[Season];
  * Get seasonal palette by season or current date
  */
 export function getSeasonalPalette(season?: String): SeasonalPalette {
-  // TODO: Fill this out
-  return SEASONAL_PALETTES['spring'];
+  const key = (season?.toLowerCase() ?? 'spring') as Season;
+  return SEASONAL_PALETTES[key] ?? SEASONAL_PALETTES['spring'];
 }
 
 /**

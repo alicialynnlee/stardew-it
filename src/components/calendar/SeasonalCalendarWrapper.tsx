@@ -7,7 +7,10 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { useSeasonalPalette } from '@/contexts/SeasonalContext';
+import {
+  useCurrentSeason,
+  useSeasonalPalette,
+} from '@/contexts/SeasonalContext';
 
 interface SeasonalCalendarWrapperProps {
   children: React.ReactNode;
@@ -193,7 +196,7 @@ export const SeasonalCalendarWrapper: React.FC<
   SeasonalCalendarWrapperProps
 > = ({ children, className }) => {
   const palette = useSeasonalPalette();
-  const season = 'spring'; // TODO: figure out the season
+  const season = useCurrentSeason();
 
   return (
     <StyledWrapper $palette={palette} className={className}>

@@ -1,8 +1,20 @@
 'use client';
 
 import * as Styled from './Calendar.styled';
-import { IconButton, Text } from '@radix-ui/themes';
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import {
+  Button,
+  Flex,
+  IconButton,
+  Text,
+  Popover,
+  Select,
+} from '@radix-ui/themes';
+import {
+  CalendarIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  TriangleRightIcon,
+} from '@radix-ui/react-icons';
 import { DAYS, DAYS_OF_WEEK, SEASONS } from '@/constants/calendar';
 import {
   Day,
@@ -10,6 +22,7 @@ import {
   CalendarEventData,
 } from '@/types/calendar';
 import { FarmTaskCompletion } from '@/types/tasks';
+import { useState, useMemo } from 'react';
 
 function getEventCompletion(
   event: CalendarEventWithTasks,
@@ -28,6 +41,11 @@ function getEventCompletion(
     allDone: completed === total,
     hasSome: completed > 0 && completed < total,
   };
+}
+
+function isYearRoundEvent(event: CalendarEventWithTasks): boolean {
+  if (!event.tasks || event.tasks.length === 0) return false;
+  return event.tasks.every((t) => t.seasons === 'year-round');
 }
 
 export default function Calendar({
@@ -49,6 +67,10 @@ export default function Calendar({
   changeSelectedEvent: (event: CalendarEventWithTasks | null) => void;
   calendarEvents?: CalendarEventData;
 }) {
+  const [seasonSectionExpanded, setSeasonSectionExpanded] = useState(true);
+  const [yearRoundSectionExpanded, setYearRoundSectionExpanded] =
+    useState(false);
+
   const getCalendarEventsForDate = (
     season: string,
     day: number
@@ -60,6 +82,26 @@ export default function Calendar({
     }
     return dayArray;
   };
+
+  // Split index-29 events into season-specific vs year-round
+  const { seasonEvents, yearRoundEvents } = useMemo(() => {
+    const allSeasonalEvents =
+      getCalendarEventsForDate(SEASONS[viewingSeasonIndex], 29) ?? [];
+
+    const season: CalendarEventWithTasks[] = [];
+    const yearRound: CalendarEventWithTasks[] = [];
+
+    allSeasonalEvents.forEach((event) => {
+      if (isYearRoundEvent(event)) {
+        yearRound.push(event);
+      } else {
+        season.push(event);
+      }
+    });
+
+    return { seasonEvents: season, yearRoundEvents: yearRound };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewingSeasonIndex, calendarEvents]);
 
   const renderEventLabel = (ce: CalendarEventWithTasks) => {
     const { allDone, hasSome, completed, total } = getEventCompletion(
@@ -101,31 +143,86 @@ export default function Calendar({
   return (
     <Styled.CalendarWrapper>
       <Styled.SeasonHeader>
-        <IconButton
-          title={SEASONS[viewingSeasonIndex - 1]}
-          size="1"
-          color="gray"
-          variant="surface"
-          highContrast
-          className={viewingSeasonIndex > 0 ? '' : 'hide'}
-          onClick={() => changeViewingSeasonIndex(viewingSeasonIndex - 1)}
-        >
-          <ChevronLeftIcon width="20" height="20" />
-        </IconButton>
         <Text size="4" weight="bold">
           {SEASONS[viewingSeasonIndex]}
         </Text>
-        <IconButton
-          title={SEASONS[viewingSeasonIndex + 1]}
-          size="1"
-          color="gray"
-          variant="surface"
-          highContrast
-          className={viewingSeasonIndex + 1 < SEASONS.length ? '' : `hide`}
-          onClick={() => changeViewingSeasonIndex(viewingSeasonIndex + 1)}
-        >
-          <ChevronRightIcon width="20" height="20" />
-        </IconButton>
+        <Flex gap={'2'} align={'center'}>
+          <Popover.Root>
+            <Popover.Trigger>
+              <Button variant="soft">
+                {selectedDay}
+                <CalendarIcon />
+              </Button>
+            </Popover.Trigger>
+            <Popover.Content size="2" maxWidth="400px">
+              <Text as="p" trim="both" size="2">
+                Select Day
+              </Text>
+              <Flex direction="row" gap="1" pt="2">
+                <Select.Root
+                  size="1"
+                  value={selectedDay?.split(' ')[0]?.toString() ?? 'Spring'}
+                  onValueChange={(newSeason) => {
+                    const currentDay = parseInt(
+                      selectedDay?.split(' ')[1] ?? '1'
+                    );
+                    changeSelectedDay(`${newSeason} ${currentDay}`);
+                    changeViewingSeasonIndex(SEASONS.indexOf(newSeason) ?? 0);
+                  }}
+                >
+                  <Select.Trigger />
+                  <Select.Content position="popper">
+                    {SEASONS.map((season) => (
+                      <Select.Item key={season} value={season}>
+                        {season}
+                      </Select.Item>
+                    ))}
+                  </Select.Content>
+                </Select.Root>
+                <Select.Root
+                  size="1"
+                  value={selectedDay?.split(' ')[1]?.toString() ?? '1'}
+                  onValueChange={(value) =>
+                    changeSelectedDay(
+                      `${SEASONS[viewingSeasonIndex]} ${Number(value)}`
+                    )
+                  }
+                >
+                  <Select.Trigger />
+                  <Select.Content position="popper">
+                    {DAYS.map((day) => (
+                      <Select.Item key={day} value={day.toString()}>
+                        {day}
+                      </Select.Item>
+                    ))}
+                  </Select.Content>
+                </Select.Root>
+              </Flex>
+            </Popover.Content>
+          </Popover.Root>
+          <IconButton
+            title={SEASONS[viewingSeasonIndex - 1]}
+            size="1"
+            color="gray"
+            variant="surface"
+            highContrast
+            disabled={viewingSeasonIndex < 1}
+            onClick={() => changeViewingSeasonIndex(viewingSeasonIndex - 1)}
+          >
+            <ChevronLeftIcon width="20" height="20" />
+          </IconButton>
+          <IconButton
+            title={SEASONS[viewingSeasonIndex + 1]}
+            size="1"
+            color="gray"
+            variant="surface"
+            highContrast
+            disabled={viewingSeasonIndex + 1 >= SEASONS.length}
+            onClick={() => changeViewingSeasonIndex(viewingSeasonIndex + 1)}
+          >
+            <ChevronRightIcon width="20" height="20" />
+          </IconButton>
+        </Flex>
       </Styled.SeasonHeader>
       <Styled.DayLabelGrid>
         {DAYS_OF_WEEK.map((day) => {
@@ -142,10 +239,6 @@ export default function Calendar({
             SEASONS[viewingSeasonIndex],
             day
           );
-          const seasonalEvents =
-            day === 28
-              ? getCalendarEventsForDate(SEASONS[viewingSeasonIndex], 29)
-              : null;
           return (
             <Styled.DayBox key={day}>
               <Styled.DayIndex
@@ -159,11 +252,54 @@ export default function Calendar({
                 {day}
               </Styled.DayIndex>
               {calEvents?.map((ce) => renderEventLabel(ce))}
-              {seasonalEvents?.map((ce) => renderEventLabel(ce))}
             </Styled.DayBox>
           );
         })}
       </Styled.DaysGrid>
+
+      {/* This Season section */}
+      {seasonEvents.length > 0 && (
+        <>
+          <Styled.SectionBar
+            $isExpanded={seasonSectionExpanded}
+            onClick={() => setSeasonSectionExpanded(!seasonSectionExpanded)}
+          >
+            <Styled.SectionChevron $isExpanded={seasonSectionExpanded}>
+              <TriangleRightIcon width="14" height="14" />
+            </Styled.SectionChevron>
+            <Text size="2" weight="medium">
+              This Season
+            </Text>
+            <Styled.CountBadge>{seasonEvents.length}</Styled.CountBadge>
+          </Styled.SectionBar>
+          <Styled.SectionContent $isExpanded={seasonSectionExpanded}>
+            {seasonEvents.map((ce) => renderEventLabel(ce))}
+          </Styled.SectionContent>
+        </>
+      )}
+
+      {/* Anytime in Year section */}
+      {yearRoundEvents.length > 0 && (
+        <>
+          <Styled.SectionBar
+            $isExpanded={yearRoundSectionExpanded}
+            onClick={() =>
+              setYearRoundSectionExpanded(!yearRoundSectionExpanded)
+            }
+          >
+            <Styled.SectionChevron $isExpanded={yearRoundSectionExpanded}>
+              <TriangleRightIcon width="14" height="14" />
+            </Styled.SectionChevron>
+            <Text size="2" weight="medium">
+              Anytime in Year
+            </Text>
+            <Styled.CountBadge>{yearRoundEvents.length}</Styled.CountBadge>
+          </Styled.SectionBar>
+          <Styled.SectionContent $isExpanded={yearRoundSectionExpanded}>
+            {yearRoundEvents.map((ce) => renderEventLabel(ce))}
+          </Styled.SectionContent>
+        </>
+      )}
     </Styled.CalendarWrapper>
   );
 }

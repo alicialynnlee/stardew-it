@@ -15,18 +15,12 @@ import { useState, useMemo } from 'react';
 export default function CalendarPanel({
   viewingSeasonIndex,
   selectedDay,
-  changeSelectedDay,
-  changeViewingSeasonIndex,
-  selectedEvent,
   changeSelectedEvent,
   farmTaskCompletion,
   calendarEvents,
 }: {
   viewingSeasonIndex: number;
   selectedDay: Day | null;
-  changeSelectedDay: (day: Day | null) => void;
-  changeViewingSeasonIndex: (seasonIndex: number) => void;
-  selectedEvent: CalendarEventWithTasks | null;
   changeSelectedEvent: (event: CalendarEventWithTasks | null) => void;
   farmTaskCompletion?: FarmTaskCompletion;
   calendarEvents?: CalendarEventData;
@@ -93,49 +87,6 @@ export default function CalendarPanel({
         <ChevronRightIcon />
       </IconButton>
       <Styled.PanelContent $isOpen={isOpen}>
-        <Styled.PanelCard>
-          <Text size="2" weight="bold">
-            Select Day
-          </Text>
-          <Flex direction="row" gap="1" pt="2">
-            <Select.Root
-              size="1"
-              value={selectedDay?.split(' ')[0]?.toString() ?? 'Spring'}
-              onValueChange={(newSeason) => {
-                const currentDay = parseInt(selectedDay?.split(' ')[1] ?? '1');
-                changeSelectedDay(`${newSeason} ${currentDay}`);
-                changeViewingSeasonIndex(SEASONS.indexOf(newSeason) ?? 0);
-              }}
-            >
-              <Select.Trigger />
-              <Select.Content position="popper">
-                {SEASONS.map((season) => (
-                  <Select.Item key={season} value={season}>
-                    {season}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select.Root>
-            <Select.Root
-              size="1"
-              value={selectedDay?.split(' ')[1]?.toString() ?? '1'}
-              onValueChange={(value) =>
-                changeSelectedDay(
-                  `${SEASONS[viewingSeasonIndex]} ${Number(value)}`
-                )
-              }
-            >
-              <Select.Trigger />
-              <Select.Content position="popper">
-                {DAYS.map((day) => (
-                  <Select.Item key={day} value={day.toString()}>
-                    {day}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select.Root>
-          </Flex>
-        </Styled.PanelCard>
         <Styled.ScrollablePanelCard>
           <Text size="2" weight="bold" as="div">
             Upcoming Events
