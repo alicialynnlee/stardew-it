@@ -8,7 +8,7 @@ export const CalendarWrapper = styled(Card)`
   flex: 1;
 `;
 
-export const MonthHeader = styled.div`
+export const SeasonHeader = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
@@ -76,7 +76,7 @@ export const TaskLabel = styled.div<{
   border-radius: 4px;
   font-size: 0.75rem;
   cursor: pointer;
-  color: #1C1C1C;
+  color: #1c1c1c;
 
   ${({ $isCompleted }) =>
     $isCompleted &&

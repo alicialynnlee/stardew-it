@@ -21,7 +21,7 @@ export default function CalendarClient({
   userId: string | null;
   selectedFarmId: string | null;
 }) {
-  const [selectedMonthIndex, setSelectedMonthIndex] = useState(0);
+  const [viewingSeasonIndex, setViewingSeasonIndex] = useState(0);
   const [selectedDay, setSelectedDay] = useState<Day | null>('Spring 1');
   const setSeasonalSelectedDay = useSetSelectedDay();
   const { farmTaskCompletion, updateTask } = useTasks(selectedFarmId);
@@ -63,22 +63,22 @@ export default function CalendarClient({
       <Flex direction="row" align="stretch" height="calc(100vh - 9rem)">
         <Calendar
           farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
-          selectedMonth={selectedMonthIndex}
+          viewingSeasonIndex={viewingSeasonIndex}
           selectedDay={selectedDay}
           changeSelectedDay={(dayIndex) => setSelectedDay(dayIndex)}
-          changeSelectedMonth={(monthIndex) =>
-            setSelectedMonthIndex(monthIndex)
+          changeViewingSeasonIndex={(seasonIndex) =>
+            setViewingSeasonIndex(seasonIndex)
           }
           selectedEvent={selectedEvent}
           changeSelectedEvent={(event) => setSelectedEvent(event)}
           calendarEvents={calendarEvents}
         />
         <CalendarPanel
-          selectedMonth={selectedMonthIndex}
+          viewingSeasonIndex={viewingSeasonIndex}
           selectedDay={selectedDay}
           changeSelectedDay={(dayIndex) => setSelectedDay(dayIndex)}
-          changeSelectedMonth={(monthIndex) =>
-            setSelectedMonthIndex(monthIndex)
+          changeViewingSeasonIndex={(seasonIndex) =>
+            setViewingSeasonIndex(seasonIndex)
           }
           selectedEvent={selectedEvent}
           changeSelectedEvent={(event) => setSelectedEvent(event)}

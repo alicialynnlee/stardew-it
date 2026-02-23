@@ -6,13 +6,17 @@
 
 'use client';
 
-import React, { createContext, useContext, useMemo, useEffect, useState, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useMemo,
+  useEffect,
+  useState,
+} from 'react';
 import {
-  getCurrentSeason,
   getSeasonalPalette,
   getSeasonalTaskColor,
   generateSeasonalCSSVariables,
-  getSeasonFromSelectedDay,
   SEASONAL_CELEBRATION_EMOJIS,
   Season,
   SeasonalPalette,
@@ -28,19 +32,25 @@ interface SeasonalContextType {
   setSelectedDay: (day: string | null) => void;
 }
 
-const SeasonalContext = createContext<SeasonalContextType | undefined>(undefined);
+const SeasonalContext = createContext<SeasonalContextType | undefined>(
+  undefined
+);
 
 /**
  * SeasonalProvider component - wraps app with seasonal context
  * Manages selectedDay and derives season from it (defaults to Spring 1)
  */
-export const SeasonalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const SeasonalProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [selectedDay, setSelectedDay] = useState<string | null>('Spring 1');
   const [season, setSeason] = useState<Season>('spring');
 
   // Update season whenever selectedDay changes
   useEffect(() => {
-    const newSeason = getSeasonFromSelectedDay(selectedDay);
+    const newSeasonString = selectedDay?.split(' ')[0] ?? 'Spring';
+    const newSeason =
+      (newSeasonString.toLowerCase() as Season) ?? ('spring' as Season);
     setSeason(newSeason);
   }, [selectedDay]);
 
@@ -49,7 +59,8 @@ export const SeasonalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return {
       currentSeason: season,
       palette,
-      getTaskColor: (taskType: string) => getSeasonalTaskColor(taskType, season),
+      getTaskColor: (taskType: string) =>
+        getSeasonalTaskColor(taskType, season),
       celebrationEmoji: SEASONAL_CELEBRATION_EMOJIS[season],
       cssVariables: generateSeasonalCSSVariables(season),
       selectedDay,
@@ -57,7 +68,11 @@ export const SeasonalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
   }, [season, selectedDay]);
 
-  return <SeasonalContext.Provider value={value}>{children}</SeasonalContext.Provider>;
+  return (
+    <SeasonalContext.Provider value={value}>
+      {children}
+    </SeasonalContext.Provider>
+  );
 };
 
 /**

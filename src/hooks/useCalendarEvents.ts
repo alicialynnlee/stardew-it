@@ -33,16 +33,16 @@ export function useCalendarEvents() {
         ]);
         calendarEventsData.forEach((event: CalendarEventWithTasks) => {
           const date = event.date.split(' ');
-          const monthMap = currCalendarEvents.get(date[0]);
-          if (!monthMap || !date[0]) {
-            setError('Could not find month map');
+          const seasonMap = currCalendarEvents.get(date[0]);
+          if (!seasonMap || !date[0]) {
+            setError('Could not find season map');
             return;
           }
           const day = date.length === 2 ? parseInt(date[1]) : 29;
-          if (monthMap[day]) {
-            monthMap[day].push(event);
+          if (seasonMap[day]) {
+            seasonMap[day].push(event);
           } else {
-            monthMap[day] = [event];
+            seasonMap[day] = [event];
           }
         });
         setCalendarEvents(currCalendarEvents);

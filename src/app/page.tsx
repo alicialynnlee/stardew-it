@@ -19,7 +19,7 @@ export default function Home() {
       </Styled.HeroSection>
 
       <Styled.FeatureGrid>
-        <Link href="/tracker" passHref legacyBehavior>
+        <Link href="/tracker" passHref>
           <Styled.FeatureCard>
             <Styled.FeatureIcon>📦</Styled.FeatureIcon>
             <Styled.FeatureTitle>Bundle Tracker</Styled.FeatureTitle>
@@ -28,7 +28,7 @@ export default function Home() {
             </Styled.FeatureDescription>
           </Styled.FeatureCard>
         </Link>
-        <Link href="/calendar" passHref legacyBehavior>
+        <Link href="/calendar" passHref>
           <Styled.FeatureCard>
             <Styled.FeatureIcon>📅</Styled.FeatureIcon>
             <Styled.FeatureTitle>Season Calendar</Styled.FeatureTitle>
@@ -48,9 +48,11 @@ export default function Home() {
             harder to replace.
           </Styled.TipItem>
           <Styled.TipItem>
-            <strong>Check the Traveling Cart every Friday &amp; Saturday.</strong>{' '}
-            She stocks rare items like Red Cabbage seeds that can save your
-            Year 1 run.
+            <strong>
+              Check the Traveling Cart every Friday &amp; Saturday.
+            </strong>{' '}
+            She stocks rare items like Red Cabbage seeds that can save your Year
+            1 run.
           </Styled.TipItem>
           <Styled.TipItem>
             <strong>Pick the Year 1 Completable option for Red Cabbage.</strong>{' '}
@@ -58,14 +60,14 @@ export default function Home() {
             obtainable without relying on luck.
           </Styled.TipItem>
           <Styled.TipItem>
-            <strong>Save one of everything.</strong> Fish, crops, foraged
-            items — if it looks unique, stash it in a chest. Future-you will
-            be grateful.
+            <strong>Save one of everything.</strong> Fish, crops, foraged items
+            — if it looks unique, stash it in a chest. Future-you will be
+            grateful.
           </Styled.TipItem>
           <Styled.TipItem>
-            <strong>Plan your rainy days.</strong> Rain means free watering,
-            so use those days to mine, fish, or forage instead. Every
-            energy point counts in Year 1.
+            <strong>Plan your rainy days.</strong> Rain means free watering, so
+            use those days to mine, fish, or forage instead. Every energy point
+            counts in Year 1.
           </Styled.TipItem>
         </Styled.TipsList>
       </Styled.TipsSection>

@@ -3,7 +3,7 @@
 import * as Styled from './CalendarPanel.styled';
 import { Flex, IconButton, Select, Text } from '@radix-ui/themes';
 import { CheckIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import { DAYS, MONTHS } from '@/constants/calendar';
+import { DAYS, SEASONS } from '@/constants/calendar';
 import {
   CalendarEventData,
   CalendarEventWithTasks,
@@ -13,19 +13,19 @@ import { FarmTaskCompletion } from '@/types/tasks';
 import { useState, useMemo } from 'react';
 
 export default function CalendarPanel({
-  selectedMonth,
+  viewingSeasonIndex,
   selectedDay,
   changeSelectedDay,
-  changeSelectedMonth,
+  changeViewingSeasonIndex,
   selectedEvent,
   changeSelectedEvent,
   farmTaskCompletion,
   calendarEvents,
 }: {
-  selectedMonth: number;
+  viewingSeasonIndex: number;
   selectedDay: Day | null;
   changeSelectedDay: (day: Day | null) => void;
-  changeSelectedMonth: (monthIndex: number) => void;
+  changeViewingSeasonIndex: (seasonIndex: number) => void;
   selectedEvent: CalendarEventWithTasks | null;
   changeSelectedEvent: (event: CalendarEventWithTasks | null) => void;
   farmTaskCompletion?: FarmTaskCompletion;
@@ -33,7 +33,7 @@ export default function CalendarPanel({
 }) {
   const [isOpen, setIsOpen] = useState(true);
 
-  // Calculate upcoming calendar events based on selected month and day
+  // Calculate upcoming calendar events based on selected season and day
   const upcomingCalendarEvents = useMemo(() => {
     if (!selectedDay || !calendarEvents || calendarEvents.size === 0) {
       return [];
@@ -43,10 +43,10 @@ export default function CalendarPanel({
 
     // Flatten all calendar events and filter for upcoming ones
     const filteredEvents: CalendarEventWithTasks[] = [];
-    const filteredMonths = MONTHS.slice(selectedMonth);
-    calendarEvents.forEach((monthEvents, monthName) => {
-      if (filteredMonths.includes(monthName)) {
-        const filteredDays = monthEvents.slice(selectedDayNumber);
+    const filteredSeasons = SEASONS.slice(viewingSeasonIndex);
+    calendarEvents.forEach((seasonEvents, seasonName) => {
+      if (filteredSeasons.includes(seasonName)) {
+        const filteredDays = seasonEvents.slice(selectedDayNumber);
         filteredDays.forEach((dayEvents) => {
           if (dayEvents) {
             filteredEvents.push(...dayEvents);
@@ -56,7 +56,7 @@ export default function CalendarPanel({
     });
 
     return filteredEvents;
-  }, [selectedDay, selectedMonth, calendarEvents]);
+  }, [selectedDay, viewingSeasonIndex, calendarEvents]);
 
   const getCompletionBadge = (event: CalendarEventWithTasks) => {
     if (!farmTaskCompletion || event.tasks.length === 0) return null;
@@ -100,19 +100,18 @@ export default function CalendarPanel({
           <Flex direction="row" gap="1" pt="2">
             <Select.Root
               size="1"
-              value={selectedMonth.toString()}
-              onValueChange={(value) => {
-                const newMonth = MONTHS[Number(value)];
+              value={selectedDay?.split(' ')[0]?.toString() ?? 'Spring'}
+              onValueChange={(newSeason) => {
                 const currentDay = parseInt(selectedDay?.split(' ')[1] ?? '1');
-                changeSelectedDay(`${newMonth} ${currentDay}`);
-                changeSelectedMonth(Number(value));
+                changeSelectedDay(`${newSeason} ${currentDay}`);
+                changeViewingSeasonIndex(SEASONS.indexOf(newSeason) ?? 0);
               }}
             >
               <Select.Trigger />
               <Select.Content position="popper">
-                {MONTHS.map((month, index) => (
-                  <Select.Item key={month} value={index.toString()}>
-                    {month}
+                {SEASONS.map((season) => (
+                  <Select.Item key={season} value={season}>
+                    {season}
                   </Select.Item>
                 ))}
               </Select.Content>
@@ -121,7 +120,9 @@ export default function CalendarPanel({
               size="1"
               value={selectedDay?.split(' ')[1]?.toString() ?? '1'}
               onValueChange={(value) =>
-                changeSelectedDay(`${MONTHS[selectedMonth]} ${Number(value)}`)
+                changeSelectedDay(
+                  `${SEASONS[viewingSeasonIndex]} ${Number(value)}`
+                )
               }
             >
               <Select.Trigger />
