@@ -10,6 +10,7 @@ import {
   CalendarEventData,
 } from '@/types/calendar';
 import { FarmTaskCompletion } from '@/types/tasks';
+import { useSeasonalTaskColor } from '@/contexts/SeasonalContext';
 
 function getEventCompletion(
   event: CalendarEventWithTasks,
@@ -49,6 +50,8 @@ export default function Calendar({
   changeSelectedEvent: (event: CalendarEventWithTasks | null) => void;
   calendarEvents?: CalendarEventData;
 }) {
+  const getSeasonalTaskColor = useSeasonalTaskColor;
+  
   const getCalendarEventsForDate = (
     month: string,
     day: number
@@ -71,11 +74,12 @@ export default function Calendar({
     
     // Get the task type from the first task in the event (they should all be the same type)
     const taskType = ce.tasks && ce.tasks.length > 0 ? ce.tasks[0].type : 'other';
+    const taskColor = getSeasonalTaskColor(taskType);
 
     return (
       <Styled.TaskLabel
         key={ce.id}
-        $taskType={taskType}
+        $taskColor={taskColor}
         $isCompleted={allDone}
         $isPartial={hasSome}
         onClick={() => changeSelectedEvent(selectedEvent ? null : ce)}
