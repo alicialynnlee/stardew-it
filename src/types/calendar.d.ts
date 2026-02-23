@@ -1,4 +1,4 @@
-import { DAYS, MONTHS } from '@/constants/calendar';
+import { DAYS, SEASONS } from '@/constants/calendar';
 import type { CalendarEvent, Task } from '@prisma/client';
 
 // Type for CalendarEvent with tasks included
@@ -7,9 +7,9 @@ type CalendarEventWithTasks = CalendarEvent & {
 };
 
 /**
- * Defines the type for the months of the year.
- * Key: Month String "Spring", "Summer", "Fall", "Winter"
- * Value: Array of days of the month, 0-28, 29 if no day (month event), null if no event
+ * Defines the type for the seasons of the year.
+ * Key: Season String "Spring", "Summer", "Fall", "Winter"
+ * Value: Array of days of the season, 0-28, 29 if no day (season event), null if no event
  * Value: Array of CalendarEvents with tasks
  */
 type CalendarEventData = Map<
@@ -17,8 +17,8 @@ type CalendarEventData = Map<
   Array<Array<CalendarEventWithTasks> | null>
 >;
 
-type Month = (typeof MONTHS)[number];
+type Season = (typeof SEASONS)[number];
 type DayNum = (typeof DAYS)[number];
-type Day = `${Month} ${DayNum}`;
+type Day = `${Season} ${DayNum}`;
 
-export type { CalendarEventWithTasks, CalendarEventData, Month, DayNum, Day };
+export type { CalendarEventWithTasks, CalendarEventData, Season, DayNum, Day };

@@ -6,18 +6,6 @@
 export type Season = 'spring' | 'summer' | 'fall' | 'winter';
 
 /**
- * Current season - determined by system date
- * Jan-Mar: Spring, Apr-Jun: Summer, Jul-Sep: Fall, Oct-Dec: Winter
- */
-export function getCurrentSeason(): Season {
-  const month = new Date().getMonth();
-  if (month >= 0 && month <= 2) return 'spring';
-  if (month >= 3 && month <= 5) return 'summer';
-  if (month >= 6 && month <= 8) return 'fall';
-  return 'winter';
-}
-
-/**
  * Get season from selectedDay (game calendar)
  * Format: "Spring 1", "Summer 15", "Fall 28", "Winter 1", etc.
  */
@@ -100,7 +88,7 @@ export const SEASONAL_PALETTES = {
   },
 } as const;
 
-export type SeasonalPalette = typeof SEASONAL_PALETTES[Season];
+export type SeasonalPalette = (typeof SEASONAL_PALETTES)[Season];
 
 /**
  * Enhanced task type colors for each season
@@ -154,26 +142,22 @@ export const SEASONAL_TASK_TYPE_COLORS = {
   },
 } as const;
 
-export type SeasonalTaskTypeColors = typeof SEASONAL_TASK_TYPE_COLORS[Season];
+export type SeasonalTaskTypeColors = (typeof SEASONAL_TASK_TYPE_COLORS)[Season];
 
 /**
  * Get seasonal palette by season or current date
  */
-export function getSeasonalPalette(season?: Season): SeasonalPalette {
-  const s = season || getCurrentSeason();
-  return SEASONAL_PALETTES[s];
+export function getSeasonalPalette(season?: String): SeasonalPalette {
+  // TODO: Fill this out
+  return SEASONAL_PALETTES['spring'];
 }
 
 /**
  * Get task type color for a specific season
  */
-export function getSeasonalTaskColor(
-  taskType: string,
-  season?: Season
-): string {
-  const s = season || getCurrentSeason();
-  const colors = SEASONAL_TASK_TYPE_COLORS[s];
-  
+export function getSeasonalTaskColor(taskType: string, season: Season): string {
+  const colors = SEASONAL_TASK_TYPE_COLORS[season];
+
   // Fallback to 'other' if task type not found
   const key = taskType.toLowerCase() as keyof SeasonalTaskTypeColors;
   return colors[key] || colors.other;
@@ -221,27 +205,3 @@ export const SEASONAL_CELEBRATION_EMOJIS = {
   fall: '🍂✨',
   winter: '❄️✨',
 } as const;
-
-/**
- * Check if a date is off-season (not current season)
- * Used to determine if a task should be dimmed/styled differently
- */
-export function isOffSeason(dateOrMonth?: number | Date): boolean {
-  const targetMonth = dateOrMonth instanceof Date 
-    ? dateOrMonth.getMonth() 
-    : dateOrMonth;
-  
-  if (targetMonth === undefined) return false;
-  
-  const currentMonth = new Date().getMonth();
-  
-  // Calculate season for current and target month
-  const getCurrentSeasonForMonth = (m: number): Season => {
-    if (m >= 0 && m <= 2) return 'spring';
-    if (m >= 3 && m <= 5) return 'summer';
-    if (m >= 6 && m <= 8) return 'fall';
-    return 'winter';
-  };
-  
-  return getCurrentSeasonForMonth(currentMonth) !== getCurrentSeasonForMonth(targetMonth);
-}

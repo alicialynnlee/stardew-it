@@ -17,16 +17,20 @@ interface OffSeasonTaskBadgeProps {
 
 const OffSeasonWrapper = styled.div<{ $isOffSeason: boolean }>`
   position: relative;
-  opacity: ${props => (props.$isOffSeason ? OFF_SEASON_TASK_STYLES.opacity : 1)};
-  filter: ${props => (props.$isOffSeason ? OFF_SEASON_TASK_STYLES.filter : 'none')};
+  opacity: ${(props) =>
+    props.$isOffSeason ? OFF_SEASON_TASK_STYLES.opacity : 1};
+  filter: ${(props) =>
+    props.$isOffSeason ? OFF_SEASON_TASK_STYLES.filter : 'none'};
   transition: all 0.2s ease;
 
-  ${props => props.$isOffSeason && `
+  ${(props) =>
+    props.$isOffSeason &&
+    `
     text-decoration: ${OFF_SEASON_TASK_STYLES.textDecoration};
   `}
 
   &:hover {
-    opacity: ${props => (props.$isOffSeason ? 0.75 : 1)};
+    opacity: ${(props) => (props.$isOffSeason ? 0.75 : 1)};
   }
 `;
 
@@ -38,7 +42,8 @@ const OffSeasonIndicator = styled.span`
   animation: pulse 2s ease-in-out infinite;
 
   @keyframes pulse {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0.6;
     }
     50% {

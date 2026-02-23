@@ -25,7 +25,7 @@ export default function BundleDrawer({
     return (completed / required) * 100;
   };
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(getPercentageComplete() < 100);
   return (
     <Styled.BundleContainer key={bundle.bundleId}>
       <Styled.DropdownHeader>
