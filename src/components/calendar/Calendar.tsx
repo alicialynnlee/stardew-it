@@ -109,9 +109,7 @@ export default function Calendar({
       farmTaskCompletion
     );
 
-    // Get the task type from the first task in the event (they should all be the same type)
-    const taskType =
-      ce.tasks && ce.tasks.length > 0 ? ce.tasks[0].type : 'other';
+    const taskType = ce.type ?? 'other';
 
     return (
       <Styled.TaskLabel

@@ -130,5 +130,6 @@ model CalendarEvent {
   date          String
   name          String
   description   String?
+  type          String    @default("other")
   tasks         Task[]             @relation("TaskCalendarEvents")
 }
