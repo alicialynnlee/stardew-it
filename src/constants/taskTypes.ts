@@ -10,11 +10,10 @@ export const TASK_TYPES = {
   ANIMALS: 'animals',
   COOKING: 'cooking',
   SOCIALIZING: 'socializing',
-  COMBAT: 'combat',
   OTHER: 'other',
 } as const;
 
-export type TaskType = typeof TASK_TYPES[keyof typeof TASK_TYPES];
+export type TaskType = (typeof TASK_TYPES)[keyof typeof TASK_TYPES];
 
 /**
  * Color mapping for each task type
@@ -30,7 +29,6 @@ export const TASK_TYPE_COLORS: Record<TaskType, string> = {
   [TASK_TYPES.ANIMALS]: '#F4B6D9', // Soft pink - nurture/care
   [TASK_TYPES.COOKING]: '#F5B766', // Warm orange - creativity/warmth
   [TASK_TYPES.SOCIALIZING]: '#F07070', // Soft red - connection/warmth
-  [TASK_TYPES.COMBAT]: '#8B5A5A', // Muted dark red - challenge/intensity
   [TASK_TYPES.OTHER]: '#C4C4C4', // Soft gray - neutral/flexible
 };
 
