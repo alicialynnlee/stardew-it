@@ -43,10 +43,6 @@ function getEventCompletion(
   };
 }
 
-function isYearRoundEvent(event: CalendarEventWithTasks): boolean {
-  if (!event.tasks || event.tasks.length === 0) return false;
-  return event.tasks.every((t) => t.seasons === 'year-round');
-}
 
 export default function Calendar({
   viewingSeasonIndex,
@@ -75,32 +71,16 @@ export default function Calendar({
     season: string,
     day: number
   ): Array<CalendarEventWithTasks> | null => {
-    const seasonArray = calendarEvents?.get(season);
-    const dayArray = seasonArray?.[day];
-    if (!dayArray) {
-      return null;
-    }
-    return dayArray;
+    const dayKey = `${season} ${day}` as Day;
+    return calendarEvents?.daily.get(dayKey) ?? null;
   };
 
-  // Split index-29 events into season-specific vs year-round
   const { seasonEvents, yearRoundEvents } = useMemo(() => {
-    const allSeasonalEvents =
-      getCalendarEventsForDate(SEASONS[viewingSeasonIndex], 29) ?? [];
-
-    const season: CalendarEventWithTasks[] = [];
-    const yearRound: CalendarEventWithTasks[] = [];
-
-    allSeasonalEvents.forEach((event) => {
-      if (isYearRoundEvent(event)) {
-        yearRound.push(event);
-      } else {
-        season.push(event);
-      }
-    });
-
-    return { seasonEvents: season, yearRoundEvents: yearRound };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const currentSeason = SEASONS[viewingSeasonIndex] as import('@/types/calendar').Season;
+    return {
+      seasonEvents: calendarEvents?.seasonal.get(currentSeason) ?? [],
+      yearRoundEvents: calendarEvents?.yearRound ?? [],
+    };
   }, [viewingSeasonIndex, calendarEvents]);
 
   const renderEventLabel = (ce: CalendarEventWithTasks) => {

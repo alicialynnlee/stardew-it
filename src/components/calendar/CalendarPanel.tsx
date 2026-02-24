@@ -29,21 +29,30 @@ export default function CalendarPanel({
 
   // Calculate the season's calendar events
   const viewingSeasonCalendarEvents = useMemo(() => {
-    if (!selectedDay || !calendarEvents || calendarEvents.size === 0) {
+    if (!selectedDay || !calendarEvents) {
       return [];
     }
 
-    const selectedDayNumber = parseInt(selectedDay.split(' ')[1]);
-
-    // Flatten all calendar events and filter the ones of the season
+    const currentSeason = SEASONS[viewingSeasonIndex] as import('@/types/calendar').Season;
     const filteredEvents: CalendarEventWithTasks[] = [];
-    const seasonsEvents: Array<Array<CalendarEventWithTasks> | null> =
-      calendarEvents.get(SEASONS[viewingSeasonIndex]) ?? [];
-    seasonsEvents.forEach((dayEvents) => {
+
+    // Daily events for this season
+    DAYS.forEach((day) => {
+      const dayKey = `${currentSeason} ${day}` as import('@/types/calendar').Day;
+      const dayEvents = calendarEvents.daily.get(dayKey);
       if (dayEvents) {
         filteredEvents.push(...dayEvents);
       }
     });
+
+    // Season-wide events
+    const seasonalEvents = calendarEvents.seasonal.get(currentSeason);
+    if (seasonalEvents) {
+      filteredEvents.push(...seasonalEvents);
+    }
+
+    // Year-round events
+    filteredEvents.push(...calendarEvents.yearRound);
 
     return filteredEvents;
   }, [selectedDay, viewingSeasonIndex, calendarEvents]);

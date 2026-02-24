@@ -7,15 +7,16 @@ type CalendarEventWithTasks = CalendarEvent & {
 };
 
 /**
- * Defines the type for the seasons of the year.
- * Key: Season String "Spring", "Summer", "Fall", "Winter"
- * Value: Array of days of the season, 0-28, 29 if no day (season event), null if no event
- * Value: Array of CalendarEvents with tasks
+ * Defines the type for calendar event data, organized by scope.
+ * - daily: events tied to a specific day, keyed by "Season Day" (e.g. "Spring 15")
+ * - seasonal: events spanning an entire season, keyed by season name
+ * - yearRound: events available year-round with no season/day restriction
  */
-type CalendarEventData = Map<
-  string,
-  Array<Array<CalendarEventWithTasks> | null>
->;
+type CalendarEventData = {
+  daily: Map<Day, CalendarEventWithTasks[]>;
+  seasonal: Map<Season, CalendarEventWithTasks[]>;
+  yearRound: CalendarEventWithTasks[];
+};
 
 type Season = (typeof SEASONS)[number];
 type DayNum = (typeof DAYS)[number];
