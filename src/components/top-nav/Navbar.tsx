@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import FarmSelector from '../farm-selector/FarmSelector';
+import UserMenu from '../user-menu/UserMenu';
 import * as Styled from './Navbar.styled';
 import { Button } from '@radix-ui/themes';
 import Jumino from '../jumino/Jumino';
@@ -41,10 +41,7 @@ export default function Navbar() {
         {session ? (
           <>
             <FarmSelector />
-            <span>
-              Hi {session.user?.name || session.user?.email || 'User'}!
-            </span>
-            <Button onClick={() => signOut()}>Sign Out</Button>
+            <UserMenu />
           </>
         ) : (
           <Link href="/auth">
