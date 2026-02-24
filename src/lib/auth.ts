@@ -43,6 +43,7 @@ const authOptions: NextAuthOptions = {
             return {
               id: user.id,
               email: user.email,
+              name: user.name,
             };
           } else {
             console.error('Password does not match');
@@ -68,23 +69,30 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     // Optional: Customize session/token data
     async session({ session, token }) {
-      // Add user id and potentially other fields to the session
       if (token && session.user) {
         session.user.id = token.id as string;
+        session.user.name = token.name as string;
+        session.user.email = token.email as string;
       }
-      // Add custom fields like role here if needed
-      // if (token.role && session.user) {
-      //  session.user.role = token.role as string;
-      //}
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       // Add custom fields to the JWT token
       // This is called first, then session callback
       if (user) {
-        token.id = user.id; // Add user ID to the token
-        // Add other properties from the user object if needed
-        // token.role = user.role; // Example: adding role
+        token.id = user.id;
+        token.name = user.name ?? undefined;
+      }
+      // Refresh user data from DB when session is updated (e.g. after profile edit)
+      if (trigger === 'update' && token.id) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { name: true, email: true },
+        });
+        if (dbUser) {
+          token.name = dbUser.name;
+          token.email = dbUser.email;
+        }
       }
       return token;
     },

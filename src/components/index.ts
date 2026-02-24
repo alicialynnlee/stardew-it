@@ -12,3 +12,4 @@ export { default as EventDetails } from './event-details/EventDetails';
 export { default as Jumino } from './jumino/Jumino';
 export { default as SeasonalCalendarWrapper } from './calendar/SeasonalCalendarWrapper';
 export { default as OffSeasonTaskBadge } from './tasks/OffSeasonTaskBadge';
+export { default as UserMenu } from './user-menu/UserMenu';
