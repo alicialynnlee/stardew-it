@@ -12,9 +12,11 @@ import type {
 } from '@/types/calendar';
 
 export function useCalendarEvents() {
-  const [calendarEvents, setCalendarEvents] = useState<CalendarEventData>(
-    new Map()
-  );
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEventData>({
+    daily: new Map(),
+    seasonal: new Map(),
+    yearRound: [],
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,28 +27,33 @@ export function useCalendarEvents() {
       const result = await getCalendarEvents();
       if (result.success && result.data) {
         const calendarEventsData = result.data as CalendarEventWithTasks[];
-        const currCalendarEvents = new Map([
-          ['Spring', Array(29).fill(null)],
-          ['Summer', Array(29).fill(null)],
-          ['Fall', Array(29).fill(null)],
-          ['Winter', Array(29).fill(null)],
-        ]);
+        const currCalendarEvents: CalendarEventData = {
+          daily: new Map(),
+          seasonal: new Map(),
+          yearRound: [],
+        };
         calendarEventsData.forEach((event: CalendarEventWithTasks) => {
-          const date = event.date.split(' ');
-          const seasonMap = currCalendarEvents.get(date[0]);
-          // TODO: ignore year-round for now, but find a better way to handle
-          if (date[0] === 'year-round') {
-            return;
-          }
-          if (!seasonMap || !date[0]) {
-            setError('Could not find season map');
-            return;
-          }
-          const day = date.length === 2 ? parseInt(date[1]) : 29;
-          if (seasonMap[day]) {
-            seasonMap[day].push(event);
+          const parts = event.date.split(' ');
+          const season = parts[0];
+
+          if (season === 'year-round') {
+            currCalendarEvents.yearRound.push(event);
+          } else if (parts.length === 2) {
+            const dayKey = event.date as import('@/types/calendar').Day;
+            const existing = currCalendarEvents.daily.get(dayKey);
+            if (existing) {
+              existing.push(event);
+            } else {
+              currCalendarEvents.daily.set(dayKey, [event]);
+            }
           } else {
-            seasonMap[day] = [event];
+            const seasonKey = season as import('@/types/calendar').Season;
+            const existing = currCalendarEvents.seasonal.get(seasonKey);
+            if (existing) {
+              existing.push(event);
+            } else {
+              currCalendarEvents.seasonal.set(seasonKey, [event]);
+            }
           }
         });
         setCalendarEvents(currCalendarEvents);
