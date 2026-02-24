@@ -20,6 +20,7 @@ import {
   Day,
   CalendarEventWithTasks,
   CalendarEventData,
+  Season,
 } from '@/types/calendar';
 import { FarmTaskCompletion } from '@/types/tasks';
 import { useState, useMemo } from 'react';
@@ -43,7 +44,6 @@ function getEventCompletion(
   };
 }
 
-
 export default function Calendar({
   viewingSeasonIndex,
   selectedDay,
@@ -56,7 +56,7 @@ export default function Calendar({
 }: {
   viewingSeasonIndex: number;
   selectedDay: Day | null;
-  changeSelectedDay: (day: Day | null) => void;
+  changeSelectedDay: (day: Day) => void;
   changeViewingSeasonIndex: (seasonIndex: number) => void;
   farmTaskCompletion?: FarmTaskCompletion;
   selectedEvent: CalendarEventWithTasks | null;
@@ -76,7 +76,7 @@ export default function Calendar({
   };
 
   const { seasonEvents, yearRoundEvents } = useMemo(() => {
-    const currentSeason = SEASONS[viewingSeasonIndex] as import('@/types/calendar').Season;
+    const currentSeason = SEASONS[viewingSeasonIndex] as Season;
     return {
       seasonEvents: calendarEvents?.seasonal.get(currentSeason) ?? [],
       yearRoundEvents: calendarEvents?.yearRound ?? [],
@@ -144,7 +144,7 @@ export default function Calendar({
                     const currentDay = parseInt(
                       selectedDay?.split(' ')[1] ?? '1'
                     );
-                    changeSelectedDay(`${newSeason} ${currentDay}`);
+                    changeSelectedDay(`${newSeason} ${currentDay}` as Day);
                     changeViewingSeasonIndex(SEASONS.indexOf(newSeason) ?? 0);
                   }}
                 >

@@ -41,12 +41,17 @@ export default function CalendarClient({
     }
   }, [selectedDay, setSeasonalSelectedDay]);
 
-  // Persist selectedDay to the farm's date field
+  // When the farm changes, sync selectedDay to the new farm's saved date
   useEffect(() => {
-    if (selectedFarmId && selectedDay) {
-      setFarmDateAction(selectedFarmId, selectedDay);
+    setSelectedDay((initialDate as Day) ?? 'Spring 1');
+  }, [initialDate]);
+
+  const handleChangeSelectedDay = (day: Day) => {
+    if (selectedFarmId) {
+      setFarmDateAction(selectedFarmId, day);
     }
-  }, [selectedFarmId, selectedDay]);
+    setSelectedDay(day);
+  };
 
   if (isLoading) return <Spinner />;
   if (error) return <div>Error: {error}</div>;
@@ -77,7 +82,7 @@ export default function CalendarClient({
           farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
           viewingSeasonIndex={viewingSeasonIndex}
           selectedDay={selectedDay}
-          changeSelectedDay={(dayIndex) => setSelectedDay(dayIndex)}
+          changeSelectedDay={(dayIndex) => handleChangeSelectedDay(dayIndex)}
           changeViewingSeasonIndex={(seasonIndex) =>
             setViewingSeasonIndex(seasonIndex)
           }

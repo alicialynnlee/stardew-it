@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import type { CalendarEvent } from '@prisma/client';
 import {
   getCalendarEvents,
   getCalendarEventsForTask,
