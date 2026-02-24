@@ -288,6 +288,7 @@ export default function SettingsClient() {
             onSelectFarm={handleSelectFarm}
             onDeleteFarm={handleDeleteFarm}
             onAddFarm={handleAddFarm}
+            showOptions
           />
         </Styled.FarmListContainer>
       </Styled.SettingsCard>

@@ -5,18 +5,13 @@ import * as Styled from './FarmSelector.styled';
 import { useCallback, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { CaretDownIcon } from '@radix-ui/react-icons';
-import { Button } from '@radix-ui/themes';
+import { Button, DropdownMenu } from '@radix-ui/themes';
 import FarmList from './FarmList';
 
 // TODO: Add error handling
 export default function FarmSelector() {
-  const {
-    farms,
-    addNewFarm,
-    deleteFarm,
-    selectedFarmId,
-    setSelectedFarm,
-  } = useFarms();
+  const { farms, addNewFarm, deleteFarm, selectedFarmId, setSelectedFarm } =
+    useFarms();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -59,25 +54,29 @@ export default function FarmSelector() {
   };
 
   return (
-    <Styled.FarmSelector>
-      <Button
-        className="farm-selector-open-button"
-        variant="soft"
-        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-      >
-        {farms.find((farm) => farm.id === selectedFarmId)?.name ||
-          'Select a farm...'}
-        <CaretDownIcon />
-      </Button>
-      <Styled.DropdownContainer $isDropdownOpen={isDropdownOpen}>
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <Button
+          className="farm-selector-open-button"
+          variant="soft"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
+          {farms.find((farm) => farm.id === selectedFarmId)?.name ||
+            'Select a farm...'}
+          <CaretDownIcon />
+        </Button>
+      </DropdownMenu.Trigger>
+
+      <DropdownMenu.Content align="end" sideOffset={8}>
         <FarmList
           farms={farms}
           selectedFarmId={selectedFarmId}
           onSelectFarm={handleSelectFarm}
           onDeleteFarm={handleDeleteFarm}
           onAddFarm={handleAddNewFarm}
+          showOptions={false}
         />
-      </Styled.DropdownContainer>
-    </Styled.FarmSelector>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   );
 }

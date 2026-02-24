@@ -16,6 +16,7 @@ interface FarmListProps {
   onSelectFarm: (farmId: string) => void;
   onDeleteFarm: (farmId: string) => void;
   onAddFarm: (farmName: string) => void;
+  showOptions: boolean;
 }
 
 export default function FarmList({
@@ -24,6 +25,7 @@ export default function FarmList({
   onSelectFarm,
   onDeleteFarm,
   onAddFarm,
+  showOptions,
 }: FarmListProps) {
   const [newFarm, setNewFarm] = useState('');
 
@@ -34,7 +36,16 @@ export default function FarmList({
   };
 
   return (
-    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: 0, margin: 0 }}>
+    <ul
+      style={{
+        listStyle: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.5rem',
+        padding: 0,
+        margin: 0,
+      }}
+    >
       {farms.map((farm) => (
         <Flex
           gapX="1"
@@ -44,18 +55,15 @@ export default function FarmList({
           key={farm.id}
         >
           <Button
-            variant="ghost"
+            variant={selectedFarmId === farm.id ? 'soft' : 'ghost'}
             color="gray"
             onClick={() => onSelectFarm(farm.id)}
             style={{ flex: '1', margin: '0', justifyContent: 'space-between' }}
           >
             {farm.name}
-            {selectedFarmId === farm.id && (
-              <CheckCircledIcon />
-            )}
           </Button>
 
-          {selectedFarmId === farm.id && (
+          {selectedFarmId === farm.id && showOptions && (
             <IconButton
               size="1"
               variant="ghost"
@@ -68,26 +76,23 @@ export default function FarmList({
               <CrossCircledIcon />
             </IconButton>
           )}
-          <IconButton
-            size="1"
-            variant="ghost"
-            color="red"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDeleteFarm(farm.id);
-            }}
-            title="Delete farm"
-          >
-            <TrashIcon width="15" height="15" />
-          </IconButton>
+          {showOptions && (
+            <IconButton
+              size="1"
+              variant="ghost"
+              color="red"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteFarm(farm.id);
+              }}
+              title="Delete farm"
+            >
+              <TrashIcon width="15" height="15" />
+            </IconButton>
+          )}
         </Flex>
       ))}
-      <Flex
-        gapX="1"
-        align="center"
-        justify="between"
-        style={{ width: '100%' }}
-      >
+      <Flex gapX="1" align="center" justify="between" style={{ width: '100%' }}>
         <TextField.Root
           placeholder="Add a new farm..."
           value={newFarm}
