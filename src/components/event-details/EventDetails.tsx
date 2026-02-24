@@ -47,7 +47,9 @@ export default function EventDetails({
             <Cross2Icon />
           </Styled.CloseButton>
         </Dialog.Close>
-        <Dialog.Title>{event.date}</Dialog.Title>
+        <Dialog.Title>
+          {event.date === 'year-round' ? 'Year Round' : event.date}
+        </Dialog.Title>
         <Dialog.Description>
           <Text size="3" weight="bold">
             {event.name}

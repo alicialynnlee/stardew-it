@@ -55,11 +55,15 @@ export const DayBox = styled.div`
   overflow-y: auto;
 `;
 
-export const DayIndex = styled.button<{ $isSelected?: boolean }>`
+export const DayIndex = styled.button<{
+  $isSelected?: boolean;
+  $isViewing?: boolean;
+}>`
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: none;
+  border: ${({ $isViewing }) =>
+    $isViewing ? `1px solid var(--accent-9)` : `none`};
   background-color: ${({ $isSelected }) =>
     $isSelected ? `var(--accent-9)` : `transparent`};
   color: ${({ $isSelected }) => $isSelected && `var(--background)`};
