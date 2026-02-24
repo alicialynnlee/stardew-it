@@ -8,18 +8,22 @@ import {
   CalendarEventData,
   CalendarEventWithTasks,
   Day,
+  Season,
 } from '@/types/calendar';
 import { FarmTaskCompletion } from '@/types/tasks';
 import { useState, useMemo } from 'react';
+import { getTaskTypeColor } from '@/constants/taskTypes';
 
 export default function CalendarPanel({
   viewingSeasonIndex,
+  viewingDay,
   selectedDay,
   changeSelectedEvent,
   farmTaskCompletion,
   calendarEvents,
 }: {
   viewingSeasonIndex: number;
+  viewingDay: Day;
   selectedDay: Day | null;
   changeSelectedEvent: (event: CalendarEventWithTasks | null) => void;
   farmTaskCompletion?: FarmTaskCompletion;
@@ -27,18 +31,26 @@ export default function CalendarPanel({
 }) {
   const [isOpen, setIsOpen] = useState(true);
 
+  // Get viewing day's calendar events
+  const viewingDayCalendarEvents = useMemo(() => {
+    if (!viewingDay || !calendarEvents) {
+      return [];
+    }
+    return calendarEvents.daily.get(viewingDay);
+  }, [viewingDay, calendarEvents]);
+
   // Calculate the season's calendar events
   const viewingSeasonCalendarEvents = useMemo(() => {
     if (!selectedDay || !calendarEvents) {
       return [];
     }
 
-    const currentSeason = SEASONS[viewingSeasonIndex] as import('@/types/calendar').Season;
+    const currentSeason = SEASONS[viewingSeasonIndex] as Season;
     const filteredEvents: CalendarEventWithTasks[] = [];
 
     // Daily events for this season
     DAYS.forEach((day) => {
-      const dayKey = `${currentSeason} ${day}` as import('@/types/calendar').Day;
+      const dayKey = `${currentSeason} ${day}` as Day;
       const dayEvents = calendarEvents.daily.get(dayKey);
       if (dayEvents) {
         filteredEvents.push(...dayEvents);
@@ -50,9 +62,6 @@ export default function CalendarPanel({
     if (seasonalEvents) {
       filteredEvents.push(...seasonalEvents);
     }
-
-    // Year-round events
-    filteredEvents.push(...calendarEvents.yearRound);
 
     return filteredEvents;
   }, [selectedDay, viewingSeasonIndex, calendarEvents]);
@@ -81,6 +90,48 @@ export default function CalendarPanel({
     return null;
   };
 
+  const renderEventCard = (event: CalendarEventWithTasks) => {
+    const allDone =
+      farmTaskCompletion &&
+      event.tasks.length > 0 &&
+      event.tasks.every((t) => farmTaskCompletion.get(t.id));
+
+    return (
+      <Styled.EventCard
+        key={event.id}
+        size="1"
+        mt="2"
+        onClick={() => changeSelectedEvent(event)}
+        $isCompleted={!!allDone}
+      >
+        <Flex justify="between" align="center">
+          <Flex direction="column" gap="2">
+            <Text size="2" weight="medium" as="div">
+              {event.name}
+            </Text>
+            {event.description && (
+              <Text size="1" weight={'light'}>
+                {event.description}
+              </Text>
+            )}
+            <Flex direction="row" gap="1">
+              <Badge variant="soft">{event.date}</Badge>
+              <Badge
+                style={{
+                  backgroundColor: getTaskTypeColor(event.type),
+                }}
+              >
+                {event.type}
+              </Badge>
+            </Flex>
+          </Flex>
+
+          {getCompletionBadge(event)}
+        </Flex>
+      </Styled.EventCard>
+    );
+  };
+
   return (
     <Styled.PanelWrapper $isOpen={isOpen}>
       <IconButton
@@ -94,8 +145,19 @@ export default function CalendarPanel({
       <Styled.PanelContent $isOpen={isOpen}>
         <Styled.PanelCard>
           <Text size="2" weight="bold" as="div">
-            Today's Events
+            {viewingDay === selectedDay ? `Today's` : viewingDay} Events
           </Text>
+          {viewingDayCalendarEvents && viewingDayCalendarEvents.length > 0 ? (
+            viewingDayCalendarEvents?.map((event: CalendarEventWithTasks) =>
+              renderEventCard(event)
+            )
+          ) : (
+            <Text size="1" weight="light">
+              No tasks scheduled
+              <br />
+              Enjoy your free day on the farm! 🌱
+            </Text>
+          )}
         </Styled.PanelCard>
         <Styled.ScrollablePanelCard>
           <Text size="2" weight="bold" as="div">
@@ -104,33 +166,7 @@ export default function CalendarPanel({
           {viewingSeasonCalendarEvents.length > 0 ? (
             <Styled.ScrollableContent>
               {viewingSeasonCalendarEvents.map(
-                (event: CalendarEventWithTasks) => {
-                  const allDone =
-                    farmTaskCompletion &&
-                    event.tasks.length > 0 &&
-                    event.tasks.every((t) => farmTaskCompletion.get(t.id));
-
-                  return (
-                    <Styled.EventCard
-                      key={event.id}
-                      size="1"
-                      mt="2"
-                      onClick={() => changeSelectedEvent(event)}
-                      $isCompleted={!!allDone}
-                    >
-                      <Flex justify="between" align="center">
-                        <Text size="2" weight="medium" as="div">
-                          {event.name}
-                        </Text>
-
-                        {getCompletionBadge(event)}
-                      </Flex>
-                      <Flex direction={'row'} gap={'1'}>
-                        <Badge variant="soft">{event.date}</Badge>
-                      </Flex>
-                    </Styled.EventCard>
-                  );
-                }
+                (event: CalendarEventWithTasks) => renderEventCard(event)
               )}
             </Styled.ScrollableContent>
           ) : (

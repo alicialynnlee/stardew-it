@@ -53,6 +53,8 @@ export default function Calendar({
   selectedEvent,
   changeSelectedEvent,
   calendarEvents,
+  viewingDay,
+  changeViewingDay,
 }: {
   viewingSeasonIndex: number;
   selectedDay: Day | null;
@@ -62,6 +64,8 @@ export default function Calendar({
   selectedEvent: CalendarEventWithTasks | null;
   changeSelectedEvent: (event: CalendarEventWithTasks | null) => void;
   calendarEvents?: CalendarEventData;
+  viewingDay: Day;
+  changeViewingDay: (newDay: Day) => void;
 }) {
   const [seasonSectionExpanded, setSeasonSectionExpanded] = useState(true);
   const [yearRoundSectionExpanded, setYearRoundSectionExpanded] =
@@ -221,10 +225,15 @@ export default function Calendar({
             <Styled.DayBox key={day}>
               <Styled.DayIndex
                 onClick={() =>
-                  changeSelectedDay(`${SEASONS[viewingSeasonIndex]} ${day}`)
+                  changeViewingDay(
+                    `${SEASONS[viewingSeasonIndex]} ${day}` as Day
+                  )
                 }
                 $isSelected={
                   `${SEASONS[viewingSeasonIndex]} ${day}` === selectedDay
+                }
+                $isViewing={
+                  `${SEASONS[viewingSeasonIndex]} ${day}` === viewingDay
                 }
               >
                 {day}

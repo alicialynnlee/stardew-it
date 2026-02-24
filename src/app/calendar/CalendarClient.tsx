@@ -28,6 +28,9 @@ export default function CalendarClient({
   const [selectedDay, setSelectedDay] = useState<Day | null>(
     (initialDate as Day) ?? 'Spring 1'
   );
+  const [viewingDay, setViewingDay] = useState<Day>(
+    (initialDate as Day) ?? 'Spring 1'
+  );
   const setSeasonalSelectedDay = useSetSelectedDay();
   const { farmTaskCompletion, updateTask } = useTasks(selectedFarmId);
   const [selectedEvent, setSelectedEvent] =
@@ -89,9 +92,12 @@ export default function CalendarClient({
           selectedEvent={selectedEvent}
           changeSelectedEvent={(event) => setSelectedEvent(event)}
           calendarEvents={calendarEvents}
+          viewingDay={viewingDay}
+          changeViewingDay={(newDay) => setViewingDay(newDay)}
         />
         <CalendarPanel
           viewingSeasonIndex={viewingSeasonIndex}
+          viewingDay={viewingDay}
           selectedDay={selectedDay}
           changeSelectedEvent={(event) => setSelectedEvent(event)}
           farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
