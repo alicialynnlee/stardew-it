@@ -27,25 +27,21 @@ export default function CalendarPanel({
 }) {
   const [isOpen, setIsOpen] = useState(true);
 
-  // Calculate upcoming calendar events based on selected season and day
-  const upcomingCalendarEvents = useMemo(() => {
+  // Calculate the season's calendar events
+  const viewingSeasonCalendarEvents = useMemo(() => {
     if (!selectedDay || !calendarEvents || calendarEvents.size === 0) {
       return [];
     }
 
     const selectedDayNumber = parseInt(selectedDay.split(' ')[1]);
 
-    // Flatten all calendar events and filter for upcoming ones
+    // Flatten all calendar events and filter the ones of the season
     const filteredEvents: CalendarEventWithTasks[] = [];
-    const filteredSeasons = SEASONS.slice(viewingSeasonIndex);
-    calendarEvents.forEach((seasonEvents, seasonName) => {
-      if (filteredSeasons.includes(seasonName)) {
-        const filteredDays = seasonEvents.slice(selectedDayNumber);
-        filteredDays.forEach((dayEvents) => {
-          if (dayEvents) {
-            filteredEvents.push(...dayEvents);
-          }
-        });
+    const seasonsEvents: Array<Array<CalendarEventWithTasks> | null> =
+      calendarEvents.get(SEASONS[viewingSeasonIndex]) ?? [];
+    seasonsEvents.forEach((dayEvents) => {
+      if (dayEvents) {
+        filteredEvents.push(...dayEvents);
       }
     });
 
@@ -87,39 +83,46 @@ export default function CalendarPanel({
         <ChevronRightIcon />
       </IconButton>
       <Styled.PanelContent $isOpen={isOpen}>
+        <Styled.PanelCard>
+          <Text size="2" weight="bold" as="div">
+            Today's Events
+          </Text>
+        </Styled.PanelCard>
         <Styled.ScrollablePanelCard>
           <Text size="2" weight="bold" as="div">
-            Upcoming Events
+            {SEASONS[viewingSeasonIndex]} Events
           </Text>
-          {upcomingCalendarEvents.length > 0 ? (
+          {viewingSeasonCalendarEvents.length > 0 ? (
             <Styled.ScrollableContent>
-              {upcomingCalendarEvents.map((event: CalendarEventWithTasks) => {
-                const allDone =
-                  farmTaskCompletion &&
-                  event.tasks.length > 0 &&
-                  event.tasks.every((t) => farmTaskCompletion.get(t.id));
+              {viewingSeasonCalendarEvents.map(
+                (event: CalendarEventWithTasks) => {
+                  const allDone =
+                    farmTaskCompletion &&
+                    event.tasks.length > 0 &&
+                    event.tasks.every((t) => farmTaskCompletion.get(t.id));
 
-                return (
-                  <Styled.EventCard
-                    key={event.id}
-                    size="1"
-                    mt="2"
-                    onClick={() => changeSelectedEvent(event)}
-                    $isCompleted={!!allDone}
-                  >
-                    <Flex justify="between" align="center">
-                      <Text size="2" weight="medium" as="div">
-                        {event.name}
-                      </Text>
+                  return (
+                    <Styled.EventCard
+                      key={event.id}
+                      size="1"
+                      mt="2"
+                      onClick={() => changeSelectedEvent(event)}
+                      $isCompleted={!!allDone}
+                    >
+                      <Flex justify="between" align="center">
+                        <Text size="2" weight="medium" as="div">
+                          {event.name}
+                        </Text>
 
-                      {getCompletionBadge(event)}
-                    </Flex>
-                    <Flex direction={'row'} gap={'1'}>
-                      <Badge variant="soft">{event.date}</Badge>
-                    </Flex>
-                  </Styled.EventCard>
-                );
-              })}
+                        {getCompletionBadge(event)}
+                      </Flex>
+                      <Flex direction={'row'} gap={'1'}>
+                        <Badge variant="soft">{event.date}</Badge>
+                      </Flex>
+                    </Styled.EventCard>
+                  );
+                }
+              )}
             </Styled.ScrollableContent>
           ) : (
             <Text size="2" color="gray" mt="2">

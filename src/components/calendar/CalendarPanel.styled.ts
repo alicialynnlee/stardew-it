@@ -28,6 +28,10 @@ export const PanelContent = styled.div<{ $isOpen: boolean }>`
   visibility: ${({ $isOpen }) => ($isOpen ? 'visible' : 'hidden')};
 `;
 
+export const PanelCard = styled(Card)`
+  margin-top: 1rem;
+`;
+
 export const ScrollablePanelCard = styled(Card)`
   margin-top: 1rem;
   display: flex;

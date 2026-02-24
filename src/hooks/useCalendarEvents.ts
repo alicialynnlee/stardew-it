@@ -26,10 +26,10 @@ export function useCalendarEvents() {
       if (result.success && result.data) {
         const calendarEventsData = result.data as CalendarEventWithTasks[];
         const currCalendarEvents = new Map([
-          ['Spring', Array(28).fill(null)],
-          ['Summer', Array(28).fill(null)],
-          ['Fall', Array(28).fill(null)],
-          ['Winter', Array(28).fill(null)],
+          ['Spring', Array(29).fill(null)],
+          ['Summer', Array(29).fill(null)],
+          ['Fall', Array(29).fill(null)],
+          ['Winter', Array(29).fill(null)],
         ]);
         calendarEventsData.forEach((event: CalendarEventWithTasks) => {
           const date = event.date.split(' ');

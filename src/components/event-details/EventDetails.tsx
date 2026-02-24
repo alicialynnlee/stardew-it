@@ -53,7 +53,8 @@ export default function EventDetails({
             {event.name}
           </Text>
           {event.description && (
-            <Text size="2" color="gray" as="p">
+            <Text size="2" color="gray">
+              <br />
               {event.description}
             </Text>
           )}
@@ -81,7 +82,13 @@ export default function EventDetails({
                       onChange={(e) => updateTask(task.id, e.target.checked)}
                     />
                     <Styled.TaskName $isCompleted={isCompleted}>
-                      <Text size="2">{task.name}</Text>
+                      <Text size="2" weight={'bold'}>
+                        {task.name}
+                        {task.seasonNote && ': '}
+                      </Text>
+                      {task.seasonNote && (
+                        <Text size="2">{task.seasonNote}</Text>
+                      )}
                     </Styled.TaskName>
                   </Styled.TaskRow>
                 );
