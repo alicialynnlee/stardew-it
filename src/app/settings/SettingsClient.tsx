@@ -10,6 +10,8 @@ import {
   updateUserProfile,
   changePassword,
 } from '@/actions/userActions';
+import { useFarms } from '@/hooks/useFarms';
+import FarmList from '@/components/farm-selector/FarmList';
 import * as Styled from './settings.styled';
 
 export default function SettingsClient() {
@@ -35,6 +37,10 @@ export default function SettingsClient() {
     type: 'success' | 'error';
     text: string;
   } | null>(null);
+
+  // Farm state — reuse the same hook as FarmSelector
+  const { farms, addNewFarm, deleteFarm, selectedFarmId, setSelectedFarm } =
+    useFarms();
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -73,7 +79,6 @@ export default function SettingsClient() {
       const result = await updateUserProfile({ name, email });
       if (result.success) {
         setProfileMessage({ type: 'success', text: 'Profile updated!' });
-        // Refresh session so navbar shows updated name
         await updateSession();
       } else {
         setProfileMessage({
@@ -97,7 +102,10 @@ export default function SettingsClient() {
     setPasswordMessage(null);
 
     if (newPassword !== confirmNewPassword) {
-      setPasswordMessage({ type: 'error', text: 'New passwords do not match.' });
+      setPasswordMessage({
+        type: 'error',
+        text: 'New passwords do not match.',
+      });
       setPasswordLoading(false);
       return;
     }
@@ -131,6 +139,33 @@ export default function SettingsClient() {
     }
   };
 
+  // Farm handlers
+  const handleSelectFarm = (farmId: string) => {
+    if (!farmId || farmId === '') {
+      setSelectedFarm('');
+    } else {
+      setSelectedFarm(farmId);
+    }
+  };
+
+  const handleAddFarm = async (farmName: string) => {
+    const result = await addNewFarm(farmName);
+    if (!result.success) {
+      console.error(result.error);
+    } else {
+      setSelectedFarm(result.farm?.id ?? '');
+    }
+  };
+
+  const handleDeleteFarm = async (farmId: string) => {
+    const result = await deleteFarm(farmId);
+    if (result.success && selectedFarmId === farmId) {
+      setSelectedFarm('');
+    } else if (result.error) {
+      console.error(result.error);
+    }
+  };
+
   if (status === 'loading') {
     return (
       <Styled.SettingsContainer>
@@ -145,7 +180,9 @@ export default function SettingsClient() {
 
   if (!session) return null;
 
-  const initials = (name || session.user?.name || 'U').slice(0, 2).toUpperCase();
+  const initials = (name || session.user?.name || 'U')
+    .slice(0, 2)
+    .toUpperCase();
 
   return (
     <Styled.SettingsContainer>
@@ -225,6 +262,35 @@ export default function SettingsClient() {
             </Styled.Message>
           )}
         </Form.Root>
+      </Styled.SettingsCard>
+
+      {/* Farms Section */}
+      <Styled.SettingsCard>
+        <Heading size="4" mb="3">
+          Farms
+        </Heading>
+        <Text size="2" color="gray" mb="3" as="p">
+          Manage your farms. The selected farm is used across the tracker and
+          calendar.
+        </Text>
+
+        <Separator size="4" mb="3" />
+
+        <Styled.FarmListContainer>
+          {farms.length === 0 ? (
+            <Text size="2" color="gray" as="p" mb="2">
+              No farms yet. Add one below to get started.
+            </Text>
+          ) : null}
+          <FarmList
+            farms={farms}
+            selectedFarmId={selectedFarmId}
+            onSelectFarm={handleSelectFarm}
+            onDeleteFarm={handleDeleteFarm}
+            onAddFarm={handleAddFarm}
+            showOptions
+          />
+        </Styled.FarmListContainer>
       </Styled.SettingsCard>
 
       {/* Password Section */}

@@ -66,12 +66,15 @@ export const ReadOnlyField = styled.div`
   gap: 0.25rem;
 `;
 
+export const FarmListContainer = styled.div`
+  margin-top: 0.5rem;
+`;
+
 export const Message = styled.div<{ $type: 'error' | 'success' }>`
   color: ${(props) => (props.$type === 'error' ? '#dc2626' : '#16a34a')};
   margin-top: 1rem;
   text-align: center;
   padding: 0.75rem;
   border-radius: 4px;
-  background: ${(props) =>
-    props.$type === 'error' ? '#fee2e2' : '#dcfce7'};
+  background: ${(props) => (props.$type === 'error' ? '#fee2e2' : '#dcfce7')};
 `;

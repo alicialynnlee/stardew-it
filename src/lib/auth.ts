@@ -77,8 +77,6 @@ const authOptions: NextAuthOptions = {
       return session;
     },
     async jwt({ token, user, trigger }) {
-      // Add custom fields to the JWT token
-      // This is called first, then session callback
       if (user) {
         token.id = user.id;
         token.name = user.name ?? undefined;

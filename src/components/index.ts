@@ -13,3 +13,4 @@ export { default as Jumino } from './jumino/Jumino';
 export { default as SeasonalCalendarWrapper } from './calendar/SeasonalCalendarWrapper';
 export { default as OffSeasonTaskBadge } from './tasks/OffSeasonTaskBadge';
 export { default as UserMenu } from './user-menu/UserMenu';
+export { default as FarmList } from './farm-selector/FarmList';
