@@ -104,7 +104,6 @@ export const SEASONAL_TASK_TYPE_COLORS = {
     animals: '#F4B6D9', // Spring blossoms
     cooking: '#FFD89B', // Spring sunshine
     socializing: '#FF9DB5', // Spring cherry blossoms
-    combat: '#C97777', // Muted spring red
     other: '#D9D9D9', // Spring gray
   },
   summer: {
@@ -115,7 +114,6 @@ export const SEASONAL_TASK_TYPE_COLORS = {
     animals: '#FF69B4', // Hot pink
     cooking: '#FFA500', // Bright orange
     socializing: '#FF6B9D', // Vibrant coral
-    combat: '#DC143C', // Crimson
     other: '#FFB6C1', // Light pink
   },
   fall: {
@@ -126,7 +124,6 @@ export const SEASONAL_TASK_TYPE_COLORS = {
     animals: '#FF8C69', // Salmon
     cooking: '#FF8C00', // Dark orange
     socializing: '#FF7F50', // Coral
-    combat: '#8B3A3A', // Darker red
     other: '#BDB76B', // Khaki
   },
   winter: {
@@ -137,7 +134,6 @@ export const SEASONAL_TASK_TYPE_COLORS = {
     animals: '#E0FFFF', // Cyan
     cooking: '#F0F8FF', // Alice blue
     socializing: '#DDA0DD', // Plum
-    combat: '#696969', // Dim gray
     other: '#FFFFFF', // Frost white
   },
 } as const;

@@ -66,7 +66,7 @@ const ColorDot = styled.div<{ $color: string }>`
   width: 48px;
   height: 48px;
   border-radius: 8px;
-  background-color: ${props => props.$color};
+  background-color: ${(props) => props.$color};
   flex-shrink: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border: 2px solid var(--season-border);
@@ -95,7 +95,7 @@ const TaskCode = styled.span`
   word-break: break-all;
 `;
 
-type TaskType = keyof typeof SEASONAL_TASK_TYPE_COLORS['spring'];
+type TaskType = keyof (typeof SEASONAL_TASK_TYPE_COLORS)['spring'];
 
 const taskTypes: TaskType[] = [
   'foraging',
@@ -105,7 +105,6 @@ const taskTypes: TaskType[] = [
   'animals',
   'cooking',
   'socializing',
-  'combat',
   'other',
 ];
 
@@ -118,13 +117,14 @@ const getTaskEmoji = (taskType: TaskType): string => {
     animals: '🐓',
     cooking: '🍳',
     socializing: '💬',
-    combat: '⚔️',
     other: '📌',
   };
   return emojiMap[taskType];
 };
 
-const TaskTypeColorsShowcase: React.FC<TaskTypeColorsShowcaseProps> = ({ season }) => {
+const TaskTypeColorsShowcase: React.FC<TaskTypeColorsShowcaseProps> = ({
+  season,
+}) => {
   const colors = SEASONAL_TASK_TYPE_COLORS[season];
   const [copiedColor, setCopiedColor] = useState<TaskType | null>(null);
 
@@ -146,7 +146,7 @@ const TaskTypeColorsShowcase: React.FC<TaskTypeColorsShowcaseProps> = ({ season 
       </SectionHeader>
 
       <TaskTypesGrid>
-        {taskTypes.map(taskType => {
+        {taskTypes.map((taskType) => {
           const color = colors[taskType];
           const isCopied = copiedColor === taskType;
 
