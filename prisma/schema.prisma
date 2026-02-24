@@ -72,6 +72,7 @@ model VerificationToken {
 model Farm {
   id        String      @id @default(cuid())
   name      String
+  date      String?
   userId    String
   user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   tasks     FarmTask[]
@@ -83,9 +84,7 @@ model Task {
   id              String       @id @default(cuid())
   name            String
   bundleId        String
-  type            String       @default("other")  // foraging, farming, fishing, mining, animals, cooking, socializing, combat, other
-  seasons         String       @default("year-round")
-  seasonNote      String?
+  description     String?
   bundle          Bundle      @relation(fields: [bundleId], references: [id])
   farmTasks       FarmTask[]  // Required by Prisma for the relation to work
   calendarEvents  CalendarEvent[]   @relation("TaskCalendarEvents")

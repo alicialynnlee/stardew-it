@@ -123,46 +123,8 @@ const TASK_TYPE_KEYWORDS: Record<string, string[]> = {
 };
 
 async function main() {
-  console.log('Starting task type seeding...');
-
-  const tasks = await prisma.task.findMany();
-
-  if (tasks.length === 0) {
-    console.log('No tasks found in database.');
-    process.exit(0);
-  }
-
-  let updated = 0;
-
-  for (const task of tasks) {
-    // Skip if already has a type other than 'other'
-    if (task.type && task.type !== 'other') {
-      continue;
-    }
-
-    const taskNameLower = task.name.toLowerCase();
-    let taskType = 'other';
-
-    // Find matching type based on keywords
-    for (const [type, keywords] of Object.entries(TASK_TYPE_KEYWORDS)) {
-      if (keywords.some((keyword) => taskNameLower.includes(keyword))) {
-        taskType = type;
-        break;
-      }
-    }
-
-    if (taskType !== task.type) {
-      await prisma.task.update({
-        where: { id: task.id },
-        data: { type: taskType },
-      });
-
-      console.log(`Updated task "${task.name}" → ${taskType}`);
-      updated++;
-    }
-  }
-
-  console.log(`\nDone! Updated ${updated} tasks with type classifications.`);
+  console.log('The task type field has been removed. This seed is no longer applicable.');
+  void TASK_TYPE_KEYWORDS; // suppress unused variable warning
 }
 
 main()

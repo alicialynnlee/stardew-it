@@ -112,6 +112,26 @@ export async function getSelectedFarm(): Promise<{
   return { success: true, farmId: userRecord.selectedFarmId };
 }
 
+export async function setFarmDateAction(
+  farmId: string,
+  date: string
+): Promise<{ success: boolean; error?: string }> {
+  const user = await getCurrentUser();
+  if (!user?.id) {
+    return { success: false, error: 'Unauthorized: User not found.' };
+  }
+  try {
+    await prisma.farm.update({
+      where: { id: farmId, userId: user.id },
+      data: { date },
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating farm date:', error);
+    return { success: false, error: 'Failed to update farm date.' };
+  }
+}
+
 export async function setSelectedFarmAction(farmId: string): Promise<{
   success: boolean;
   error?: string;

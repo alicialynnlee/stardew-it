@@ -29,7 +29,7 @@ export default async function CalendarPage({ searchParams }: Props) {
     if (!farm) {
       redirect('/calendar');
     }
-    return <CalendarClient userId={user.id} selectedFarmId={paramFarmId} />;
+    return <CalendarClient userId={user.id} selectedFarmId={paramFarmId} initialDate={farm.date} />;
   }
 
   return <CalendarClient userId={user.id} selectedFarmId={null} />;

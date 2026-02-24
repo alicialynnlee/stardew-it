@@ -6,125 +6,125 @@ const prisma = new PrismaClient();
  * Seasonal availability mappings for Stardew Valley tasks
  * Each task is classified by which seasons it's available
  */
-const SEASONAL_AVAILABILITY: Record<string, { seasons: string; seasonNote?: string }> = {
+const SEASONAL_AVAILABILITY: Record<string, { description?: string }> = {
   // SPRING FISHING
-  pufferfish: { seasons: 'summer,winter', seasonNote: 'Ocean, 12pm-4pm summer; any time winter' },
-  walleye: { seasons: 'fall,winter', seasonNote: 'Freshwater, rainy days' },
-  sunfish: { seasons: 'spring,summer', seasonNote: 'Ocean, 6am-11am' },
-  catfish: { seasons: 'spring,summer,fall', seasonNote: 'Freshwater, rainy days' },
-  shad: { seasons: 'spring,summer,fall', seasonNote: 'Ocean, rainy days' },
-  sandfish: { seasons: 'summer,fall', seasonNote: 'Desert, any time' },
-  anchovy: { seasons: 'spring,fall', seasonNote: 'Ocean' },
-  mackerel: { seasons: 'fall,winter', seasonNote: 'Ocean' },
-  herring: { seasons: 'winter', seasonNote: 'Ocean' },
-  halibut: { seasons: 'spring,winter', seasonNote: 'Ocean' },
-  sardine: { seasons: 'spring,summer,fall,winter', seasonNote: 'Ocean, 6am-7pm' },
-  salmon: { seasons: 'fall', seasonNote: 'Freshwater' },
-  largemouth_bass: { seasons: 'spring,summer,fall', seasonNote: 'Freshwater' },
-  smallmouth_bass: { seasons: 'spring,fall', seasonNote: 'Freshwater' },
-  rainbow_trout: { seasons: 'summer', seasonNote: 'Freshwater' },
-  lingcod: { seasons: 'winter', seasonNote: 'Freshwater' },
-  squid: { seasons: 'summer,winter', seasonNote: 'Ocean, 6pm-2am' },
-  tiger_trout: { seasons: 'fall,winter', seasonNote: 'Freshwater' },
-  red_snapper: { seasons: 'summer,fall', seasonNote: 'Ocean, 12pm-4pm' },
-  carp: { seasons: 'spring,summer,fall,winter', seasonNote: 'Freshwater' },
-  eel: { seasons: 'spring,fall', seasonNote: 'Freshwater, rainy days' },
-  tuna: { seasons: 'summer,winter', seasonNote: 'Ocean' },
-  lobster: { seasons: 'summer,fall', seasonNote: 'Ocean' },
-  crayfish: { seasons: 'spring,fall', seasonNote: 'Freshwater, rainy days' },
-  crab: { seasons: 'summer,fall', seasonNote: 'Ocean' },
-  oyster: { seasons: 'winter', seasonNote: 'Ocean' },
-  clam: { seasons: 'spring,fall', seasonNote: 'Ocean' },
-  
+  pufferfish: { description: 'Ocean, 12pm-4pm summer; any time winter' },
+  walleye: { description: 'Freshwater, rainy days' },
+  sunfish: { description: 'Ocean, 6am-11am' },
+  catfish: { description: 'Freshwater, rainy days' },
+  shad: { description: 'Ocean, rainy days' },
+  sandfish: { description: 'Desert, any time' },
+  anchovy: { description: 'Ocean' },
+  mackerel: { description: 'Ocean' },
+  herring: { description: 'Ocean' },
+  halibut: { description: 'Ocean' },
+  sardine: { description: 'Ocean, 6am-7pm' },
+  salmon: { description: 'Freshwater' },
+  largemouth_bass: { description: 'Freshwater' },
+  smallmouth_bass: { description: 'Freshwater' },
+  rainbow_trout: { description: 'Freshwater' },
+  lingcod: { description: 'Freshwater' },
+  squid: { description: 'Ocean, 6pm-2am' },
+  tiger_trout: { description: 'Freshwater' },
+  red_snapper: { description: 'Ocean, 12pm-4pm' },
+  carp: { description: 'Freshwater' },
+  eel: { description: 'Freshwater, rainy days' },
+  tuna: { description: 'Ocean' },
+  lobster: { description: 'Ocean' },
+  crayfish: { description: 'Freshwater, rainy days' },
+  crab: { description: 'Ocean' },
+  oyster: { description: 'Ocean' },
+  clam: { description: 'Ocean' },
+
   // SPRING FORAGING
-  spring_foraging: { seasons: 'spring', seasonNote: 'Spring mushrooms, parsnips, spring seeds' },
-  daffodil: { seasons: 'spring', seasonNote: 'Spring flower' },
-  dandelion: { seasons: 'spring', seasonNote: 'Spring flower' },
-  leek: { seasons: 'spring', seasonNote: 'Spring forage' },
-  parsnip: { seasons: 'spring', seasonNote: 'Spring seed crop' },
-  
+  spring_foraging: { description: 'Spring mushrooms, parsnips, spring seeds' },
+  daffodil: { description: 'Spring flower' },
+  dandelion: { description: 'Spring flower' },
+  leek: { description: 'Spring forage' },
+  parsnip: { description: 'Spring seed crop' },
+
   // SUMMER FORAGING
-  summer_foraging: { seasons: 'summer', seasonNote: 'Summer berries, flowers, seeds' },
-  summer_spangle: { seasons: 'summer', seasonNote: 'Summer flower' },
-  pink_cake: { seasons: 'summer', seasonNote: 'Item requires multiple summer ingredients' },
-  
+  summer_foraging: { description: 'Summer berries, flowers, seeds' },
+  summer_spangle: { description: 'Summer flower' },
+  pink_cake: { description: 'Item requires multiple summer ingredients' },
+
   // FALL FORAGING
-  fall_foraging: { seasons: 'fall', seasonNote: 'Fall mushrooms, seeds, hazelnuts' },
-  fall_seeds: { seasons: 'fall', seasonNote: 'Fall seed crops' },
-  hazelnut: { seasons: 'fall', seasonNote: 'Fall forage' },
-  common_mushroom: { seasons: 'fall', seasonNote: 'Fall mushroom' },
-  chanterelle: { seasons: 'fall', seasonNote: 'Fall mushroom' },
-  purple_mushroom: { seasons: 'fall', seasonNote: 'Fall mushroom' },
-  
+  fall_foraging: { description: 'Fall mushrooms, seeds, hazelnuts' },
+  fall_seeds: { description: 'Fall seed crops' },
+  hazelnut: { description: 'Fall forage' },
+  common_mushroom: { description: 'Fall mushroom' },
+  chanterelle: { description: 'Fall mushroom' },
+  purple_mushroom: { description: 'Fall mushroom' },
+
   // WINTER FORAGING
-  winter_foraging: { seasons: 'winter', seasonNote: 'Winter seeds, snow yam, winter roots' },
-  winter_seed: { seasons: 'winter', seasonNote: 'Winter seed crops' },
-  snow_yam: { seasons: 'winter', seasonNote: 'Winter forage' },
-  winter_root: { seasons: 'winter', seasonNote: 'Winter forage' },
-  crystal_fruit: { seasons: 'winter', seasonNote: 'Winter forage' },
-  
+  winter_foraging: { description: 'Winter seeds, snow yam, winter roots' },
+  winter_seed: { description: 'Winter seed crops' },
+  snow_yam: { description: 'Winter forage' },
+  winter_root: { description: 'Winter forage' },
+  crystal_fruit: { description: 'Winter forage' },
+
   // FARMING - SPRING
-  spring_seed: { seasons: 'spring', seasonNote: 'Spring seed crops' },
-  cauliflower: { seasons: 'spring', seasonNote: 'Spring crop' },
-  potato: { seasons: 'spring', seasonNote: 'Spring crop' },
-  
+  spring_seed: { description: 'Spring seed crops' },
+  cauliflower: { description: 'Spring crop' },
+  potato: { description: 'Spring crop' },
+
   // FARMING - SUMMER
-  summer_seed: { seasons: 'summer', seasonNote: 'Summer seed crops' },
-  melon: { seasons: 'summer', seasonNote: 'Summer crop' },
-  wheat: { seasons: 'summer,fall', seasonNote: 'Summer-Fall crop' },
-  
+  summer_seed: { description: 'Summer seed crops' },
+  melon: { description: 'Summer crop' },
+  wheat: { description: 'Summer-Fall crop' },
+
   // FARMING - FALL
-  fall_seed: { seasons: 'fall', seasonNote: 'Fall seed crops' },
-  pumpkin: { seasons: 'fall', seasonNote: 'Fall crop' },
-  cranberry: { seasons: 'fall', seasonNote: 'Fall crop' },
-  garlic: { seasons: 'fall', seasonNote: 'Fall crop' },
-  yam: { seasons: 'fall', seasonNote: 'Fall crop' },
-  
+  fall_seed: { description: 'Fall seed crops' },
+  pumpkin: { description: 'Fall crop' },
+  cranberry: { description: 'Fall crop' },
+  garlic: { description: 'Fall crop' },
+  yam: { description: 'Fall crop' },
+
   // FARMING - YEAR-ROUND (via greenhouse)
-  ancient_fruit: { seasons: 'year-round', seasonNote: 'Greenhouse crop' },
-  starfruit: { seasons: 'summer', seasonNote: 'Summer crop or greenhouse' },
-  sweet_potato: { seasons: 'fall', seasonNote: 'Fall crop or greenhouse' },
-  
+  ancient_fruit: { description: 'Greenhouse crop' },
+  starfruit: { description: 'Summer crop or greenhouse' },
+  sweet_potato: { description: 'Fall crop or greenhouse' },
+
   // MINING - YEAR-ROUND (accessible in mines all seasons)
-  copper_ore: { seasons: 'year-round', seasonNote: 'Mine level 1-40' },
-  iron_ore: { seasons: 'year-round', seasonNote: 'Mine level 40+' },
-  gold_ore: { seasons: 'year-round', seasonNote: 'Mine level 80+' },
-  iridium_ore: { seasons: 'year-round', seasonNote: 'Skull Cavern' },
-  quartz: { seasons: 'year-round', seasonNote: 'Mine' },
-  stone: { seasons: 'year-round', seasonNote: 'Mine' },
-  coal: { seasons: 'year-round', seasonNote: 'Mine' },
-  diamond: { seasons: 'year-round', seasonNote: 'Mine level 80+' },
-  ruby: { seasons: 'year-round', seasonNote: 'Mine level 40-80' },
-  emerald: { seasons: 'year-round', seasonNote: 'Mine level 40-80' },
-  topaz: { seasons: 'year-round', seasonNote: 'Mine level 40-80' },
-  jade: { seasons: 'year-round', seasonNote: 'Mine level 40-80' },
-  amethyst: { seasons: 'year-round', seasonNote: 'Mine level 1-40' },
-  
+  copper_ore: { description: 'Mine level 1-40' },
+  iron_ore: { description: 'Mine level 40+' },
+  gold_ore: { description: 'Mine level 80+' },
+  iridium_ore: { description: 'Skull Cavern' },
+  quartz: { description: 'Mine' },
+  stone: { description: 'Mine' },
+  coal: { description: 'Mine' },
+  diamond: { description: 'Mine level 80+' },
+  ruby: { description: 'Mine level 40-80' },
+  emerald: { description: 'Mine level 40-80' },
+  topaz: { description: 'Mine level 40-80' },
+  jade: { description: 'Mine level 40-80' },
+  amethyst: { description: 'Mine level 1-40' },
+
   // ANIMALS - YEAR-ROUND
-  egg: { seasons: 'year-round', seasonNote: 'From chickens' },
-  brown_egg: { seasons: 'year-round', seasonNote: 'From chickens' },
-  white_egg: { seasons: 'year-round', seasonNote: 'From chickens' },
-  milk: { seasons: 'year-round', seasonNote: 'From cows' },
-  wool: { seasons: 'year-round', seasonNote: 'From sheep' },
-  
+  egg: { description: 'From chickens' },
+  brown_egg: { description: 'From chickens' },
+  white_egg: { description: 'From chickens' },
+  milk: { description: 'From cows' },
+  wool: { description: 'From sheep' },
+
   // COOKING - YEAR-ROUND
-  cooking: { seasons: 'year-round', seasonNote: 'Various recipes year-round' },
-  recipe: { seasons: 'year-round', seasonNote: 'Learn recipes year-round' },
-  
+  cooking: { description: 'Various recipes year-round' },
+  recipe: { description: 'Learn recipes year-round' },
+
   // SOCIALIZING - YEAR-ROUND
-  socializing: { seasons: 'year-round', seasonNote: 'All villagers available' },
-  gift: { seasons: 'year-round', seasonNote: 'Gift giving possible all year' },
-  
+  socializing: { description: 'All villagers available' },
+  gift: { description: 'Gift giving possible all year' },
+
   // COMBAT - YEAR-ROUND
-  combat: { seasons: 'year-round', seasonNote: 'Mines accessible all year' },
-  dungeon: { seasons: 'year-round', seasonNote: 'Skull Cavern accessible all year' },
+  combat: { description: 'Mines accessible all year' },
+  dungeon: { description: 'Skull Cavern accessible all year' },
 };
 
 /**
- * Keyword-to-seasonal mapping for tasks
- * If a task name contains these keywords, assign these seasons
+ * Keyword-to-description mapping for tasks
+ * If a task name contains these keywords, assign these descriptions
  */
-const TASK_SEASON_PATTERNS: Record<string, { seasons: string; seasonNote?: string }> = {
+const TASK_SEASON_PATTERNS: Record<string, { description?: string }> = {
   // Fishing patterns
   pufferfish: SEASONAL_AVAILABILITY['pufferfish'],
   walleye: SEASONAL_AVAILABILITY['walleye'],
@@ -138,7 +138,7 @@ const TASK_SEASON_PATTERNS: Record<string, { seasons: string; seasonNote?: strin
   halibut: SEASONAL_AVAILABILITY['halibut'],
   sardine: SEASONAL_AVAILABILITY['sardine'],
   salmon: SEASONAL_AVAILABILITY['salmon'],
-  bass: { seasons: 'spring,summer,fall', seasonNote: 'Largemouth or Smallmouth bass' },
+  bass: { description: 'Largemouth or Smallmouth bass' },
   rainbow_trout: SEASONAL_AVAILABILITY['rainbow_trout'],
   lingcod: SEASONAL_AVAILABILITY['lingcod'],
   squid: SEASONAL_AVAILABILITY['squid'],
@@ -152,52 +152,52 @@ const TASK_SEASON_PATTERNS: Record<string, { seasons: string; seasonNote?: strin
   crab: SEASONAL_AVAILABILITY['crab'],
   oyster: SEASONAL_AVAILABILITY['oyster'],
   clam: SEASONAL_AVAILABILITY['clam'],
-  
+
   // Foraging patterns - Spring
-  'spring foraging': { seasons: 'spring', seasonNote: 'Spring foraged items' },
-  'spring mushroom': { seasons: 'spring', seasonNote: 'Spring mushroom' },
+  'spring foraging': { description: 'Spring foraged items' },
+  'spring mushroom': { description: 'Spring mushroom' },
   daffodil: SEASONAL_AVAILABILITY['daffodil'],
   dandelion: SEASONAL_AVAILABILITY['dandelion'],
   leek: SEASONAL_AVAILABILITY['leek'],
-  
+
   // Foraging patterns - Summer
-  'summer foraging': { seasons: 'summer', seasonNote: 'Summer foraged items' },
-  'summer berry': { seasons: 'summer', seasonNote: 'Summer berries' },
-  'summer flower': { seasons: 'summer', seasonNote: 'Summer flowers' },
-  
+  'summer foraging': { description: 'Summer foraged items' },
+  'summer berry': { description: 'Summer berries' },
+  'summer flower': { description: 'Summer flowers' },
+
   // Foraging patterns - Fall
-  'fall foraging': { seasons: 'fall', seasonNote: 'Fall foraged items' },
-  'fall mushroom': { seasons: 'fall', seasonNote: 'Fall mushrooms' },
+  'fall foraging': { description: 'Fall foraged items' },
+  'fall mushroom': { description: 'Fall mushrooms' },
   hazelnut: SEASONAL_AVAILABILITY['hazelnut'],
-  
+
   // Foraging patterns - Winter
-  'winter foraging': { seasons: 'winter', seasonNote: 'Winter foraged items' },
+  'winter foraging': { description: 'Winter foraged items' },
   'winter seed': SEASONAL_AVAILABILITY['winter_seed'],
   'snow yam': SEASONAL_AVAILABILITY['snow_yam'],
-  
+
   // Farming - Spring
   'spring seed': SEASONAL_AVAILABILITY['spring_seed'],
   cauliflower: SEASONAL_AVAILABILITY['cauliflower'],
   potato: SEASONAL_AVAILABILITY['potato'],
   parsnip: SEASONAL_AVAILABILITY['parsnip'],
-  
+
   // Farming - Summer
   'summer seed': SEASONAL_AVAILABILITY['summer_seed'],
   melon: SEASONAL_AVAILABILITY['melon'],
   wheat: SEASONAL_AVAILABILITY['wheat'],
-  
+
   // Farming - Fall
   'fall seed': SEASONAL_AVAILABILITY['fall_seed'],
   pumpkin: SEASONAL_AVAILABILITY['pumpkin'],
   cranberry: SEASONAL_AVAILABILITY['cranberry'],
   garlic: SEASONAL_AVAILABILITY['garlic'],
   yam: SEASONAL_AVAILABILITY['yam'],
-  
+
   // Farming - Year-round
   'ancient fruit': SEASONAL_AVAILABILITY['ancient_fruit'],
   starfruit: SEASONAL_AVAILABILITY['starfruit'],
   'sweet potato': SEASONAL_AVAILABILITY['sweet_potato'],
-  
+
   // Mining - Year-round
   'copper ore': SEASONAL_AVAILABILITY['copper_ore'],
   'iron ore': SEASONAL_AVAILABILITY['iron_ore'],
@@ -211,28 +211,28 @@ const TASK_SEASON_PATTERNS: Record<string, { seasons: string; seasonNote?: strin
   topaz: SEASONAL_AVAILABILITY['topaz'],
   jade: SEASONAL_AVAILABILITY['jade'],
   amethyst: SEASONAL_AVAILABILITY['amethyst'],
-  
+
   // Animals - Year-round
   egg: SEASONAL_AVAILABILITY['egg'],
   milk: SEASONAL_AVAILABILITY['milk'],
   wool: SEASONAL_AVAILABILITY['wool'],
-  
+
   // Cooking - Year-round
-  cook: { seasons: 'year-round', seasonNote: 'Cooking recipes available year-round' },
-  recipe: { seasons: 'year-round', seasonNote: 'Learn recipes' },
-  
+  cook: { description: 'Cooking recipes available year-round' },
+  recipe: { description: 'Learn recipes' },
+
   // Socializing - Year-round
   socializing: SEASONAL_AVAILABILITY['socializing'],
   gift: SEASONAL_AVAILABILITY['gift'],
-  friendship: { seasons: 'year-round', seasonNote: 'Increase friendship year-round' },
-  
+  friendship: { description: 'Increase friendship year-round' },
+
   // Combat - Year-round
   combat: SEASONAL_AVAILABILITY['combat'],
   dungeon: SEASONAL_AVAILABILITY['dungeon'],
 };
 
 async function main() {
-  console.log('Starting seasonal task classification...');
+  console.log('Starting task description seeding...');
 
   const tasks = await prisma.task.findMany();
 
@@ -244,42 +244,34 @@ async function main() {
   let updated = 0;
 
   for (const task of tasks) {
-    // If task already has seasons other than default, skip
-    if (task.seasons && task.seasons !== 'year-round') {
+    // If task already has a description, skip
+    if (task.description) {
       continue;
     }
 
     const taskNameLower = task.name.toLowerCase();
-    let assignedSeasons = 'year-round';
-    let assignedNote: string | undefined;
+    let assignedDescription: string | undefined;
 
-    // Find matching seasons based on task name patterns
-    for (const [pattern, seasonData] of Object.entries(TASK_SEASON_PATTERNS)) {
+    // Find matching description based on task name patterns
+    for (const [pattern, data] of Object.entries(TASK_SEASON_PATTERNS)) {
       if (taskNameLower.includes(pattern.toLowerCase())) {
-        assignedSeasons = seasonData.seasons;
-        assignedNote = seasonData.seasonNote;
+        assignedDescription = data.description;
         break;
       }
     }
 
-    // Update the task with seasonal data
-    if (assignedSeasons !== task.seasons || assignedNote !== task.seasonNote) {
+    if (assignedDescription) {
       await prisma.task.update({
         where: { id: task.id },
-        data: {
-          seasons: assignedSeasons,
-          seasonNote: assignedNote,
-        },
+        data: { description: assignedDescription },
       });
 
-      console.log(
-        `Updated task "${task.name}" → seasons: ${assignedSeasons}${assignedNote ? ` (${assignedNote})` : ''}`
-      );
+      console.log(`Updated task "${task.name}" → ${assignedDescription}`);
       updated++;
     }
   }
 
-  console.log(`\nDone! Updated ${updated} tasks with seasonal data.`);
+  console.log(`\nDone! Updated ${updated} tasks with descriptions.`);
 }
 
 main()

@@ -13,16 +13,21 @@ import { useSetSelectedDay } from '@/contexts/SeasonalContext';
 import { CalendarEventWithTasks, Day } from '@/types/calendar';
 import { Box, Flex, Link, Spinner } from '@radix-ui/themes';
 import { useState, useEffect } from 'react';
+import { setFarmDateAction } from '@/actions/farmActions';
 
 export default function CalendarClient({
   userId,
   selectedFarmId,
+  initialDate,
 }: {
   userId: string | null;
   selectedFarmId: string | null;
+  initialDate?: string | null;
 }) {
   const [viewingSeasonIndex, setViewingSeasonIndex] = useState(0);
-  const [selectedDay, setSelectedDay] = useState<Day | null>('Spring 1');
+  const [selectedDay, setSelectedDay] = useState<Day | null>(
+    (initialDate as Day) ?? 'Spring 1'
+  );
   const setSeasonalSelectedDay = useSetSelectedDay();
   const { farmTaskCompletion, updateTask } = useTasks(selectedFarmId);
   const [selectedEvent, setSelectedEvent] =
@@ -35,6 +40,13 @@ export default function CalendarClient({
       setSeasonalSelectedDay(selectedDay);
     }
   }, [selectedDay, setSeasonalSelectedDay]);
+
+  // Persist selectedDay to the farm's date field
+  useEffect(() => {
+    if (selectedFarmId && selectedDay) {
+      setFarmDateAction(selectedFarmId, selectedDay);
+    }
+  }, [selectedFarmId, selectedDay]);
 
   if (isLoading) return <Spinner />;
   if (error) return <div>Error: {error}</div>;

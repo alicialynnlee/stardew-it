@@ -84,10 +84,10 @@ export default function EventDetails({
                     <Styled.TaskName $isCompleted={isCompleted}>
                       <Text size="2" weight={'bold'}>
                         {task.name}
-                        {task.seasonNote && ': '}
+                        {task.description && ': '}
                       </Text>
-                      {task.seasonNote && (
-                        <Text size="2">{task.seasonNote}</Text>
+                      {task.description && (
+                        <Text size="2">{task.description}</Text>
                       )}
                     </Styled.TaskName>
                   </Styled.TaskRow>
