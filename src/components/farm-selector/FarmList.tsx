@@ -7,7 +7,7 @@ import {
   TrashIcon,
   CheckCircledIcon,
 } from '@radix-ui/react-icons';
-import { Button, Flex, IconButton, TextField } from '@radix-ui/themes';
+import { Button, Flex, IconButton, Text, TextField } from '@radix-ui/themes';
 import type { Farm } from '@prisma/client';
 
 interface FarmListProps {
@@ -55,12 +55,16 @@ export default function FarmList({
           key={farm.id}
         >
           <Button
-            variant={selectedFarmId === farm.id ? 'soft' : 'ghost'}
+            // TODO: handle selected style
+            variant="ghost"
             color="gray"
             onClick={() => onSelectFarm(farm.id)}
             style={{ flex: '1', margin: '0', justifyContent: 'space-between' }}
           >
-            {farm.name}
+            <Flex direction={'column'} align={'start'}>
+              <Text weight="bold">{farm.name}</Text>
+              <Text>{farm.date}</Text>
+            </Flex>
           </Button>
 
           {selectedFarmId === farm.id && showOptions && (
