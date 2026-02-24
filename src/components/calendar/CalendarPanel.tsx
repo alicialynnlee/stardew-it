@@ -1,7 +1,7 @@
 'use client';
 
 import * as Styled from './CalendarPanel.styled';
-import { Flex, IconButton, Select, Text } from '@radix-ui/themes';
+import { Badge, Flex, IconButton, Select, Text } from '@radix-ui/themes';
 import { CheckIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { DAYS, SEASONS } from '@/constants/calendar';
 import {
@@ -109,15 +109,14 @@ export default function CalendarPanel({
                   >
                     <Flex justify="between" align="center">
                       <Text size="2" weight="medium" as="div">
-                        {event.date}: {event.name}
+                        {event.name}
                       </Text>
+
                       {getCompletionBadge(event)}
                     </Flex>
-                    {event.description && (
-                      <Text size="1" color="gray" as="p">
-                        {event.description}
-                      </Text>
-                    )}
+                    <Flex direction={'row'} gap={'1'}>
+                      <Badge variant="soft">{event.date}</Badge>
+                    </Flex>
                   </Styled.EventCard>
                 );
               })}
