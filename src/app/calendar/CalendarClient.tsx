@@ -80,7 +80,7 @@ export default function CalendarClient({
           />
         </Box>
       )}
-      <Flex direction="row" align="stretch" height="calc(100vh - 9rem)">
+      <Flex direction="row" align="stretch" height="calc(100vh - 9rem)" gap="4">
         <Calendar
           farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
           viewingSeasonIndex={viewingSeasonIndex}

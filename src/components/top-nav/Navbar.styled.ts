@@ -6,7 +6,6 @@ export const Navbar = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: ${whiteSmoke};
   border-bottom: 1px solid #e9ecef;
   height: 5rem;
 `;

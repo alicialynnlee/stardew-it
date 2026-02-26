@@ -1,11 +1,10 @@
 import { lighterGreen } from '@/styles/colors';
-import { Card } from '@radix-ui/themes';
+import { Card, Flex } from '@radix-ui/themes';
 import styled from 'styled-components';
 
 export const PanelWrapper = styled.div<{ $isOpen: boolean }>`
   height: 100%;
   width: ${({ $isOpen }) => ($isOpen ? '18rem' : '2rem')};
-  padding: 1rem;
   display: flex;
   flex-direction: column;
   transition: width 0.3s ease-in-out;
@@ -19,21 +18,14 @@ export const PanelWrapper = styled.div<{ $isOpen: boolean }>`
   }
 `;
 
-export const PanelContent = styled.div<{ $isOpen: boolean }>`
-  display: flex;
-  flex-direction: column;
+export const PanelContent = styled(Flex)<{ $isOpen: boolean }>`
   height: 100%;
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
   transition: opacity 0.2s ease-in-out;
   visibility: ${({ $isOpen }) => ($isOpen ? 'visible' : 'hidden')};
 `;
 
-export const PanelCard = styled(Card)`
-  margin-top: 1rem;
-`;
-
 export const ScrollablePanelCard = styled(Card)`
-  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -42,7 +34,6 @@ export const ScrollablePanelCard = styled(Card)`
 export const ScrollableContent = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding-right: 1rem; /* Space for scrollbar */
 `;
 
 export const EventCard = styled(Card)<{ $isCompleted?: boolean }>`

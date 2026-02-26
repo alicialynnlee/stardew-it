@@ -2,14 +2,13 @@
 
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { DropdownMenu, Avatar, Text } from '@radix-ui/themes';
+import { DropdownMenu, Avatar, Text, Button } from '@radix-ui/themes';
 import {
   PersonIcon,
   GearIcon,
   ExitIcon,
   CaretDownIcon,
 } from '@radix-ui/react-icons';
-import * as Styled from './UserMenu.styled';
 
 export default function UserMenu() {
   const { data: session } = useSession();
@@ -23,18 +22,13 @@ export default function UserMenu() {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <Styled.TriggerButton>
-          <Avatar
-            size="2"
-            fallback={initials}
-            radius="full"
-            variant="soft"
-          />
+        <Button variant="outline" size="3">
+          <Avatar size="1" fallback={initials} radius="full" variant="soft" />
           <Text size="2" weight="medium">
             {userName}
           </Text>
           <CaretDownIcon />
-        </Styled.TriggerButton>
+        </Button>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content align="end" sideOffset={8}>

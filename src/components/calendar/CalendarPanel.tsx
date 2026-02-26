@@ -1,7 +1,7 @@
 'use client';
 
 import * as Styled from './CalendarPanel.styled';
-import { Badge, Flex, IconButton, Select, Text } from '@radix-ui/themes';
+import { Badge, Card, Flex, IconButton, Select, Text } from '@radix-ui/themes';
 import { CheckIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { DAYS, SEASONS } from '@/constants/calendar';
 import {
@@ -12,7 +12,7 @@ import {
 } from '@/types/calendar';
 import { FarmTaskCompletion } from '@/types/tasks';
 import { useState, useMemo } from 'react';
-import { getTaskTypeColor } from '@/constants/taskTypes';
+import { SEASONAL_PALETTES, Season as SeasonStyle } from '@/styles/seasonal';
 
 export default function CalendarPanel({
   viewingSeasonIndex,
@@ -96,6 +96,10 @@ export default function CalendarPanel({
       event.tasks.length > 0 &&
       event.tasks.every((t) => farmTaskCompletion.get(t.id));
 
+    const eventSeason = (event.date.split(' ')[0].toLowerCase() ??
+      'spring') as SeasonStyle;
+    const eventSeasonalPalette = SEASONAL_PALETTES[eventSeason];
+
     return (
       <Styled.EventCard
         key={event.id}
@@ -115,10 +119,18 @@ export default function CalendarPanel({
               </Text>
             )}
             <Flex direction="row" gap="1">
-              <Badge variant="soft">{event.date}</Badge>
               <Badge
                 style={{
-                  backgroundColor: getTaskTypeColor(event.type),
+                  backgroundColor: eventSeasonalPalette.radixAccent.a3,
+                  color: eventSeasonalPalette.radixAccent.a11,
+                }}
+              >
+                {event.date}
+              </Badge>
+              <Badge
+                style={{
+                  backgroundColor: `var(--task-color-${event.type}, #D9D9D9)`,
+                  color: `color-mix(in oklab, var(--task-color-${event.type}), black 60%)`,
                 }}
               >
                 {event.type}
@@ -139,11 +151,12 @@ export default function CalendarPanel({
         className="panel-toggle"
         highContrast
         onClick={() => setIsOpen(!isOpen)}
+        style={{ marginBottom: '8px' }}
       >
         <ChevronRightIcon />
       </IconButton>
-      <Styled.PanelContent $isOpen={isOpen}>
-        <Styled.PanelCard>
+      <Styled.PanelContent $isOpen={isOpen} gap="4" direction="column">
+        <Card>
           <Text size="2" weight="bold" as="div">
             {viewingDay === selectedDay ? `Today's` : viewingDay} Events
           </Text>
@@ -158,7 +171,7 @@ export default function CalendarPanel({
               Enjoy your free day on the farm! 🌱
             </Text>
           )}
-        </Styled.PanelCard>
+        </Card>
         <Styled.ScrollablePanelCard>
           <Text size="2" weight="bold" as="div">
             {SEASONS[viewingSeasonIndex]} Events

@@ -1,23 +1,44 @@
 import styled from 'styled-components';
 import { whiteSmoke } from '@/styles/colors';
 import { Text } from '@radix-ui/themes';
+import Link from 'next/link';
 
 export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
-  min-height: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  overflow-y: auto;
   width: ${(props) => (props.$isOpen ? '17rem' : '5.3rem')};
-  background-color: ${whiteSmoke};
   border-right: 1px solid #e9ecef;
   padding: 1.5rem;
   transition: width 0.3s ease-in-out;
   z-index: 2;
+
+  .nav-item {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 8px;
+    gap: 0.5rem;
+    transition: all 0.3s;
+
+    &:not(.active):hover {
+      background-color: var(--accent-a3);
+      color: var(--accent-a12);
+    }
+    &.active {
+      background-color: var(--accent-a9);
+      color: var(--season-secondary);
+    }
+  }
 `;
 
 export const NavList = styled.ul`
   list-style: none;
-  padding: 1rem 0;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
 `;
 
 export const LinkLabel = styled(Text)<{ $isOpen: boolean }>`
@@ -28,33 +49,34 @@ export const LinkLabel = styled(Text)<{ $isOpen: boolean }>`
   transition: all 0.2s allow-discrete;
 `;
 
-export const NavItem = styled.li`
-  a {
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    border-radius: 8px;
-    gap: 0.5rem;
-    transition: all 0.3s;
+export const NavItem = styled(Link)`
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 8px;
+  gap: 0.5rem;
+  transition: all 0.3s;
 
-    &:hover {
-      background-color: var(--accent-a3);
-      color: var(--accent-a12);
-    }
+  &:not(.active):hover {
+    background-color: var(--accent-a3);
+    color: var(--accent-a12);
+  }
+  &.active {
+    background-color: var(--accent-a9);
+    color: var(--season-secondary);
   }
 `;
 
 export const CloseButton = styled.button<{ $isOpen: boolean }>`
-  background: none;
   border: none;
   padding: 0.5rem;
   border-radius: 8px;
-  transform: ${(props) =>
-    props.$isOpen
-      ? `translateX(12rem) rotate(0);`
-      : `translateX(0) rotate(45deg);`};
-  transition: all 0.3s ease-in-out;
+  width: 100%;
+  svg {
+    transform: ${(props) => (props.$isOpen ? `rotate(0);` : `rotate(180deg);`)};
+    transition: all 0.3s ease-in-out;
+  }
 
   &:hover {
     color: var(--accent-a12);

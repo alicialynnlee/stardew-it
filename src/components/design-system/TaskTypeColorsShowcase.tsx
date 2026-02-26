@@ -2,11 +2,10 @@
 
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Season, SEASONAL_TASK_TYPE_COLORS } from '@/styles/seasonal';
+import { TASK_TYPE_COLORS } from '@/styles/seasonal';
 
-interface TaskTypeColorsShowcaseProps {
-  season: Season;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface TaskTypeColorsShowcaseProps {}
 
 const SectionContainer = styled.div`
   display: flex;
@@ -95,7 +94,7 @@ const TaskCode = styled.span`
   word-break: break-all;
 `;
 
-type TaskType = keyof (typeof SEASONAL_TASK_TYPE_COLORS)['spring'];
+type TaskType = keyof typeof TASK_TYPE_COLORS;
 
 const taskTypes: TaskType[] = [
   'foraging',
@@ -122,10 +121,8 @@ const getTaskEmoji = (taskType: TaskType): string => {
   return emojiMap[taskType];
 };
 
-const TaskTypeColorsShowcase: React.FC<TaskTypeColorsShowcaseProps> = ({
-  season,
-}) => {
-  const colors = SEASONAL_TASK_TYPE_COLORS[season];
+const TaskTypeColorsShowcase: React.FC<TaskTypeColorsShowcaseProps> = () => {
+  const colors = TASK_TYPE_COLORS;
   const [copiedColor, setCopiedColor] = useState<TaskType | null>(null);
 
   const handleTaskTypeClick = (taskType: TaskType, hex: string) => {
@@ -140,7 +137,7 @@ const TaskTypeColorsShowcase: React.FC<TaskTypeColorsShowcaseProps> = ({
         <div>
           <SectionTitle>Task Type Colors</SectionTitle>
           <SectionSubtitle>
-            All 9 task types with their seasonal colors - Click to copy hex code
+            All 8 task types - Click to copy hex code
           </SectionSubtitle>
         </div>
       </SectionHeader>

@@ -59,6 +59,7 @@ export default function FarmSelector() {
         <Button
           className="farm-selector-open-button"
           variant="soft"
+          size="3"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           {farms.find((farm) => farm.id === selectedFarmId)?.name ||
