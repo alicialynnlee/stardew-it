@@ -19,7 +19,7 @@ export default function Home() {
       </Styled.HeroSection>
 
       <Styled.FeatureGrid>
-        <Link href="/tracker" passHref>
+        <Link href="/tracker">
           <Styled.FeatureCard>
             <Styled.FeatureIcon>📦</Styled.FeatureIcon>
             <Styled.FeatureTitle>Bundle Tracker</Styled.FeatureTitle>
@@ -28,7 +28,7 @@ export default function Home() {
             </Styled.FeatureDescription>
           </Styled.FeatureCard>
         </Link>
-        <Link href="/calendar" passHref>
+        <Link href="/calendar">
           <Styled.FeatureCard>
             <Styled.FeatureIcon>📅</Styled.FeatureIcon>
             <Styled.FeatureTitle>Season Calendar</Styled.FeatureTitle>
