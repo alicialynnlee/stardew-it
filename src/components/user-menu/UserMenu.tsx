@@ -3,12 +3,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { DropdownMenu, Avatar, Text, Button } from '@radix-ui/themes';
-import {
-  PersonIcon,
-  GearIcon,
-  ExitIcon,
-  CaretDownIcon,
-} from '@radix-ui/react-icons';
+import { GearIcon, ExitIcon, CaretDownIcon } from '@radix-ui/react-icons';
 
 export default function UserMenu() {
   const { data: session } = useSession();
@@ -32,9 +27,6 @@ export default function UserMenu() {
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content align="end" sideOffset={8}>
-        <DropdownMenu.Item onSelect={() => router.push('/settings')}>
-          <PersonIcon /> Profile
-        </DropdownMenu.Item>
         <DropdownMenu.Item onSelect={() => router.push('/settings')}>
           <GearIcon /> Settings
         </DropdownMenu.Item>

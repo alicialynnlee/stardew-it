@@ -39,10 +39,13 @@ const SeasonalContext = createContext<SeasonalContextType | undefined>(
  * SeasonalProvider component - wraps app with seasonal context
  * Manages selectedDay and derives season from it (defaults to Spring 1)
  */
-export const SeasonalProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [selectedDay, setSelectedDay] = useState<string | null>('Spring 1');
+export const SeasonalProvider: React.FC<{
+  children: React.ReactNode;
+  initialDate?: string | null;
+}> = ({ children, initialDate }) => {
+  const [selectedDay, setSelectedDay] = useState<string | null>(
+    initialDate ?? 'Spring 1'
+  );
   const [season, setSeason] = useState<Season>('spring');
 
   // Update season whenever selectedDay changes

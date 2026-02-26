@@ -36,7 +36,7 @@ export const FeatureGrid = styled.div`
   gap: 1.5rem;
 `;
 
-export const FeatureCard = styled.a`
+export const FeatureCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

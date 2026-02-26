@@ -7,11 +7,13 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { CaretDownIcon } from '@radix-ui/react-icons';
 import { Button, DropdownMenu } from '@radix-ui/themes';
 import FarmList from './FarmList';
+import { useSetSelectedDay } from '@/contexts/SeasonalContext';
 
 // TODO: Add error handling
 export default function FarmSelector() {
   const { farms, addNewFarm, deleteFarm, selectedFarmId, setSelectedFarm } =
     useFarms();
+  const setSeasonalDay = useSetSelectedDay();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -21,10 +23,13 @@ export default function FarmSelector() {
     (farmId: string) => {
       if (!farmId || farmId === '') {
         setSelectedFarm('');
+        setSeasonalDay('Spring 1');
         setIsDropdownOpen(false);
         router.push('/tracker');
       } else {
         setSelectedFarm(farmId);
+        const newDate = farms.find((f) => f.id === farmId)?.date ?? 'Spring 1';
+        setSeasonalDay(newDate);
         setIsDropdownOpen(false);
         const params = new URLSearchParams(searchParams.toString());
         params.set('farmId', farmId);
@@ -32,7 +37,7 @@ export default function FarmSelector() {
         router.push(`${path}?${params.toString()}`);
       }
     },
-    [pathname, router, searchParams, setSelectedFarm]
+    [farms, pathname, router, searchParams, setSelectedFarm, setSeasonalDay]
   );
 
   const handleAddNewFarm = async (farmName: string) => {

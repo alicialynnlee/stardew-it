@@ -5,6 +5,8 @@ import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import { Navbar, SideNav, AuthProvider } from '@/components';
 import SeasonalProvider from '@/contexts/SeasonalContext';
+import { getCurrentUser } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 
 export const metadata: Metadata = {
   title: 'Stardew It',
@@ -25,11 +27,31 @@ export const metadata: Metadata = {
 
 // TODO: handle dark mode
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let initialDate: string | null = null;
+  try {
+    const user = await getCurrentUser();
+    if (user?.id) {
+      const userRecord = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: { selectedFarmId: true },
+      });
+      if (userRecord?.selectedFarmId) {
+        const farm = await prisma.farm.findUnique({
+          where: { id: userRecord.selectedFarmId },
+          select: { date: true },
+        });
+        initialDate = farm?.date ?? null;
+      }
+    }
+  } catch {
+    // Non-fatal — fall back to Spring 1
+  }
+
   return (
     <html lang="en">
       <body>
@@ -41,7 +63,7 @@ export default function RootLayout({
             scaling="100%"
           >
             <GlobalStyles />
-            <SeasonalProvider>
+            <SeasonalProvider initialDate={initialDate}>
               <AuthProvider>
                 <Navbar />
                 <div
