@@ -1,5 +1,4 @@
 import { lighterGreen, dustySage } from '@/styles/colors';
-import { getTaskTypeColor } from '@/constants/taskTypes';
 import { Card } from '@radix-ui/themes';
 import styled from 'styled-components';
 
@@ -75,7 +74,8 @@ export const TaskLabel = styled.div<{
   $isPartial?: boolean;
 }>`
   margin-top: 0.3rem;
-  background-color: ${({ $taskType }) => getTaskTypeColor($taskType)};
+  background-color: ${({ $taskType }) =>
+    $taskType ? `var(--task-color-${$taskType}, #D9D9D9)` : '#D9D9D9'};
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-size: 0.75rem;

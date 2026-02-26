@@ -1,14 +1,16 @@
 'use client';
 
-import Link from 'next/link';
 import {
   CalendarIcon,
-  Cross2Icon,
+  ChevronLeftIcon,
   HomeIcon,
   MixerHorizontalIcon,
 } from '@radix-ui/react-icons';
 import * as Styled from './SideNav.styled';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { Flex } from '@radix-ui/themes';
+import Link from 'next/link';
 
 const NAV_ITEMS = [
   {
@@ -29,6 +31,7 @@ const NAV_ITEMS = [
 ];
 const SideNav: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const pathname = usePathname();
 
   const toggleSideNav = () => {
     setIsOpen(!isOpen);
@@ -36,21 +39,42 @@ const SideNav: React.FC = () => {
 
   return (
     <Styled.SideNavContainer $isOpen={isOpen}>
-      <Styled.CloseButton onClick={toggleSideNav} $isOpen={isOpen}>
-        <Cross2Icon width={18} height={18} />
-      </Styled.CloseButton>
-      <Styled.NavList>
-        {NAV_ITEMS.map((item) => (
-          <Styled.NavItem key={item.label}>
-            <Link href={item.href}>
-              <item.icon width={18} height={18} />
-              <Styled.LinkLabel size="2" $isOpen={isOpen}>
-                {item.label}
-              </Styled.LinkLabel>
-            </Link>
-          </Styled.NavItem>
-        ))}
-      </Styled.NavList>
+      <Flex
+        direction="column"
+        justify="between"
+        align="start"
+        height="100%"
+        width="100%"
+      >
+        <Styled.NavList>
+          {NAV_ITEMS.map((item) => (
+            <li key={item.label}>
+              <Link
+                href={item.href}
+                className={
+                  pathname === item.href ? 'active nav-item' : 'nav-item'
+                }
+              >
+                <item.icon width={18} height={18} />
+                <Styled.LinkLabel size="2" $isOpen={isOpen}>
+                  {item.label}
+                </Styled.LinkLabel>
+              </Link>
+            </li>
+          ))}
+        </Styled.NavList>
+        <Flex direction="column" width="100%">
+          {/* TODO: add cute peeking <Jumino /> */}
+          <Styled.CloseButton
+            onClick={toggleSideNav}
+            $isOpen={isOpen}
+            className="nav-item"
+          >
+            <ChevronLeftIcon width={18} height={18} />
+            {isOpen && 'Collapse'}
+          </Styled.CloseButton>
+        </Flex>
+      </Flex>
     </Styled.SideNavContainer>
   );
 };

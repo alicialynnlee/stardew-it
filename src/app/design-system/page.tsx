@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Season, SEASONAL_PALETTES, SEASONAL_TASK_TYPE_COLORS } from '@/styles/seasonal';
+import { Season, SEASONAL_PALETTES, TASK_TYPE_COLORS } from '@/styles/seasonal';
 import { Jumino } from '@/components/jumino/Jumino';
 
 // Styled Components
@@ -10,7 +10,9 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, sans-serif;
   background: #f9f9f9;
   min-height: 100vh;
 `;
@@ -48,8 +50,8 @@ const SeasonButton = styled.button<{ $active: boolean; $season: Season }>`
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 600;
-  
-  ${props => {
+
+  ${(props) => {
     const palette = SEASONAL_PALETTES[props.$season];
     return `
       border-color: ${palette.primary};
@@ -98,7 +100,7 @@ const ColorSwatch = styled.div<{ $color: string }>`
 const ColorBox = styled.div<{ $color: string }>`
   width: 100%;
   height: 100px;
-  background-color: ${props => props.$color};
+  background-color: ${(props) => props.$color};
   border: 1px solid #ddd;
 `;
 
@@ -134,7 +136,7 @@ const TaskColorItem = styled.div<{ $color: string }>`
 const TaskColorBox = styled.div<{ $color: string }>`
   width: 100%;
   height: 80px;
-  background-color: ${props => props.$color};
+  background-color: ${(props) => props.$color};
   border: 1px solid #ddd;
 `;
 
@@ -166,7 +168,6 @@ const JuminoSection = styled.div`
   align-items: center;
   gap: 1rem;
   padding: 2rem;
-  background: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 `;
@@ -194,10 +195,15 @@ const JuminoLabel = styled.p`
 export default function DesignSystemPage() {
   const [season, setSeason] = useState<Season>('spring');
   const palette = SEASONAL_PALETTES[season];
-  const taskColors = SEASONAL_TASK_TYPE_COLORS[season];
+  const taskColors = TASK_TYPE_COLORS;
 
   const paletteEntries = Object.entries(palette).filter(
-    ([key]) => !key.startsWith('season') && !key.startsWith('calendar')
+    ([key, val]) =>
+      !key.startsWith('season') &&
+      !key.startsWith('calendar') &&
+      key !== 'name' &&
+      key !== 'radixAccent' &&
+      typeof val === 'string'
   ) as Array<[string, string]>;
 
   const taskTypeEntries = Object.entries(taskColors) as Array<[string, string]>;
@@ -211,7 +217,7 @@ export default function DesignSystemPage() {
 
       {/* Season Toggle */}
       <SeasonToggle>
-        {(['spring', 'summer', 'fall', 'winter'] as Season[]).map(s => (
+        {(['spring', 'summer', 'fall', 'winter'] as Season[]).map((s) => (
           <SeasonButton
             key={s}
             $season={s}
@@ -241,14 +247,20 @@ export default function DesignSystemPage() {
 
       {/* Task Type Colors */}
       <Section>
-        <SectionTitle>{palette.name} Task Type Colors (9 Types)</SectionTitle>
+        <SectionTitle>Task Type Colors (8 Types)</SectionTitle>
         <TaskColorGrid>
           {taskTypeEntries.map(([taskType, color]) => (
             <TaskColorItem key={taskType} $color={color}>
               <TaskColorBox $color={color} />
               <TaskColorLabel>
                 <div>{taskType}</div>
-                <div style={{ fontSize: '0.8rem', color: '#999', marginTop: '0.25rem' }}>
+                <div
+                  style={{
+                    fontSize: '0.8rem',
+                    color: '#999',
+                    marginTop: '0.25rem',
+                  }}
+                >
                   {color}
                 </div>
               </TaskColorLabel>
@@ -262,21 +274,33 @@ export default function DesignSystemPage() {
         <SectionTitle>Typography</SectionTitle>
         <TypographyGrid>
           <TypographySample>
-            <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Heading 1</h1>
+            <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
+              Heading 1
+            </h1>
             <p style={{ color: '#6b6b6b' }}>Large primary heading</p>
           </TypographySample>
           <TypographySample>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Heading 2</h2>
+            <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>
+              Heading 2
+            </h2>
             <p style={{ color: '#6b6b6b' }}>Section heading</p>
           </TypographySample>
           <TypographySample>
-            <p style={{ fontSize: '1rem', marginBottom: '0.5rem', fontWeight: 600 }}>
+            <p
+              style={{
+                fontSize: '1rem',
+                marginBottom: '0.5rem',
+                fontWeight: 600,
+              }}
+            >
               Body Text
             </p>
             <p style={{ color: '#6b6b6b' }}>Regular body text paragraph</p>
           </TypographySample>
           <TypographySample>
-            <p style={{ fontSize: '0.875rem', marginBottom: '0.5rem' }}>Small Text</p>
+            <p style={{ fontSize: '0.875rem', marginBottom: '0.5rem' }}>
+              Small Text
+            </p>
             <p style={{ color: '#6b6b6b' }}>Secondary or muted information</p>
           </TypographySample>
         </TypographyGrid>

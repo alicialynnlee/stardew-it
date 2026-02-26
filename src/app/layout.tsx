@@ -44,7 +44,13 @@ export default function RootLayout({
             <SeasonalProvider>
               <AuthProvider>
                 <Navbar />
-                <div style={{ display: 'flex', minHeight: 'calc(100vh - 5rem)' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    height: 'calc(100vh - 5rem)',
+                    overflow: 'hidden',
+                  }}
+                >
                   <SideNav />
                   <main className="flex-grow">{children}</main>
                 </div>
