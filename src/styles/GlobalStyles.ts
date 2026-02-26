@@ -147,7 +147,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Roboto;
     background: var(--background);
     color: var(--foreground);
     -webkit-font-smoothing: antialiased;
@@ -223,6 +223,8 @@ const GlobalStyles = createGlobalStyle`
     --accent-a12: var(--season-accent-a12, var(--custom-a12));
 
     --color-background: var(--season-background);
+    --default-font-family: var(--font-roboto);
+    --heading-font-family: var(--font-publicSans);
   }
 `;
 

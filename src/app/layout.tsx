@@ -7,6 +7,19 @@ import { Navbar, SideNav, AuthProvider } from '@/components';
 import SeasonalProvider from '@/contexts/SeasonalContext';
 import { getCurrentUser } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { Public_Sans, Roboto } from 'next/font/google';
+
+// Typography
+const roboto = Roboto({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-roboto',
+});
+
+const publicSans = Public_Sans({
+  subsets: ['latin'],
+  variable: '--font-publicSans',
+});
 
 export const metadata: Metadata = {
   title: 'Stardew It',
@@ -26,7 +39,6 @@ export const metadata: Metadata = {
 };
 
 // TODO: handle dark mode
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -53,14 +65,14 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${publicSans.variable} ${roboto.variable}`}>
       <body>
         <StyledComponentsRegistry>
           <Theme
             appearance="light"
-            accentColor="grass"
             grayColor="slate"
             scaling="100%"
+            radius="large"
           >
             <GlobalStyles />
             <SeasonalProvider initialDate={initialDate}>

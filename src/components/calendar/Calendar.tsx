@@ -24,6 +24,7 @@ import {
 } from '@/types/calendar';
 import { FarmTaskCompletion } from '@/types/tasks';
 import { useState, useMemo } from 'react';
+import { TASK_TYPE_LIST, TaskType } from '@/constants/taskTypes';
 
 function getEventCompletion(
   event: CalendarEventWithTasks,
@@ -70,22 +71,67 @@ export default function Calendar({
   const [seasonSectionExpanded, setSeasonSectionExpanded] = useState(true);
   const [yearRoundSectionExpanded, setYearRoundSectionExpanded] =
     useState(false);
+  const [selectedTaskTypes, setSelectedTaskTypes] = useState<Set<TaskType>>(
+    new Set(TASK_TYPE_LIST)
+  );
 
-  const getCalendarEventsForDate = (
-    season: string,
-    day: number
-  ): Array<CalendarEventWithTasks> | null => {
-    const dayKey = `${season} ${day}` as Day;
-    return calendarEvents?.daily.get(dayKey) ?? null;
+  const toggleTaskType = (type: TaskType) => {
+    setSelectedTaskTypes((prev: Set<TaskType>) => {
+      const newTaskTypes = new Set(prev);
+
+      if (newTaskTypes.has(type)) {
+        newTaskTypes.delete(type);
+      } else {
+        newTaskTypes.add(type);
+      }
+
+      return newTaskTypes;
+    });
   };
+
+  // filtered calendar data
+  function filterCalendarData(
+    data: CalendarEventData,
+    selected: Set<TaskType>
+  ): CalendarEventData {
+    if (selected.size === 0) return data;
+
+    const filterList = (events: CalendarEventWithTasks[]) =>
+      events.filter((event: CalendarEventWithTasks) =>
+        selected.has((event.type as TaskType) ?? 'other')
+      );
+
+    return {
+      daily: new Map(
+        Array.from(data.daily.entries()).map(([day, events]) => [
+          day,
+          filterList(events),
+        ])
+      ),
+      seasonal: new Map(
+        Array.from(data.seasonal.entries()).map(([season, events]) => [
+          season,
+          filterList(events),
+        ])
+      ),
+      yearRound: filterList(data.yearRound),
+    };
+  }
+  const filteredCalendarData = useMemo(
+    () =>
+      calendarEvents
+        ? filterCalendarData(calendarEvents, selectedTaskTypes)
+        : calendarEvents,
+    [calendarEvents, selectedTaskTypes]
+  );
 
   const { seasonEvents, yearRoundEvents } = useMemo(() => {
     const currentSeason = SEASONS[viewingSeasonIndex] as Season;
     return {
-      seasonEvents: calendarEvents?.seasonal.get(currentSeason) ?? [],
-      yearRoundEvents: calendarEvents?.yearRound ?? [],
+      seasonEvents: filteredCalendarData?.seasonal.get(currentSeason) ?? [],
+      yearRoundEvents: filteredCalendarData?.yearRound ?? [],
     };
-  }, [viewingSeasonIndex, calendarEvents]);
+  }, [viewingSeasonIndex, filteredCalendarData]);
 
   const renderEventLabel = (ce: CalendarEventWithTasks) => {
     const { allDone, hasSome, completed, total } = getEventCompletion(
@@ -104,14 +150,6 @@ export default function Calendar({
         onClick={() => changeSelectedEvent(selectedEvent ? null : ce)}
       >
         {ce.name}{' '}
-        {ce.name === 'Plant' &&
-          (ce.tasks && ce.tasks.length > 1
-            ? `(${ce.tasks.length})`
-            : ce.tasks[0]?.name)}
-        {ce.name === 'Forage' &&
-          (ce.tasks && ce.tasks.length > 1
-            ? `(${ce.tasks.length})`
-            : ce.tasks[0]?.name)}
         {farmTaskCompletion && total > 0 && !allDone && hasSome && (
           <>
             {' '}
@@ -217,10 +255,10 @@ export default function Calendar({
       </Styled.DayLabelGrid>
       <Styled.DaysGrid>
         {DAYS.map((day) => {
-          const calEvents = getCalendarEventsForDate(
-            SEASONS[viewingSeasonIndex],
-            day
-          );
+          const calEvents =
+            filteredCalendarData?.daily.get(
+              `${SEASONS[viewingSeasonIndex]} ${day}` as Day
+            ) ?? [];
           return (
             <Styled.DayBox key={day}>
               <Styled.DayIndex
@@ -260,7 +298,16 @@ export default function Calendar({
             <Styled.CountBadge>{seasonEvents.length}</Styled.CountBadge>
           </Styled.SectionBar>
           <Styled.SectionContent $isExpanded={seasonSectionExpanded}>
-            {seasonEvents.map((ce) => renderEventLabel(ce))}
+            {TASK_TYPE_LIST.map((type) => (
+              <Styled.TaskLabel
+                $taskType={type}
+                $isOff={!selectedTaskTypes.has(type)}
+                key={type}
+                onClick={() => toggleTaskType(type)}
+              >
+                {type}
+              </Styled.TaskLabel>
+            ))}
           </Styled.SectionContent>
         </>
       )}
