@@ -9,7 +9,7 @@ export const TASK_TYPES = {
   MINING: 'mining',
   ANIMALS: 'animals',
   COOKING: 'cooking',
-  SOCIALIZING: 'socializing',
+  CALENDAR: 'calendar',
   OTHER: 'other',
 } as const;
 
@@ -28,7 +28,7 @@ export const TASK_TYPE_COLORS: Record<TaskType, string> = {
   [TASK_TYPES.MINING]: '#B8A5D6', // Soft purple - earth/mystery
   [TASK_TYPES.ANIMALS]: '#F4B6D9', // Soft pink - nurture/care
   [TASK_TYPES.COOKING]: '#F5B766', // Warm orange - creativity/warmth
-  [TASK_TYPES.SOCIALIZING]: '#F07070', // Soft red - connection/warmth
+  [TASK_TYPES.CALENDAR]: '#FFD166', // Warm festive gold - festivals/events
   [TASK_TYPES.OTHER]: '#C4C4C4', // Soft gray - neutral/flexible
 };
 

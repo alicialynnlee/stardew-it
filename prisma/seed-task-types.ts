@@ -102,14 +102,17 @@ const TASK_TYPE_KEYWORDS: Record<string, string[]> = {
     'juice',
     'preserve',
   ],
-  socializing: [
-    'socializing',
+  calendar: [
+    'calendar',
+    'festival',
+    'event',
+    'celebration',
+    'fair',
     'friendship',
-    'love',
-    'wedding',
-    'birthday',
     'gift',
     'heart',
+    'birthday',
+    'wedding',
   ],
   combat: [
     'combat',

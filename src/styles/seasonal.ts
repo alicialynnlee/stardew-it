@@ -227,7 +227,7 @@ export const TASK_TYPE_COLORS = {
   farming: '#A8D86F',
   animals: '#F4B6D9',
   cooking: '#FFD89B',
-  socializing: '#FF9DB5',
+  calendar: '#FFD166',
   other: '#D9D9D9',
 } as const;
 
@@ -316,7 +316,7 @@ export function generateSeasonalCSSVariables(season?: Season): string {
     --task-color-farming: ${taskColors.farming};
     --task-color-animals: ${taskColors.animals};
     --task-color-cooking: ${taskColors.cooking};
-    --task-color-socializing: ${taskColors.socializing};
+    --task-color-calendar: ${taskColors.calendar};
     --task-color-other: ${taskColors.other};
   `;
 }
