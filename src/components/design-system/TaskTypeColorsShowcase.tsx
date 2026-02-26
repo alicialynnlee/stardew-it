@@ -103,7 +103,7 @@ const taskTypes: TaskType[] = [
   'farming',
   'animals',
   'cooking',
-  'socializing',
+  'calendar',
   'other',
 ];
 
@@ -115,7 +115,7 @@ const getTaskEmoji = (taskType: TaskType): string => {
     farming: '🌾',
     animals: '🐓',
     cooking: '🍳',
-    socializing: '💬',
+    calendar: '📅',
     other: '📌',
   };
   return emojiMap[taskType];

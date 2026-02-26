@@ -111,8 +111,8 @@ const SEASONAL_AVAILABILITY: Record<string, { description?: string }> = {
   cooking: { description: 'Various recipes year-round' },
   recipe: { description: 'Learn recipes year-round' },
 
-  // SOCIALIZING - YEAR-ROUND
-  socializing: { description: 'All villagers available' },
+  // CALENDAR - YEAR-ROUND
+  calendar: { description: 'Festivals and social events year-round' },
   gift: { description: 'Gift giving possible all year' },
 
   // COMBAT - YEAR-ROUND
@@ -222,7 +222,7 @@ const TASK_SEASON_PATTERNS: Record<string, { description?: string }> = {
   recipe: { description: 'Learn recipes' },
 
   // Socializing - Year-round
-  socializing: SEASONAL_AVAILABILITY['socializing'],
+  calendar: SEASONAL_AVAILABILITY['calendar'],
   gift: SEASONAL_AVAILABILITY['gift'],
   friendship: { description: 'Increase friendship year-round' },
 
