@@ -3,14 +3,12 @@
 import { BundleId, FarmTaskCompletion } from '@/types/tasks';
 import {
   Card,
-  Checkbox,
   Flex,
   Heading,
   Progress,
   ScrollArea,
   Text,
 } from '@radix-ui/themes';
-import ProgressBar from '../progress-bar/ProgressBar';
 import TaskDetails from '../task-details/TaskDetails';
 
 export default function BundleDrawer({
@@ -24,7 +22,7 @@ export default function BundleDrawer({
 }) {
   const doneTasks = bundle.taskIds.filter((taskId) =>
     farmTaskCompletion.get(taskId.taskId)
-  );
+  ).length;
   return (
     <Card key={bundle.bundleId} style={{ padding: 0 }}>
       <Flex direction="column" width="100%">
@@ -34,13 +32,15 @@ export default function BundleDrawer({
           </Heading>
           <Text size="1">Reward: {bundle.reward}</Text>
           <Flex direction="row" gap="1">
-            {doneTasks.map(() => (
-              <Progress value={100} />
+            {Array.from({
+              length: Math.min(doneTasks, bundle.tasksRequired),
+            }).map((_, i) => (
+              <Progress key={`done-${i}`} value={100} />
             ))}
             {Array.from({
-              length: bundle.tasksRequired - doneTasks.length,
-            }).map(() => (
-              <Progress value={0} />
+              length: bundle.tasksRequired - doneTasks,
+            }).map((_, i) => (
+              <Progress key={`empty-${i}`} value={0} />
             ))}
           </Flex>
         </Flex>

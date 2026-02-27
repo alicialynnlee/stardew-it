@@ -15,8 +15,9 @@ import {
   IconButton,
 } from '@radix-ui/themes';
 import { useState } from 'react';
-import { useTasks } from '@/hooks/useTasks';
-import { useCalendarEventsForTask } from '@/hooks/useCalendarEvents';
+import { getTaskDetails as getTaskDetailsAction } from '@/actions/taskActions';
+import { getCalendarEventsForTask } from '@/actions/calendarActions';
+import type { CalendarEventWithTasks } from '@/types/calendar';
 
 export default function TaskDetails({
   task,
@@ -29,23 +30,35 @@ export default function TaskDetails({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [taskDetails, setTaskDetails] = useState<TaskDetailsType | null>(null);
-  const { getTaskDetails } = useTasks(null);
-  const {
-    calendarEvents,
-    isLoading: calendarLoading,
-    error: calendarError,
-  } = useCalendarEventsForTask(task.taskId);
+  const [calendarEvents, setCalendarEvents] = useState<
+    CalendarEventWithTasks[]
+  >([]);
+  const [calendarLoading, setCalendarLoading] = useState(false);
+  const [calendarError, setCalendarError] = useState<string | null>(null);
 
   const handleToggle = async () => {
     if (!isOpen) {
       try {
-        const result = await getTaskDetails(task.taskId);
-        if (result.success && result.data) {
-          setTaskDetails(result.data);
+        setCalendarLoading(true);
+        const [detailsResult, calendarResult] = await Promise.all([
+          getTaskDetailsAction(task.taskId),
+          getCalendarEventsForTask(task.taskId),
+        ]);
+        if (detailsResult.success && detailsResult.data) {
+          setTaskDetails(detailsResult.data);
           setIsOpen(true);
+        }
+        if (calendarResult.success && calendarResult.data) {
+          setCalendarEvents(calendarResult.data as CalendarEventWithTasks[]);
+        } else if (!calendarResult.success) {
+          setCalendarError(
+            calendarResult.error ?? 'Could not fetch calendar events'
+          );
         }
       } catch {
         setTaskDetails(null);
+      } finally {
+        setCalendarLoading(false);
       }
     } else {
       setIsOpen(false);
@@ -65,7 +78,7 @@ export default function TaskDetails({
         >
           <input
             type="checkbox"
-            checked={farmTaskCompletion.get(task.taskId)}
+            checked={farmTaskCompletion.get(task.taskId) ?? false}
             onChange={(e) => updateTask(task.taskId, e.target.checked)}
           />
           <Text size="2">{task.name}</Text>

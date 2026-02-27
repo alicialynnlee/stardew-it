@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { ProgressBar, RoomDrawer, WarningBanner } from '@/components';
+import { useEffect, useMemo, useState } from 'react';
+import { RoomDrawer, WarningBanner } from '@/components';
 import { useTasks } from '@/hooks/useTasks';
 import { useRooms } from '@/hooks/useRooms';
 import { RoomId } from '@/types/tasks';
@@ -37,7 +37,27 @@ export default function TrackerClient({
     updateTask,
   } = useTasks(selectedFarmId);
 
-  const [activeRoom, setActiveRoom] = useState<RoomId>(roomCollection[0]);
+  const [activeRoom, setActiveRoom] = useState<RoomId | undefined>(undefined);
+
+  useEffect(() => {
+    if (roomCollection.length > 0 && !activeRoom) {
+      setActiveRoom(roomCollection[0]);
+    }
+  }, [roomCollection, activeRoom]);
+
+  const { totalCompleted, totalTasks } = useMemo(() => {
+    let completed = 0;
+    let total = 0;
+    roomCollection.forEach((room) =>
+      room.bundleIds.forEach((bundle) => {
+        total += bundle.tasksRequired;
+        completed += bundle.taskIds.filter((taskId) =>
+          farmTaskCompletion.get(taskId.taskId)
+        ).length;
+      })
+    );
+    return { totalCompleted: completed, totalTasks: total };
+  }, [roomCollection, farmTaskCompletion]);
 
   if (roomsLoading) return <Spinner />;
   if (roomsError) return <div>Error: {roomsError}</div>;
@@ -75,8 +95,8 @@ export default function TrackerClient({
       )}
       <Card>
         <Heading>Restore the Valley</Heading>
-        <Text>75 / 100 Items</Text>
-        <Progress value={75} size="3" />
+        <Text>{`${totalCompleted} / ${totalTasks} Items`}</Text>
+        <Progress value={Math.floor(totalCompleted / totalTasks)} size="3" />
       </Card>
       <ToggleGroup.Root
         type="single"

@@ -6,7 +6,6 @@ export { default as Calendar } from './calendar/Calendar';
 export { default as CalendarPanel } from './calendar/CalendarPanel';
 export { default as WarningBanner } from './banners/WarningBanner';
 export { default as RoomDrawer } from './tracker-components/RoomDrawer';
-export { default as ProgressBar } from './progress-bar/ProgressBar';
 export { default as EventDetails } from './event-details/EventDetails';
 export { default as Jumino } from './jumino/Jumino';
 export { default as SeasonalCalendarWrapper } from './calendar/SeasonalCalendarWrapper';
