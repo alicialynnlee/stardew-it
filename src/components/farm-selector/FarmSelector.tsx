@@ -63,9 +63,10 @@ export default function FarmSelector() {
       <DropdownMenu.Trigger>
         <Button
           className="farm-selector-open-button"
-          variant="soft"
+          variant="ghost"
           size="3"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          style={{ margin: '0 8px' }}
         >
           {farms.find((farm) => farm.id === selectedFarmId)?.name ||
             'Select a farm...'}

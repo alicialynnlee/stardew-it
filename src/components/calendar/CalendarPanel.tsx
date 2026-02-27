@@ -13,6 +13,8 @@ import {
 import { FarmTaskCompletion } from '@/types/tasks';
 import { useState, useMemo } from 'react';
 import { SEASONAL_PALETTES, Season as SeasonStyle } from '@/styles/seasonal';
+import { TASK_TYPE_PALETTE } from '@/styles/tasks';
+import { TaskType } from '@/constants/taskTypes';
 
 export default function CalendarPanel({
   viewingSeasonIndex,
@@ -129,8 +131,10 @@ export default function CalendarPanel({
               </Badge>
               <Badge
                 style={{
-                  backgroundColor: `var(--task-color-${event.type}, #D9D9D9)`,
-                  color: `color-mix(in oklab, var(--task-color-${event.type}), black 60%)`,
+                  backgroundColor:
+                    TASK_TYPE_PALETTE[(event.type as TaskType) ?? 'other'].base,
+                  color:
+                    TASK_TYPE_PALETTE[(event.type as TaskType) ?? 'other'].text,
                 }}
               >
                 {event.type}

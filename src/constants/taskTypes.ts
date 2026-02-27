@@ -1,7 +1,6 @@
 /**
- * Task type definitions and color mappings for the Stardew Valley task tracker.
+ * Task type definitions
  */
-
 export const TASK_TYPES = {
   FORAGING: 'foraging',
   FARMING: 'farming',
@@ -12,7 +11,7 @@ export const TASK_TYPES = {
   CALENDAR: 'calendar',
   OTHER: 'other',
 } as const;
-
+export const TASK_TYPE_LIST = Object.values(TASK_TYPES);
 export type TaskType = (typeof TASK_TYPES)[keyof typeof TASK_TYPES];
 
 /**
@@ -31,18 +30,3 @@ export const TASK_TYPE_COLORS: Record<TaskType, string> = {
   [TASK_TYPES.CALENDAR]: '#FFD166', // Warm festive gold - festivals/events
   [TASK_TYPES.OTHER]: '#C4C4C4', // Soft gray - neutral/flexible
 };
-
-/**
- * Get color for a task type, with fallback to OTHER
- */
-export function getTaskTypeColor(type?: string | null): string {
-  if (!type || !(type in TASK_TYPE_COLORS)) {
-    return TASK_TYPE_COLORS[TASK_TYPES.OTHER];
-  }
-  return TASK_TYPE_COLORS[type as TaskType];
-}
-
-/**
- * All available task types as an array
- */
-export const TASK_TYPE_LIST = Object.values(TASK_TYPES);

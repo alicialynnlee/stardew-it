@@ -1,7 +1,7 @@
 'use client';
 
 import { FarmTaskCompletion, RoomId } from '@/types/tasks';
-import { Box, Text } from '@radix-ui/themes';
+import { Grid, Text } from '@radix-ui/themes';
 import BundleDrawer from './BundleDrawer';
 
 export default function RoomDrawer({
@@ -14,10 +14,7 @@ export default function RoomDrawer({
   updateTask: (taskId: string, completed: boolean) => void;
 }) {
   return (
-    <Box key={room.roomId} my="4">
-      <Text weight="bold" size="6">
-        {room.roomName}
-      </Text>
+    <Grid key={room.roomId} columns="3" gap="3">
       {room.bundleIds.map((bundle) => (
         <BundleDrawer
           key={bundle.bundleId}
@@ -26,6 +23,6 @@ export default function RoomDrawer({
           updateTask={updateTask}
         />
       ))}
-    </Box>
+    </Grid>
   );
 }

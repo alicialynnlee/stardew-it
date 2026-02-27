@@ -155,7 +155,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   main {
-    padding: 2rem;
+    padding: 1.5rem;
     flex: 1;
     min-height: 0;
     overflow-y: auto;

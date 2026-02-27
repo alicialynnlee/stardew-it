@@ -223,11 +223,11 @@ export type SeasonalPalette = (typeof SEASONAL_PALETTES)[Season];
 export const TASK_TYPE_COLORS = {
   foraging: '#C8B359',
   fishing: '#87CEEB',
-  mining: '#D4A8E8',
   farming: '#A8D86F',
-  animals: '#F4B6D9',
-  cooking: '#FFD89B',
-  calendar: '#FFD166',
+  cooking: '#A59EC7',
+  mining: '#26210D',
+  animals: '#891F24',
+  calendar: '#85523D',
   other: '#D9D9D9',
 } as const;
 

@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import FarmSelector from '../farm-selector/FarmSelector';
 import UserMenu from '../user-menu/UserMenu';
 import * as Styled from './Navbar.styled';
-import { Button } from '@radix-ui/themes';
+import { Button, Card, Flex, Separator } from '@radix-ui/themes';
 import Jumino from '../jumino/Jumino';
 
 export default function Navbar() {
@@ -39,10 +39,13 @@ export default function Navbar() {
       </div>
       <Styled.AuthActions>
         {session ? (
-          <>
-            <FarmSelector />
-            <UserMenu />
-          </>
+          <Card>
+            <Flex direction="row" gap="2" align="center">
+              <FarmSelector />
+              <Separator orientation="vertical" decorative />
+              <UserMenu />
+            </Flex>
+          </Card>
         ) : (
           <Link href="/auth">
             <Button>Sign In</Button>

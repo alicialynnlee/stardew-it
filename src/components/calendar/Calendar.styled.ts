@@ -1,5 +1,5 @@
 import { lighterGreen, dustySage } from '@/styles/colors';
-import { Card } from '@radix-ui/themes';
+import { Card, Flex } from '@radix-ui/themes';
 import styled from 'styled-components';
 
 export const CalendarWrapper = styled(Card)`
@@ -48,7 +48,7 @@ export const DaysGrid = styled.div`
   min-height: 0;
 `;
 
-export const DayBox = styled.div`
+export const DayBox = styled(Flex)`
   padding: 0.5rem;
   background-color: var(--gray-1);
   overflow-y: auto;
@@ -66,45 +66,6 @@ export const DayIndex = styled.button<{
   background-color: ${({ $isSelected }) =>
     $isSelected ? `var(--accent-9)` : `transparent`};
   color: ${({ $isSelected }) => $isSelected && `var(--background)`};
-`;
-
-export const TaskLabel = styled.div<{
-  $taskType?: string;
-  $isCompleted?: boolean;
-  $isPartial?: boolean;
-  $isOff?: boolean;
-}>`
-  margin-top: 0.3rem;
-  background-color: ${({ $taskType }) =>
-    $taskType ? `var(--task-color-${$taskType}, #D9D9D9)` : '#D9D9D9'};
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  cursor: pointer;
-  color: #1c1c1c;
-
-  ${({ $isCompleted }) =>
-    $isCompleted &&
-    `
-    background-color: ${lighterGreen};
-    text-decoration: line-through;
-    opacity: 0.7;
-  `}
-
-  ${({ $isOff, $taskType }) =>
-    $isOff &&
-    `
-    background-color: transparent;
-    color: ${$taskType ? `var(--task-color-${$taskType}, #D9D9D9)` : '#D9D9D9'};
-    border: 1px solid ${$taskType ? `var(--task-color-${$taskType}, #D9D9D9)` : '#D9D9D9'};
-  `}
-
-  ${({ $isPartial, $isCompleted }) =>
-    $isPartial &&
-    !$isCompleted &&
-    `
-    border-left: 3px solid ${dustySage};
-  `}
 `;
 
 export const SectionBar = styled.div<{ $isExpanded?: boolean }>`

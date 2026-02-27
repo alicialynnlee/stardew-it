@@ -6,11 +6,18 @@ import {
   TaskId,
 } from '@/types/tasks';
 import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
-import * as Styled from './TaskDetails.styled';
-import { Text, Dialog, Separator, Button } from '@radix-ui/themes';
+import {
+  Text,
+  Dialog,
+  Separator,
+  Button,
+  Flex,
+  IconButton,
+} from '@radix-ui/themes';
 import { useState } from 'react';
-import { useTasks } from '@/hooks/useTasks';
-import { useCalendarEventsForTask } from '@/hooks/useCalendarEvents';
+import { getTaskDetails as getTaskDetailsAction } from '@/actions/taskActions';
+import { getCalendarEventsForTask } from '@/actions/calendarActions';
+import type { CalendarEventWithTasks } from '@/types/calendar';
 
 export default function TaskDetails({
   task,
@@ -23,23 +30,35 @@ export default function TaskDetails({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [taskDetails, setTaskDetails] = useState<TaskDetailsType | null>(null);
-  const { getTaskDetails } = useTasks(null);
-  const {
-    calendarEvents,
-    isLoading: calendarLoading,
-    error: calendarError,
-  } = useCalendarEventsForTask(task.taskId);
+  const [calendarEvents, setCalendarEvents] = useState<
+    CalendarEventWithTasks[]
+  >([]);
+  const [calendarLoading, setCalendarLoading] = useState(false);
+  const [calendarError, setCalendarError] = useState<string | null>(null);
 
   const handleToggle = async () => {
     if (!isOpen) {
       try {
-        const result = await getTaskDetails(task.taskId);
-        if (result.success && result.data) {
-          setTaskDetails(result.data);
+        setCalendarLoading(true);
+        const [detailsResult, calendarResult] = await Promise.all([
+          getTaskDetailsAction(task.taskId),
+          getCalendarEventsForTask(task.taskId),
+        ]);
+        if (detailsResult.success && detailsResult.data) {
+          setTaskDetails(detailsResult.data);
           setIsOpen(true);
+        }
+        if (calendarResult.success && calendarResult.data) {
+          setCalendarEvents(calendarResult.data as CalendarEventWithTasks[]);
+        } else if (!calendarResult.success) {
+          setCalendarError(
+            calendarResult.error ?? 'Could not fetch calendar events'
+          );
         }
       } catch {
         setTaskDetails(null);
+      } finally {
+        setCalendarLoading(false);
       }
     } else {
       setIsOpen(false);
@@ -50,32 +69,36 @@ export default function TaskDetails({
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Styled.TaskLabel
+        <Button
           key={task.taskId}
-          variant="outline"
+          variant="ghost"
           color="gray"
           onClick={handleToggle}
+          style={{ justifyContent: 'flex-start' }}
         >
           <input
             type="checkbox"
-            checked={farmTaskCompletion.get(task.taskId)}
+            checked={farmTaskCompletion.get(task.taskId) ?? false}
             onChange={(e) => updateTask(task.taskId, e.target.checked)}
           />
           <Text size="2">{task.name}</Text>
-        </Styled.TaskLabel>
+        </Button>
       </Dialog.Trigger>
       <Dialog.Content className="DialogContent">
-        <Dialog.Close>
-          <Styled.CloseButton
-            radius="full"
-            variant="soft"
-            color="gray"
-            aria-label="Close"
-          >
-            <Cross2Icon />
-          </Styled.CloseButton>
-        </Dialog.Close>
-        <Dialog.Title>{task.name}</Dialog.Title>
+        <Flex justify="between">
+          <Dialog.Title>{task.name}</Dialog.Title>
+          <Dialog.Close>
+            <IconButton
+              radius="full"
+              variant="soft"
+              color="gray"
+              aria-label="Close"
+            >
+              <Cross2Icon />
+            </IconButton>
+          </Dialog.Close>
+        </Flex>
+
         <Dialog.Description>
           Bundle: {taskDetails?.bundle.name}
           <Separator my="3" size="4" />
