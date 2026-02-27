@@ -24,7 +24,8 @@ import {
 } from '@/types/calendar';
 import { FarmTaskCompletion } from '@/types/tasks';
 import { useState, useMemo } from 'react';
-import { TASK_TYPE_LIST, TaskType } from '@/constants/taskTypes';
+import { TaskType, TASK_TYPE_LIST } from '@/constants/taskTypes';
+import { TaskLabel } from '@/components';
 
 function getEventCompletion(
   event: CalendarEventWithTasks,
@@ -68,7 +69,7 @@ export default function Calendar({
   viewingDay: Day;
   changeViewingDay: (newDay: Day) => void;
 }) {
-  const [seasonSectionExpanded, setSeasonSectionExpanded] = useState(true);
+  const [taskSectionExpanded, setTaskSectionExpanded] = useState(true);
   const [yearRoundSectionExpanded, setYearRoundSectionExpanded] =
     useState(false);
   const [selectedTaskTypes, setSelectedTaskTypes] = useState<Set<TaskType>>(
@@ -125,38 +126,25 @@ export default function Calendar({
     [calendarEvents, selectedTaskTypes]
   );
 
-  const { seasonEvents, yearRoundEvents } = useMemo(() => {
-    const currentSeason = SEASONS[viewingSeasonIndex] as Season;
-    return {
-      seasonEvents: filteredCalendarData?.seasonal.get(currentSeason) ?? [],
-      yearRoundEvents: filteredCalendarData?.yearRound ?? [],
-    };
-  }, [viewingSeasonIndex, filteredCalendarData]);
-
   const renderEventLabel = (ce: CalendarEventWithTasks) => {
     const { allDone, hasSome, completed, total } = getEventCompletion(
       ce,
       farmTaskCompletion
     );
 
-    const taskType = ce.type ?? 'other';
-
+    const taskType = (ce.type as TaskType) ?? 'other';
+    /*
+    TODO: partial designs?
+    $isPartial={hasSome}
+    */
     return (
-      <Styled.TaskLabel
+      <TaskLabel
         key={ce.id}
-        $taskType={taskType}
-        $isCompleted={allDone}
-        $isPartial={hasSome}
-        onClick={() => changeSelectedEvent(selectedEvent ? null : ce)}
-      >
-        {ce.name}{' '}
-        {farmTaskCompletion && total > 0 && !allDone && hasSome && (
-          <>
-            {' '}
-            ({completed}/{total})
-          </>
-        )}
-      </Styled.TaskLabel>
+        text={`${ce.name} ${farmTaskCompletion && total > 0 && !allDone && hasSome ? `(${completed}/${total})` : ''}`}
+        type={taskType}
+        isCompleted={allDone}
+        onClickHandler={() => changeSelectedEvent(selectedEvent ? null : ce)}
+      />
     );
   };
 
@@ -260,7 +248,7 @@ export default function Calendar({
               `${SEASONS[viewingSeasonIndex]} ${day}` as Day
             ) ?? [];
           return (
-            <Styled.DayBox key={day}>
+            <Styled.DayBox key={day} direction="column" align="start" gap="1">
               <Styled.DayIndex
                 onClick={() =>
                   changeViewingDay(
@@ -282,38 +270,32 @@ export default function Calendar({
         })}
       </Styled.DaysGrid>
 
-      {/* This Season section */}
-      {seasonEvents.length > 0 && (
-        <>
-          <Styled.SectionBar
-            $isExpanded={seasonSectionExpanded}
-            onClick={() => setSeasonSectionExpanded(!seasonSectionExpanded)}
-          >
-            <Styled.SectionChevron $isExpanded={seasonSectionExpanded}>
-              <TriangleRightIcon width="14" height="14" />
-            </Styled.SectionChevron>
-            <Text size="2" weight="medium">
-              This Season
-            </Text>
-            <Styled.CountBadge>{seasonEvents.length}</Styled.CountBadge>
-          </Styled.SectionBar>
-          <Styled.SectionContent $isExpanded={seasonSectionExpanded}>
-            {TASK_TYPE_LIST.map((type) => (
-              <Styled.TaskLabel
-                $taskType={type}
-                $isOff={!selectedTaskTypes.has(type)}
-                key={type}
-                onClick={() => toggleTaskType(type)}
-              >
-                {type}
-              </Styled.TaskLabel>
-            ))}
-          </Styled.SectionContent>
-        </>
-      )}
-
+      {/* Task Filtering section */}
+      <Styled.SectionBar
+        $isExpanded={taskSectionExpanded}
+        onClick={() => setTaskSectionExpanded(!taskSectionExpanded)}
+      >
+        <Styled.SectionChevron $isExpanded={taskSectionExpanded}>
+          <TriangleRightIcon width="14" height="14" />
+        </Styled.SectionChevron>
+        <Text size="2" weight="medium">
+          Task Filters
+        </Text>
+        <Styled.CountBadge>{TASK_TYPE_LIST.length}</Styled.CountBadge>
+      </Styled.SectionBar>
+      <Styled.SectionContent $isExpanded={taskSectionExpanded}>
+        {TASK_TYPE_LIST.map((type: TaskType) => (
+          <TaskLabel
+            key={type}
+            type={type}
+            text={type}
+            isOff={!selectedTaskTypes.has(type)}
+            onClickHandler={() => toggleTaskType(type)}
+          />
+        ))}
+      </Styled.SectionContent>
       {/* Anytime in Year section */}
-      {yearRoundEvents.length > 0 && (
+      {filteredCalendarData && filteredCalendarData.yearRound?.length > 0 && (
         <>
           <Styled.SectionBar
             $isExpanded={yearRoundSectionExpanded}
@@ -327,10 +309,12 @@ export default function Calendar({
             <Text size="2" weight="medium">
               Anytime in Year
             </Text>
-            <Styled.CountBadge>{yearRoundEvents.length}</Styled.CountBadge>
+            <Styled.CountBadge>
+              {filteredCalendarData.yearRound.length}
+            </Styled.CountBadge>
           </Styled.SectionBar>
           <Styled.SectionContent $isExpanded={yearRoundSectionExpanded}>
-            {yearRoundEvents.map((ce) => renderEventLabel(ce))}
+            {filteredCalendarData.yearRound.map((ce) => renderEventLabel(ce))}
           </Styled.SectionContent>
         </>
       )}

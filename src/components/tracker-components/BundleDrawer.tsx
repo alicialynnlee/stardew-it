@@ -1,10 +1,15 @@
 'use client';
 
 import { BundleId, FarmTaskCompletion } from '@/types/tasks';
-import { ChevronRightIcon } from '@radix-ui/react-icons';
-import { useState } from 'react';
-import * as Styled from './TrackerComponents.styled';
-import { Flex, Text } from '@radix-ui/themes';
+import {
+  Card,
+  Checkbox,
+  Flex,
+  Heading,
+  Progress,
+  ScrollArea,
+  Text,
+} from '@radix-ui/themes';
 import ProgressBar from '../progress-bar/ProgressBar';
 import TaskDetails from '../task-details/TaskDetails';
 
@@ -17,29 +22,30 @@ export default function BundleDrawer({
   farmTaskCompletion: FarmTaskCompletion;
   updateTask: (taskId: string, completed: boolean) => void;
 }) {
-  const getPercentageComplete = () => {
-    const required = bundle.tasksRequired;
-    const completed = bundle.taskIds.filter((taskId) =>
-      farmTaskCompletion.get(taskId.taskId)
-    ).length;
-    return (completed / required) * 100;
-  };
-
-  const [isOpen, setIsOpen] = useState(getPercentageComplete() < 100);
+  const doneTasks = bundle.taskIds.filter((taskId) =>
+    farmTaskCompletion.get(taskId.taskId)
+  );
   return (
-    <Styled.BundleContainer key={bundle.bundleId}>
-      <Styled.DropdownHeader>
-        <ChevronRightIcon
-          className={`chevron ${isOpen && 'open'}`}
-          aria-hidden
-          onClick={() => setIsOpen(!isOpen)}
-        />
-        <Flex direction="column" width="100%">
-          <Text size="4">
+    <Card key={bundle.bundleId} style={{ padding: 0 }}>
+      <Flex direction="column" width="100%">
+        <Flex direction="column" p="3" style={{ backgroundColor: 'orange' }}>
+          <Heading size="3">
             {bundle.name} {bundle.tasksRequired && ` (${bundle.tasksRequired})`}
-          </Text>
-          <ProgressBar width={getPercentageComplete()} />
-          <Styled.TaskContainer $isOpen={isOpen}>
+          </Heading>
+          <Text size="1">Reward: {bundle.reward}</Text>
+          <Flex direction="row" gap="1">
+            {doneTasks.map(() => (
+              <Progress value={100} />
+            ))}
+            {Array.from({
+              length: bundle.tasksRequired - doneTasks.length,
+            }).map(() => (
+              <Progress value={0} />
+            ))}
+          </Flex>
+        </Flex>
+        <ScrollArea type="auto" scrollbars="vertical" style={{ height: 150 }}>
+          <Flex direction="column" p="3" gap="1">
             {bundle.taskIds.map((task) => (
               <TaskDetails
                 key={task.taskId}
@@ -48,9 +54,9 @@ export default function BundleDrawer({
                 updateTask={updateTask}
               />
             ))}
-          </Styled.TaskContainer>
-        </Flex>
-      </Styled.DropdownHeader>
-    </Styled.BundleContainer>
+          </Flex>
+        </ScrollArea>
+      </Flex>
+    </Card>
   );
 }

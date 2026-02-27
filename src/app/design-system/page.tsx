@@ -2,17 +2,18 @@
 
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Season, SEASONAL_PALETTES, TASK_TYPE_COLORS } from '@/styles/seasonal';
+import { Season, SEASONAL_PALETTES } from '@/styles/seasonal';
+import { TASK_TYPE_PALETTE } from '@/styles/tasks';
+import { TASK_TYPE_LIST } from '@/constants/taskTypes';
 import { Jumino } from '@/components/jumino/Jumino';
+import { TaskLabel } from '@/components';
+import { Text } from '@radix-ui/themes';
 
 // Styled Components
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, sans-serif;
   background: #f9f9f9;
   min-height: 100vh;
 `;
@@ -117,7 +118,13 @@ const ColorLabel = styled.div`
 
 const TaskColorGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-rows: repeat(8, 1fr);
+  gap: 1rem;
+`;
+
+const TaskColorRow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 `;
 
@@ -131,22 +138,6 @@ const TaskColorItem = styled.div<{ $color: string }>`
     transform: translateY(-4px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
-`;
-
-const TaskColorBox = styled.div<{ $color: string }>`
-  width: 100%;
-  height: 80px;
-  background-color: ${(props) => props.$color};
-  border: 1px solid #ddd;
-`;
-
-const TaskColorLabel = styled.div`
-  padding: 0.75rem;
-  background: white;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #2d2d2d;
-  text-align: center;
 `;
 
 const TypographyGrid = styled.div`
@@ -195,7 +186,6 @@ const JuminoLabel = styled.p`
 export default function DesignSystemPage() {
   const [season, setSeason] = useState<Season>('spring');
   const palette = SEASONAL_PALETTES[season];
-  const taskColors = TASK_TYPE_COLORS;
 
   const paletteEntries = Object.entries(palette).filter(
     ([key, val]) =>
@@ -205,8 +195,6 @@ export default function DesignSystemPage() {
       key !== 'radixAccent' &&
       typeof val === 'string'
   ) as Array<[string, string]>;
-
-  const taskTypeEntries = Object.entries(taskColors) as Array<[string, string]>;
 
   return (
     <Container>
@@ -249,22 +237,23 @@ export default function DesignSystemPage() {
       <Section>
         <SectionTitle>Task Type Colors (8 Types)</SectionTitle>
         <TaskColorGrid>
-          {taskTypeEntries.map(([taskType, color]) => (
-            <TaskColorItem key={taskType} $color={color}>
-              <TaskColorBox $color={color} />
-              <TaskColorLabel>
-                <div>{taskType}</div>
-                <div
-                  style={{
-                    fontSize: '0.8rem',
-                    color: '#999',
-                    marginTop: '0.25rem',
-                  }}
-                >
-                  {color}
-                </div>
-              </TaskColorLabel>
-            </TaskColorItem>
+          {TASK_TYPE_LIST.map((taskType) => (
+            <TaskColorRow key={taskType}>
+              <TaskLabel
+                type={taskType}
+                text={`${taskType}: ${TASK_TYPE_PALETTE[taskType].base} regular`}
+              />
+              <TaskLabel
+                type={taskType}
+                text={`${taskType}: ${TASK_TYPE_PALETTE[taskType].base} off`}
+                isOff
+              />
+              <TaskLabel
+                type={taskType}
+                text={`${taskType}: ${TASK_TYPE_PALETTE[taskType].base} completed`}
+                isCompleted
+              />
+            </TaskColorRow>
           ))}
         </TaskColorGrid>
       </Section>

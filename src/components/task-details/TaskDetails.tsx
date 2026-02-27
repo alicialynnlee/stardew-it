@@ -6,8 +6,14 @@ import {
   TaskId,
 } from '@/types/tasks';
 import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
-import * as Styled from './TaskDetails.styled';
-import { Text, Dialog, Separator, Button } from '@radix-ui/themes';
+import {
+  Text,
+  Dialog,
+  Separator,
+  Button,
+  Flex,
+  IconButton,
+} from '@radix-ui/themes';
 import { useState } from 'react';
 import { useTasks } from '@/hooks/useTasks';
 import { useCalendarEventsForTask } from '@/hooks/useCalendarEvents';
@@ -50,11 +56,12 @@ export default function TaskDetails({
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Styled.TaskLabel
+        <Button
           key={task.taskId}
-          variant="outline"
+          variant="ghost"
           color="gray"
           onClick={handleToggle}
+          style={{ justifyContent: 'flex-start' }}
         >
           <input
             type="checkbox"
@@ -62,20 +69,23 @@ export default function TaskDetails({
             onChange={(e) => updateTask(task.taskId, e.target.checked)}
           />
           <Text size="2">{task.name}</Text>
-        </Styled.TaskLabel>
+        </Button>
       </Dialog.Trigger>
       <Dialog.Content className="DialogContent">
-        <Dialog.Close>
-          <Styled.CloseButton
-            radius="full"
-            variant="soft"
-            color="gray"
-            aria-label="Close"
-          >
-            <Cross2Icon />
-          </Styled.CloseButton>
-        </Dialog.Close>
-        <Dialog.Title>{task.name}</Dialog.Title>
+        <Flex justify="between">
+          <Dialog.Title>{task.name}</Dialog.Title>
+          <Dialog.Close>
+            <IconButton
+              radius="full"
+              variant="soft"
+              color="gray"
+              aria-label="Close"
+            >
+              <Cross2Icon />
+            </IconButton>
+          </Dialog.Close>
+        </Flex>
+
         <Dialog.Description>
           Bundle: {taskDetails?.bundle.name}
           <Separator my="3" size="4" />

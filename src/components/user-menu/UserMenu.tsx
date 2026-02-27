@@ -17,11 +17,9 @@ export default function UserMenu() {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <Button variant="outline" size="3">
+        <Button variant="ghost" size="3" style={{ margin: '0 8px' }}>
           <Avatar size="1" fallback={initials} radius="full" variant="soft" />
-          <Text size="2" weight="medium">
-            {userName}
-          </Text>
+          {userName}
           <CaretDownIcon />
         </Button>
       </DropdownMenu.Trigger>

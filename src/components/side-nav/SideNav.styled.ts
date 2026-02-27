@@ -7,8 +7,7 @@ export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
   height: 100%;
   flex-shrink: 0;
   overflow-y: auto;
-  width: ${(props) => (props.$isOpen ? '17rem' : '5.3rem')};
-  border-right: 1px solid #e9ecef;
+  width: ${(props) => (props.$isOpen ? '17rem' : '6.6rem')};
   padding: 1.5rem;
   transition: width 0.3s ease-in-out;
   z-index: 2;
