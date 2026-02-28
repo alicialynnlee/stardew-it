@@ -35,10 +35,10 @@ const DayInfo = styled.p`
   margin: 0.5rem 0;
 `;
 
-const Quote = styled.p`
+const Quote = styled.p<{ $color: string }>`
   font-size: 1.05rem;
   font-style: italic;
-  color: var(--season-primary);
+  color: ${({ $color }) => $color};
   margin: 1rem 0 0;
   max-width: 600px;
   margin-left: auto;
@@ -55,21 +55,26 @@ const ProgressSection = styled.div`
   margin-bottom: 2.5rem;
 `;
 
-const ProgressBar = styled.div<{ $percentage: number }>`
+const ProgressBar = styled.div<{ $percentage: number; $color: string }>`
   width: 100%;
   height: 24px;
   background-color: rgba(0, 0, 0, 0.05);
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 0.5rem;
+  position: relative;
 
   &::after {
     content: '';
     display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: ${({ $percentage }) => $percentage}%;
     height: 100%;
-    background: linear-gradient(90deg, var(--season-primary), var(--season-accent));
+    background: ${({ $color }) => $color};
     transition: width 0.3s ease;
+    border-radius: 12px;
   }
 `;
 
@@ -88,15 +93,16 @@ const TasksGrid = styled.div`
 
 const TaskCard = styled.div<{ $color: string }>`
   background: white;
-  border: 2px solid ${({ $color }) => $color};
-  border-radius: 16px;
-  padding: 1rem;
+  border: 1px solid #e9ecef;
+  border-left: 4px solid ${({ $color }) => $color};
+  border-radius: 12px;
+  padding: 1.25rem;
   position: relative;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -139,15 +145,18 @@ const FestivalDetails = styled.p`
   opacity: 0.95;
 `;
 
-const TipsSection = styled.div`
-  background: rgba(var(--season-primary-rgb), 0.05);
-  border: 2px solid var(--season-primary);
+const TipsSection = styled.div<{ $color: string }>`
+  background: ${({ $color }) => {
+    // Adjust opacity based on the primary color
+    return `${$color}15`;
+  }};
+  border: 2px solid ${({ $color }) => $color};
   border-radius: 16px;
   padding: 2rem;
   margin-bottom: 2rem;
 `;
 
-const TipsList = styled.ol`
+const TipsList = styled.ol<{ $color: string }>`
   list-style: none;
   padding: 0;
   margin: 0;
@@ -160,7 +169,7 @@ const TipsList = styled.ol`
   }
 
   li strong {
-    color: var(--season-primary);
+    color: ${({ $color }) => $color};
   }
 `;
 
@@ -319,20 +328,20 @@ export default function DashboardClient({
   if (isLoading) return <Spinner />;
 
   return (
-    <DashboardWrapper style={{ '--season-primary': palette.primary } as any}>
+    <DashboardWrapper>
       {/* Header Section */}
       <HeaderSection>
         <Greeting>{getGreeting()}</Greeting>
         <DayInfo>
           {selectedDay} • Season {Math.ceil(dayNumber / 7)} of 4
         </DayInfo>
-        <Quote>{quote}</Quote>
+        <Quote $color={palette.primary}>{quote}</Quote>
       </HeaderSection>
 
       {/* Season Progress */}
       <ProgressSection>
         <SectionTitle>Season Progress</SectionTitle>
-        <ProgressBar $percentage={percentage} />
+        <ProgressBar $percentage={percentage} $color={palette.primary} />
         <ProgressText>
           Day {dayNumber} of {DAYS_PER_SEASON} ({Math.round(percentage)}%)
         </ProgressText>
@@ -388,9 +397,9 @@ export default function DashboardClient({
       )}
 
       {/* Tips Section */}
-      <TipsSection>
+      <TipsSection $color={palette.primary}>
         <SectionTitle style={{ marginTop: 0 }}>Year 1 Survival Tips</SectionTitle>
-        <TipsList>
+        <TipsList $color={palette.primary}>
           {TIPS.map((tip, idx) => (
             <li key={idx}>
               <strong>{tip.title}</strong> {tip.description}

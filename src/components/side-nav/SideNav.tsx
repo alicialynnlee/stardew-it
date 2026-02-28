@@ -19,6 +19,11 @@ const NAV_ITEMS = [
     href: '/',
   },
   {
+    label: 'Dashboard',
+    icon: HomeIcon,
+    href: '/dashboard',
+  },
+  {
     label: 'Tracker',
     icon: MixerHorizontalIcon,
     href: '/tracker',
