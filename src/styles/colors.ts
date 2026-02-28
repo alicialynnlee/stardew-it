@@ -13,15 +13,15 @@ export const ashGray = '#6E6E6E'; // For subtext or notes
 /* ── Design System v2 ── */
 // Base
 export const mainBackground = '#FCFAF8'; // Page background — warm cream
-export const mainWhite = '#FFFFFF'; // Card background — light
-export const mainCreamDark = '#F3ECE7'; // Card background — dark / borders
-export const mainDarkText = '#9A6C4C'; // Muted text, labels
-export const mainBlack = '#1B130D'; // Primary text
+export const mainWhite = '#FFFFFF';       // Card background — light
+export const mainCreamDark = '#F3ECE7';   // Card background — dark / borders
+export const mainDarkText = '#9A6C4C';    // Muted text, labels
+export const mainBlack = '#1B130D';       // Primary text
 
 // Primary action — Pumpkin Orange
 export const pumpkinOrange = '#EC6D13';
-export const pumpkinRust = '#D55F0B'; // Hover / active
-export const pumpkinCream = '#FCEDE2'; // Subtle background highlight
+export const pumpkinRust = '#D55F0B';     // Hover / active
+export const pumpkinCream = '#FCEDE2';    // Subtle background highlight
 
 // Secondary — Sage
 export const sageGreen = '#8DA399';

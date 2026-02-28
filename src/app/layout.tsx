@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
-
-import { Navbar, SideNav } from '@/components';
-import { Montserrat, Roboto } from 'next/font/google';
-import Providers from './providers/Providers';
-import { getCurrentUser } from '@/lib/auth';
+import StyledComponentsRegistry from './registry';
+import GlobalStyles from '@/styles/GlobalStyles';
+import { Theme } from '@radix-ui/themes';
+import '@radix-ui/themes/styles.css';
+import { Navbar, SideNav, AuthProvider } from '@/components';
 import SeasonalProvider from '@/contexts/SeasonalContext';
+import { getCurrentUser } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { Public_Sans, Roboto } from 'next/font/google';
 
 // Typography
 const roboto = Roboto({
@@ -14,9 +16,9 @@ const roboto = Roboto({
   variable: '--font-roboto',
 });
 
-const montserrat = Montserrat({
+const publicSans = Public_Sans({
   subsets: ['latin'],
-  variable: '--font-montserrat',
+  variable: '--font-publicSans',
 });
 
 export const metadata: Metadata = {
@@ -63,23 +65,33 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en" className={`${montserrat.variable} ${roboto.variable}`}>
+    <html lang="en" className={`${publicSans.variable} ${roboto.variable}`}>
       <body>
-        <Providers>
-          <SeasonalProvider>
-            <Navbar />
-            <div
-              style={{
-                display: 'flex',
-                height: 'calc(100vh - 5rem)',
-                overflow: 'hidden',
-              }}
-            >
-              <SideNav />
-              <main className="flex-grow">{children}</main>
-            </div>
-          </SeasonalProvider>
-        </Providers>
+        <StyledComponentsRegistry>
+          <Theme
+            appearance="light"
+            grayColor="slate"
+            scaling="100%"
+            radius="large"
+          >
+            <GlobalStyles />
+            <SeasonalProvider initialDate={initialDate}>
+              <AuthProvider>
+                <Navbar />
+                <div
+                  style={{
+                    display: 'flex',
+                    height: 'calc(100vh - 5rem)',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <SideNav />
+                  <main className="flex-grow">{children}</main>
+                </div>
+              </AuthProvider>
+            </SeasonalProvider>
+          </Theme>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

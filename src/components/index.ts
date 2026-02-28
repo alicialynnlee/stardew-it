@@ -3,6 +3,7 @@ export type { ButtonProps, ButtonVariant, ButtonSize, CardProps, CardVariant, Ca
 
 export { default as SideNav } from './side-nav/SideNav';
 export { default as Navbar } from './top-nav/Navbar';
+export { default as AuthProvider } from './AuthProvider';
 export { default as FarmSelector } from './farm-selector/FarmSelector';
 export { default as Calendar } from './calendar/Calendar';
 export { default as CalendarPanel } from './calendar/CalendarPanel';
@@ -10,6 +11,8 @@ export { default as WarningBanner } from './banners/WarningBanner';
 export { default as RoomDrawer } from './tracker-components/RoomDrawer';
 export { default as EventDetails } from './event-details/EventDetails';
 export { default as Jumino } from './jumino/Jumino';
+export { default as SeasonalCalendarWrapper } from './calendar/SeasonalCalendarWrapper';
+export { default as OffSeasonTaskBadge } from './tasks/OffSeasonTaskBadge';
 export { default as UserMenu } from './user-menu/UserMenu';
 export { default as FarmList } from './farm-selector/FarmList';
 export { default as TaskLabel } from './task-label/TaskLabel';

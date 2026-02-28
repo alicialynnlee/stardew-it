@@ -16,6 +16,7 @@ import React, {
 import {
   getSeasonalPalette,
   getSeasonalTaskColor,
+  generateSeasonalCSSVariables,
   SEASONAL_CELEBRATION_EMOJIS,
   Season,
   SeasonalPalette,
@@ -54,6 +55,23 @@ export const SeasonalProvider: React.FC<{
       (newSeasonString.toLowerCase() as Season) ?? ('spring' as Season);
     setSeason(newSeason);
   }, [selectedDay]);
+
+  // Apply seasonal CSS variables (accent overrides + task colors) to the
+  // .radix-themes element so Radix UI components react to season changes
+  useEffect(() => {
+    const root = document.querySelector('.radix-themes') as HTMLElement | null;
+    if (!root) return;
+    const vars = generateSeasonalCSSVariables(season);
+    vars.split(';').forEach((decl) => {
+      const colonIdx = decl.indexOf(':');
+      if (colonIdx === -1) return;
+      const prop = decl.slice(0, colonIdx).trim();
+      const val = decl.slice(colonIdx + 1).trim();
+      if (prop.startsWith('--') && val) {
+        root.style.setProperty(prop, val);
+      }
+    });
+  }, [season]);
 
   const value = useMemo<SeasonalContextType>(() => {
     const palette = getSeasonalPalette(season);
@@ -100,6 +118,30 @@ export function useSetSelectedDay(): (day: string | null) => void {
 export function useSelectedDay(): string | null {
   const { selectedDay } = useSeasonalContext();
   return selectedDay;
+}
+
+/**
+ * Hook to get seasonal task color
+ */
+export function useSeasonalTaskColor(taskType?: string | null): string {
+  const { getTaskColor } = useSeasonalContext();
+  return taskType ? getTaskColor(taskType) : '#C4C4C4'; // Default to 'other' color
+}
+
+/**
+ * Hook to get current season
+ */
+export function useCurrentSeason(): Season {
+  const { currentSeason } = useSeasonalContext();
+  return currentSeason;
+}
+
+/**
+ * Hook to get seasonal palette
+ */
+export function useSeasonalPalette(): SeasonalPalette {
+  const { palette } = useSeasonalContext();
+  return palette;
 }
 
 export default SeasonalProvider;
