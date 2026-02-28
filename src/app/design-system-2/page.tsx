@@ -1,5 +1,8 @@
 'use client';
 
+import { Button, Card, ChecklistItem } from '@/components';
+import { TASK_TYPES } from '@/constants/taskTypes';
+import { pumpkinOrange, sageGreen } from '@/styles/colors';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -168,7 +171,7 @@ const PageBody = styled.div`
 `;
 
 const Sidebar = styled.aside`
-  width: 264px;
+  width: 100px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -1340,36 +1343,9 @@ const CircleLabel = styled.span<{ $size: 'lg' | 'sm' }>`
   color: ${({ $size }) => ($size === 'lg' ? '#ec6d13' : '#8da399')};
 `;
 
-/* ─── Footer ─── */
-
-const PageFooter = styled.footer`
-  border-top: 1px solid #f3ece7;
-  padding: 33px 40px 32px;
-  text-align: center;
-  background: white;
-
-  p {
-    font-family: var(--font-roboto), sans-serif;
-    font-size: 14px;
-    line-height: 20px;
-    color: #9a6c4c;
-    margin: 0;
-  }
-`;
-
 // === Page Component ===
-
-type NavItem =
-  | 'visual-identity'
-  | 'typography'
-  | 'color-system'
-  | 'cards'
-  | 'buttons'
-  | 'progress'
-  | 'state';
-
 export default function DesignSystem2Page() {
-  const [activeNav, setActiveNav] = useState<NavItem>('visual-identity');
+  const [activeNav, setActiveNav] = useState('color-system');
 
   return (
     <PageWrapper>
@@ -1389,12 +1365,12 @@ export default function DesignSystem2Page() {
             <SidebarGroupLabel>Foundation</SidebarGroupLabel>
             <SidebarNavList>
               <SidebarNavLink
-                href="#visual-identity"
-                $active={activeNav === 'visual-identity'}
-                onClick={() => setActiveNav('visual-identity')}
+                href="#color-system"
+                $active={activeNav === 'color-system'}
+                onClick={() => setActiveNav('color-system')}
               >
                 <SidebarDot />
-                Visual Identity
+                Color System
               </SidebarNavLink>
               <SidebarNavLink
                 href="#typography"
@@ -1403,14 +1379,6 @@ export default function DesignSystem2Page() {
               >
                 <SidebarDot />
                 Typography
-              </SidebarNavLink>
-              <SidebarNavLink
-                href="#color-system"
-                $active={activeNav === 'color-system'}
-                onClick={() => setActiveNav('color-system')}
-              >
-                <SidebarDot />
-                Color System
               </SidebarNavLink>
             </SidebarNavList>
           </SidebarGroup>
@@ -1456,8 +1424,8 @@ export default function DesignSystem2Page() {
 
         {/* Main Content */}
         <MainContent>
-          {/* ── Visual Identity ── */}
-          <SectionContainer id="visual-identity">
+          {/* ── Colors ── */}
+          <SectionContainer id="color-system">
             <div>
               <HeroTitle>Cozy Aesthetic &amp; Visual Identity</HeroTitle>
               <HeroDesc>
@@ -2332,15 +2300,173 @@ export default function DesignSystem2Page() {
               </ProgressCol>
             </ProgressTwoCol>
           </SectionContainer>
+
+          {/* UI Components */}
+          <SectionContainer id="ui">
+            <SectionTitle>UI Components</SectionTitle>
+
+            {/* Buttons */}
+            <div style={{ marginBottom: '2rem' }}>
+              <h3
+                style={{
+                  marginBottom: '1rem',
+                  fontSize: '1.1rem',
+                  color: '#2d2d2d',
+                }}
+              >
+                Button — variants
+              </h3>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '0.75rem',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  marginBottom: '0.75rem',
+                }}
+              >
+                <Button variant="primary">Primary Default</Button>
+                <Button variant="primary" color={sageGreen}>
+                  Primary Sage
+                </Button>
+                <Button variant="secondary">Secondary</Button>
+                <Button variant="tertiary">Tertiary</Button>
+                <Button variant="ghost">Ghost</Button>
+                <Button variant="primary" disabled>
+                  Disabled
+                </Button>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '0.75rem',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                }}
+              >
+                <Button size="sm" variant="primary">
+                  Small
+                </Button>
+                <Button size="md" variant="primary">
+                  Medium
+                </Button>
+                <Button size="lg" variant="primary">
+                  Large
+                </Button>
+              </div>
+            </div>
+
+            {/* Cards */}
+            <div style={{ marginBottom: '2rem' }}>
+              <h3
+                style={{
+                  marginBottom: '1rem',
+                  fontSize: '1.1rem',
+                  color: '#2d2d2d',
+                }}
+              >
+                Card — variants
+              </h3>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                  gap: '1rem',
+                }}
+              >
+                <Card variant="default">
+                  <p style={{ fontWeight: 600, marginBottom: '0.25rem' }}>
+                    Default
+                  </p>
+                  <p style={{ fontSize: '0.875rem', color: '#9a6c4c' }}>
+                    White bg, soft border & shadow
+                  </p>
+                </Card>
+                <Card variant="tinted">
+                  <p style={{ fontWeight: 600, marginBottom: '0.25rem' }}>
+                    Tinted
+                  </p>
+                  <p style={{ fontSize: '0.875rem', color: '#9a6c4c' }}>
+                    Warm cream bg
+                  </p>
+                </Card>
+                <Card variant="featured">
+                  <p style={{ fontWeight: 600, marginBottom: '0.25rem' }}>
+                    Featured
+                  </p>
+                  <p
+                    style={{
+                      fontSize: '0.875rem',
+                      color: 'rgba(255,255,255,0.8)',
+                    }}
+                  >
+                    Orange CTA card
+                  </p>
+                </Card>
+                <Card variant="featured" color={sageGreen}>
+                  <p style={{ fontWeight: 600, marginBottom: '0.25rem' }}>
+                    Featured
+                  </p>
+                  <p
+                    style={{
+                      fontSize: '0.875rem',
+                      color: 'rgba(255,255,255,0.8)',
+                    }}
+                  >
+                    Sage CTA card
+                  </p>
+                </Card>
+                <Card variant="flat">
+                  <p style={{ fontWeight: 600, marginBottom: '0.25rem' }}>
+                    Flat
+                  </p>
+                  <p style={{ fontSize: '0.875rem', color: '#9a6c4c' }}>
+                    Page bg, subtle border
+                  </p>
+                </Card>
+              </div>
+            </div>
+
+            {/* Checklist Items */}
+            <div>
+              <h3
+                style={{
+                  marginBottom: '1rem',
+                  fontSize: '1.1rem',
+                  color: '#2d2d2d',
+                }}
+              >
+                ChecklistItem — states
+              </h3>
+              <Card variant="default" padding="sm">
+                <ChecklistItem
+                  label="Harvest Parsnips"
+                  taskType={TASK_TYPES.FARMING}
+                />
+                <ChecklistItem
+                  label="Go Fishing at the mountain lake"
+                  taskType={TASK_TYPES.FISHING}
+                  isCompleted
+                />
+                <ChecklistItem
+                  label="Collect Spring Onions (off-season)"
+                  taskType={TASK_TYPES.FORAGING}
+                  isDisabled
+                />
+                <ChecklistItem
+                  label="Cook a Fried Egg"
+                  taskType={TASK_TYPES.COOKING}
+                />
+                <ChecklistItem
+                  label="Check animals and pet them"
+                  taskType={TASK_TYPES.ANIMALS}
+                  isCompleted
+                />
+              </Card>
+            </div>
+          </SectionContainer>
         </MainContent>
       </PageBody>
-
-      <PageFooter>
-        <p>
-          Stardew Tracker Design System v2.0 · © 2024 Not affiliated with
-          ConcernedApe.
-        </p>
-      </PageFooter>
     </PageWrapper>
   );
 }

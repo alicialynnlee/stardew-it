@@ -121,6 +121,54 @@ const GlobalStyles = createGlobalStyle`
   button {
     cursor: pointer;
   }
+
+  // radix
+  .radix-themes {
+    --cursor-button: pointer;
+    --cursor-checkbox: pointer;
+    --cursor-disabled: default;
+    --cursor-link: pointer;
+    --cursor-menu-item: pointer;
+    --cursor-radio: pointer;
+    --cursor-slider-thumb: grab;
+    --cursor-slider-thumb-active: grabbing;
+    --cursor-switch: pointer;
+
+    /* Custom theme mapping */
+    --accent-1: var(--custom-1);
+    --accent-2: var(--custom-2);
+    --accent-3: var(--custom-3);
+    --accent-4: var(--custom-4);
+    --accent-5: var(--custom-5);
+    --accent-6: var(--custom-6);
+    --accent-7: var(--custom-7);
+    --accent-8: var(--custom-8);
+    --accent-9: var(--custom-9);
+    --accent-10: var(--custom-10);
+    --accent-11: var(--custom-11);
+    --accent-12: var(--custom-12);
+
+    --accent-contrast: var(--custom-contrast);
+    --accent-surface: var(--custom-surface);
+    --accent-indicator: var(--custom-indicator);
+    --accent-track: var(--custom-track);
+
+    --accent-a1: var(--custom-a1);
+    --accent-a2: var(--custom-a2);
+    --accent-a3: var(--custom-a3);
+    --accent-a4: var(--custom-a4);
+    --accent-a5: var(--custom-a5);
+    --accent-a6: var(--custom-a6);
+    --accent-a7: var(--custom-a7);
+    --accent-a8: var(--custom-a8);
+    --accent-a9: var(--custom-a9);
+    --accent-a10: var(--custom-a10);
+    --accent-a11: var(--custom-a11);
+    --accent-a12: var(--custom-a12);
+
+    --default-font-family: var(--font-roboto);
+    --heading-font-family: var(--font-publicSans);
+  }
 `;
 
 export default GlobalStyles;

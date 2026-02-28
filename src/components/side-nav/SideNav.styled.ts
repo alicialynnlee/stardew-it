@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { whiteSmoke } from '@/styles/colors';
 import { Text } from '@radix-ui/themes';
 import Link from 'next/link';
 
@@ -27,7 +26,7 @@ export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
     }
     &.active {
       background-color: var(--accent-a9);
-      color: var(--season-secondary);
+      color: var(--custom-contrast);
     }
   }
 `;
@@ -63,7 +62,7 @@ export const NavItem = styled(Link)`
   }
   &.active {
     background-color: var(--accent-a9);
-    color: var(--season-secondary);
+    color: var(--custom-contrast);
   }
 `;
 
