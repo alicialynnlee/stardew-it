@@ -16,7 +16,6 @@ import React, {
 import {
   getSeasonalPalette,
   getSeasonalTaskColor,
-  generateSeasonalCSSVariables,
   SEASONAL_CELEBRATION_EMOJIS,
   Season,
   SeasonalPalette,
@@ -55,23 +54,6 @@ export const SeasonalProvider: React.FC<{
       (newSeasonString.toLowerCase() as Season) ?? ('spring' as Season);
     setSeason(newSeason);
   }, [selectedDay]);
-
-  // Apply seasonal CSS variables (accent overrides + task colors) to the
-  // .radix-themes element so Radix UI components react to season changes
-  useEffect(() => {
-    const root = document.querySelector('.radix-themes') as HTMLElement | null;
-    if (!root) return;
-    const vars = generateSeasonalCSSVariables(season);
-    vars.split(';').forEach((decl) => {
-      const colonIdx = decl.indexOf(':');
-      if (colonIdx === -1) return;
-      const prop = decl.slice(0, colonIdx).trim();
-      const val = decl.slice(colonIdx + 1).trim();
-      if (prop.startsWith('--') && val) {
-        root.style.setProperty(prop, val);
-      }
-    });
-  }, [season]);
 
   const value = useMemo<SeasonalContextType>(() => {
     const palette = getSeasonalPalette(season);

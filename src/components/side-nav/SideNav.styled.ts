@@ -27,7 +27,7 @@ export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
     }
     &.active {
       background-color: var(--accent-a9);
-      color: var(--season-secondary);
+      color: var(--custom-contrast);
     }
   }
 `;
@@ -63,7 +63,7 @@ export const NavItem = styled(Link)`
   }
   &.active {
     background-color: var(--accent-a9);
-    color: var(--season-secondary);
+    color: var(--custom-contrast);
   }
 `;
 
