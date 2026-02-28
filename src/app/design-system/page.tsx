@@ -332,13 +332,22 @@ export default function DesignSystemPage() {
 
         {/* Buttons */}
         <div style={{ marginBottom: '2rem' }}>
-          <h3 style={{ marginBottom: '1rem', fontSize: '1.1rem', color: '#2d2d2d' }}>Button — variants</h3>
+          <h3 style={{ marginBottom: '1rem', fontSize: '1.1rem', color: '#2d2d2d' }}>Button — variants (orange)</h3>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center', marginBottom: '0.75rem' }}>
             <Button variant="primary">Primary</Button>
             <Button variant="secondary">Secondary</Button>
-            <Button variant="sage">Sage</Button>
+            <Button variant="tertiary">Tertiary</Button>
             <Button variant="ghost">Ghost</Button>
             <Button variant="primary" disabled>Disabled</Button>
+          </div>
+          <h3 style={{ margin: '1rem 0', fontSize: '1.1rem', color: '#2d2d2d' }}>Button — colors (primary)</h3>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <Button color="orange">Orange</Button>
+            <Button color="sage">Sage</Button>
+            <Button color="spring">Spring</Button>
+            <Button color="summer">Summer</Button>
+            <Button color="fall">Fall</Button>
+            <Button color="winter">Winter</Button>
           </div>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
             <Button size="sm" variant="primary">Small</Button>
