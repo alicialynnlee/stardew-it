@@ -123,8 +123,8 @@ export default function CalendarPanel({
             <Flex direction="row" gap="1">
               <Badge
                 style={{
-                  backgroundColor: eventSeasonalPalette.radixAccent.a3,
-                  color: eventSeasonalPalette.radixAccent.a11,
+                  backgroundColor: eventSeasonalPalette.border,
+                  color: eventSeasonalPalette.text,
                 }}
               >
                 {event.date}
