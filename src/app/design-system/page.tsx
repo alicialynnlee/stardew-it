@@ -6,8 +6,9 @@ import { Season, SEASONAL_PALETTES } from '@/styles/seasonal';
 import { TASK_TYPE_PALETTE } from '@/styles/tasks';
 import { TASK_TYPE_LIST } from '@/constants/taskTypes';
 import { Jumino } from '@/components/jumino/Jumino';
-import { TaskLabel } from '@/components';
+import { TaskLabel, Button, Card, ChecklistItem } from '@/components';
 import { Text } from '@radix-ui/themes';
+import { TASK_TYPES } from '@/constants/taskTypes';
 
 // Styled Components
 const Container = styled.div`
@@ -323,6 +324,63 @@ export default function DesignSystemPage() {
             </JuminoStateItem>
           </JuminoStateGrid>
         </JuminoSection>
+      </Section>
+
+      {/* UI Components */}
+      <Section>
+        <SectionTitle>UI Components</SectionTitle>
+
+        {/* Buttons */}
+        <div style={{ marginBottom: '2rem' }}>
+          <h3 style={{ marginBottom: '1rem', fontSize: '1.1rem', color: '#2d2d2d' }}>Button — variants</h3>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <Button variant="primary">Primary</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="sage">Sage</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="primary" disabled>Disabled</Button>
+          </div>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Button size="sm" variant="primary">Small</Button>
+            <Button size="md" variant="primary">Medium</Button>
+            <Button size="lg" variant="primary">Large</Button>
+          </div>
+        </div>
+
+        {/* Cards */}
+        <div style={{ marginBottom: '2rem' }}>
+          <h3 style={{ marginBottom: '1rem', fontSize: '1.1rem', color: '#2d2d2d' }}>Card — variants</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+            <Card variant="default">
+              <p style={{ fontWeight: 600, marginBottom: '0.25rem' }}>Default</p>
+              <p style={{ fontSize: '0.875rem', color: '#9a6c4c' }}>White bg, soft border & shadow</p>
+            </Card>
+            <Card variant="tinted">
+              <p style={{ fontWeight: 600, marginBottom: '0.25rem' }}>Tinted</p>
+              <p style={{ fontSize: '0.875rem', color: '#9a6c4c' }}>Warm cream bg</p>
+            </Card>
+            <Card variant="featured">
+              <p style={{ fontWeight: 600, marginBottom: '0.25rem' }}>Featured</p>
+              <p style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.8)' }}>Orange CTA card</p>
+            </Card>
+            <Card variant="flat">
+              <p style={{ fontWeight: 600, marginBottom: '0.25rem' }}>Flat</p>
+              <p style={{ fontSize: '0.875rem', color: '#9a6c4c' }}>Page bg, subtle border</p>
+            </Card>
+          </div>
+        </div>
+
+        {/* Checklist Items */}
+        <div>
+          <h3 style={{ marginBottom: '1rem', fontSize: '1.1rem', color: '#2d2d2d' }}>ChecklistItem — states</h3>
+          <Card variant="default" padding="sm">
+            <ChecklistItem label="Harvest Parsnips" taskType={TASK_TYPES.FARMING} />
+            <ChecklistItem label="Go Fishing at the mountain lake" taskType={TASK_TYPES.FISHING} isCompleted />
+            <ChecklistItem label="Collect Spring Onions (off-season)" taskType={TASK_TYPES.FORAGING} isDisabled />
+            <ChecklistItem label="Cook a Fried Egg" taskType={TASK_TYPES.COOKING} />
+            <ChecklistItem label="Check animals and pet them" taskType={TASK_TYPES.ANIMALS} isCompleted />
+          </Card>
+        </div>
       </Section>
     </Container>
   );

@@ -10,82 +10,37 @@ export const darkGreen = '#344e41'; // Dark green
 export const warmBeige = '#EAE1D1'; // Light earthy border if needed
 export const ashGray = '#6E6E6E'; // For subtext or notes
 
-/* DESIGN SYSTEM V2 COLORS */
-// Main Colors
-export const mainBackground = '#FCFAF8'; // Background cream color.
-export const mainWhite = '#FFFFFF'; // Card background - light.
-export const mainCreamDark = '#F3ECE7'; // Card background - Dark.
-export const mainDarkText = '#9a6c4c'; // Text against main colors.
-export const mainBlack = '#000000'; // Default text - black
+/* ── Design System v2 ── */
+// Base
+export const mainBackground = '#FCFAF8'; // Page background — warm cream
+export const mainWhite = '#FFFFFF'; // Card background — light
+export const mainCreamDark = '#F3ECE7'; // Card background — dark / borders
+export const mainDarkText = '#9A6C4C'; // Muted text, labels
+export const mainBlack = '#1B130D'; // Primary text
 
-// Primary Color (Sage)
-export const sageGreen = '#8DA399'; // Success states, nature elements, secondary buttons
-export const sageDark = '#6B7C74'; // Icons, text on light backgrounds.
-export const sageMist = '#E8EFEC'; // Neutral backgrounds, disabled states.
+// Primary action — Pumpkin Orange
+export const pumpkinOrange = '#EC6D13';
+export const pumpkinRust = '#D55F0B'; // Hover / active
+export const pumpkinCream = '#FCEDE2'; // Subtle background highlight
 
-/*
+// Secondary — Sage
+export const sageGreen = '#8DA399';
+export const sageDark = '#6B7C74';
+export const sageMist = '#E8EFEC';
 
-Secondary Tones
-Pumpkin Orange
-#EC6D13
-Main action color, brand identity.
+// Seasonal tones (v2 — lighter, used as bg/border/text only)
+export const springBg = '#F0FDF4';
+export const springBorder = '#DCFCE7';
+export const springText = '#15803D';
 
-Rust
-#D55F0B
-Hover states, active elements.
+export const summerBg = '#FEFCE8';
+export const summerBorder = '#FEF9C3';
+export const summerText = '#A16207';
 
-Cream Orange
-#FCEDE2
-Background highlights, subtle accents.
+export const fallBg = '#FEF2F2';
+export const fallBorder = '#FEE2E2';
+export const fallText = '#B91C1C';
 
-Spring Tones
-Light Green
-#f0fdf4
-Background
-
-Primary Green Spring
-#dcfce7
-Border
-
-Dark Green
-#15803d
-Text
-
-Summer Tones
-Light Yellow
-#fefce8
-Background
-
-Primary Yellow Summer
-#fef9c3
-Border
-
-Dark Yellow
-#a16207
-Text
-
-Fall Tones
-Light Red
-#fef2f2
-Background
-
-Primary Red Fall
-#fee2e2
-Border
-
-Dark Red
-#b91c1c
-Text
-
-Winter Tones
-Light Blue
-#ecfeff
-Background
-
-Primary Blue Winter
-#cffafe
-Border
-
-Dark Blue
-#0e7490
-*/
+export const winterBg = '#ECFEFF';
+export const winterBorder = '#CFFAFE';
+export const winterText = '#0E7490';
