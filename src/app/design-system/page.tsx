@@ -6,7 +6,7 @@ import { Season, SEASONAL_PALETTES } from '@/styles/seasonal';
 import { TASK_TYPE_PALETTE } from '@/styles/tasks';
 import { TASK_TYPE_LIST } from '@/constants/taskTypes';
 import { Jumino } from '@/components/jumino/Jumino';
-import { TaskLabel } from '@/components';
+import { TaskLabel, Badge, Modal, Toast, Button } from '@/components';
 import { Text } from '@radix-ui/themes';
 
 // Styled Components
@@ -183,6 +183,192 @@ const JuminoLabel = styled.p`
   font-weight: 600;
 `;
 
+const BadgeSection = styled(Section)``;
+const ModalSection = styled(Section)``;
+const ToastSection = styled(Section)``;
+
+const ComponentCard = styled.div`
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+`;
+
+const ComponentSubtitle = styled.h3`
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #2d2d2d;
+  font-weight: 600;
+`;
+
+const BadgeGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const BadgeVariantRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+`;
+
+const ModalDemoGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+`;
+
+const ModalPreviewBox = styled.div`
+  background: #f9f9f9;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+const ModalPreviewContent = styled.div`
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 400px;
+  margin: 0 auto;
+`;
+
+const ModalHeader = styled.div<{ $isPreview?: boolean }>`
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: #2d2d2d;
+`;
+
+const ModalBody = styled.div<{ $isPreview?: boolean }>`
+  padding: 1.5rem 1.75rem;
+  color: #6b6b6b;
+  font-size: 0.9rem;
+  line-height: 1.6;
+`;
+
+const ModalFooter = styled.div<{ $isPreview?: boolean }>`
+  padding: 1rem 1.75rem;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+`;
+
+const DemoButton = styled.button<{ $secondary?: boolean }>`
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  ${(props) =>
+    props.$secondary
+      ? `
+      background: #f0f0f0;
+      color: #2d2d2d;
+      &:hover {
+        background: #e0e0e0;
+      }
+    `
+      : `
+      background: #8da399;
+      color: white;
+      &:hover {
+        background: #6b7c74;
+      }
+    `}
+`;
+
+const ToastDemoGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const ToastPreviewBox = styled.div`
+  background: #f9f9f9;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  overflow: hidden;
+`;
+
+const ToastPreviewContent = styled.div<{ $type: string }>`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid;
+
+  ${(props) => {
+    switch (props.$type) {
+      case 'success':
+        return `
+          background: #dcfce7;
+          border-color: #bbf7d0;
+          color: #15803d;
+        `;
+      case 'error':
+        return `
+          background: #fee2e2;
+          border-color: #fecaca;
+          color: #b91c1c;
+        `;
+      case 'warning':
+        return `
+          background: #fef3c7;
+          border-color: #fde68a;
+          color: #92400e;
+        `;
+      default:
+        return `
+          background: #dbeafe;
+          border-color: #bfdbfe;
+          color: #0e7490;
+        `;
+    }
+  }}
+`;
+
+const FeatureList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+const FeatureItem = styled.li`
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: #6b6b6b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+`;
+
+const FeatureBullet = styled.span`
+  color: #8da399;
+  font-weight: bold;
+  flex-shrink: 0;
+`;
+
+const FeatureText = styled.span`
+  color: #6b6b6b;
+`;
+
 export default function DesignSystemPage() {
   const [season, setSeason] = useState<Season>('spring');
   const palette = SEASONAL_PALETTES[season];
@@ -324,6 +510,218 @@ export default function DesignSystemPage() {
           </JuminoStateGrid>
         </JuminoSection>
       </Section>
+
+      {/* Badge/Tag Component */}
+      <BadgeSection>
+        <SectionTitle>Badges &amp; Tags</SectionTitle>
+        <ComponentCard>
+          <ComponentSubtitle>Size Variants</ComponentSubtitle>
+          <BadgeGrid>
+            <BadgeVariantRow>
+              <Badge size="sm">Small Badge</Badge>
+              <Badge size="md">Medium Badge</Badge>
+              <Badge size="lg">Large Badge</Badge>
+            </BadgeVariantRow>
+          </BadgeGrid>
+        </ComponentCard>
+
+        <ComponentCard>
+          <ComponentSubtitle>Task Type Badges</ComponentSubtitle>
+          <BadgeGrid>
+            {TASK_TYPE_LIST.map((taskType) => (
+              <BadgeVariantRow key={taskType}>
+                <Badge variant="taskType" taskType={taskType}>
+                  {taskType}
+                </Badge>
+              </BadgeVariantRow>
+            ))}
+          </BadgeGrid>
+        </ComponentCard>
+
+        <ComponentCard>
+          <ComponentSubtitle>Status Badges</ComponentSubtitle>
+          <BadgeGrid>
+            <BadgeVariantRow>
+              <Badge variant="status" statusType="pending">
+                Pending
+              </Badge>
+              <Badge variant="status" statusType="in-progress">
+                In Progress
+              </Badge>
+              <Badge variant="status" statusType="completed">
+                Completed
+              </Badge>
+              <Badge variant="status" statusType="failed">
+                Failed
+              </Badge>
+            </BadgeVariantRow>
+          </BadgeGrid>
+        </ComponentCard>
+
+        <ComponentCard>
+          <ComponentSubtitle>Variants</ComponentSubtitle>
+          <BadgeGrid>
+            <BadgeVariantRow>
+              <Badge variant="default">Default</Badge>
+              <Badge variant="outline">Outline</Badge>
+              <Badge variant="reward">Reward</Badge>
+            </BadgeVariantRow>
+          </BadgeGrid>
+        </ComponentCard>
+      </BadgeSection>
+
+      {/* Modal/Dialog Component */}
+      <ModalSection>
+        <SectionTitle>Modal &amp; Dialog</SectionTitle>
+        <ComponentCard>
+          <ComponentSubtitle>Modal States</ComponentSubtitle>
+          <ModalDemoGrid>
+            <ModalPreviewBox>
+              <ModalPreviewContent>
+                <ModalHeader $isPreview>
+                  <div>Create Task</div>
+                  <div style={{ fontSize: '18px', cursor: 'pointer' }}>×</div>
+                </ModalHeader>
+                <ModalBody $isPreview>
+                  <p>
+                    A composable modal component with header, body, and footer
+                    sections.
+                  </p>
+                </ModalBody>
+                <ModalFooter $isPreview>
+                  <DemoButton $secondary>Cancel</DemoButton>
+                  <DemoButton>Create</DemoButton>
+                </ModalFooter>
+              </ModalPreviewContent>
+            </ModalPreviewBox>
+          </ModalDemoGrid>
+        </ComponentCard>
+
+        <ComponentCard>
+          <ComponentSubtitle>Modal Features</ComponentSubtitle>
+          <FeatureList>
+            <FeatureItem>
+              <FeatureBullet>•</FeatureBullet>
+              <FeatureText>Close on Escape key</FeatureText>
+            </FeatureItem>
+            <FeatureItem>
+              <FeatureBullet>•</FeatureBullet>
+              <FeatureText>Close on backdrop click</FeatureText>
+            </FeatureItem>
+            <FeatureItem>
+              <FeatureBullet>•</FeatureBullet>
+              <FeatureText>Customizable title and footer</FeatureText>
+            </FeatureItem>
+            <FeatureItem>
+              <FeatureBullet>•</FeatureBullet>
+              <FeatureText>Size variants: sm, md, lg</FeatureText>
+            </FeatureItem>
+            <FeatureItem>
+              <FeatureBullet>•</FeatureBullet>
+              <FeatureText>Smooth animations</FeatureText>
+            </FeatureItem>
+          </FeatureList>
+        </ComponentCard>
+      </ModalSection>
+
+      {/* Toast/Alert Component */}
+      <ToastSection>
+        <SectionTitle>Toast &amp; Notifications</SectionTitle>
+        <ComponentCard>
+          <ComponentSubtitle>Toast Types</ComponentSubtitle>
+          <ToastDemoGrid>
+            <ToastPreviewBox>
+              <ToastPreviewContent $type="success">
+                <span style={{ fontSize: '18px' }}>✓</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 600, marginBottom: '2px' }}>
+                    Success!
+                  </div>
+                  <div style={{ fontSize: '13px' }}>
+                    Task created successfully
+                  </div>
+                </div>
+                <span style={{ cursor: 'pointer', fontSize: '20px' }}>×</span>
+              </ToastPreviewContent>
+            </ToastPreviewBox>
+
+            <ToastPreviewBox>
+              <ToastPreviewContent $type="error">
+                <span style={{ fontSize: '18px' }}>✕</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 600, marginBottom: '2px' }}>
+                    Error
+                  </div>
+                  <div style={{ fontSize: '13px' }}>
+                    Failed to save changes
+                  </div>
+                </div>
+                <span style={{ cursor: 'pointer', fontSize: '20px' }}>×</span>
+              </ToastPreviewContent>
+            </ToastPreviewBox>
+
+            <ToastPreviewBox>
+              <ToastPreviewContent $type="warning">
+                <span style={{ fontSize: '18px' }}>⚠</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 600, marginBottom: '2px' }}>
+                    Warning
+                  </div>
+                  <div style={{ fontSize: '13px' }}>
+                    This action cannot be undone
+                  </div>
+                </div>
+                <span style={{ cursor: 'pointer', fontSize: '20px' }}>×</span>
+              </ToastPreviewContent>
+            </ToastPreviewBox>
+
+            <ToastPreviewBox>
+              <ToastPreviewContent $type="info">
+                <span style={{ fontSize: '18px' }}>ⓘ</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 600, marginBottom: '2px' }}>
+                    Info
+                  </div>
+                  <div style={{ fontSize: '13px' }}>
+                    New tasks available
+                  </div>
+                </div>
+                <span style={{ cursor: 'pointer', fontSize: '20px' }}>×</span>
+              </ToastPreviewContent>
+            </ToastPreviewBox>
+          </ToastDemoGrid>
+        </ComponentCard>
+
+        <ComponentCard>
+          <ComponentSubtitle>Toast Features</ComponentSubtitle>
+          <FeatureList>
+            <FeatureItem>
+              <FeatureBullet>•</FeatureBullet>
+              <FeatureText>Auto-dismiss after configurable duration</FeatureText>
+            </FeatureItem>
+            <FeatureItem>
+              <FeatureBullet>•</FeatureBullet>
+              <FeatureText>Position variants (9 positions)</FeatureText>
+            </FeatureItem>
+            <FeatureItem>
+              <FeatureBullet>•</FeatureBullet>
+              <FeatureText>Type variants: success, error, warning, info</FeatureText>
+            </FeatureItem>
+            <FeatureItem>
+              <FeatureBullet>•</FeatureBullet>
+              <FeatureText>Progress bar showing remaining time</FeatureText>
+            </FeatureItem>
+            <FeatureItem>
+              <FeatureBullet>•</FeatureBullet>
+              <FeatureText>Smooth slide animations</FeatureText>
+            </FeatureItem>
+            <FeatureItem>
+              <FeatureBullet>•</FeatureBullet>
+              <FeatureText>Dismissible by user</FeatureText>
+            </FeatureItem>
+          </FeatureList>
+        </ComponentCard>
+      </ToastSection>
     </Container>
   );
 }
