@@ -58,6 +58,9 @@ export function useTasks(selectedFarmId: string | null) {
         };
       }
 
+      // Optimistic update — flip the checkbox instantly without waiting for the server
+      setFarmTaskCompletion((prev) => new Map(prev).set(taskId, completed));
+
       let result: ResponseNoData = {
         success: false,
         error: 'Failed to update task',
@@ -66,10 +69,12 @@ export function useTasks(selectedFarmId: string | null) {
       await new Promise<void>((resolve) => {
         startTransition(async () => {
           result = await updateFarmTask(selectedFarmId, taskId, completed);
-          if (result.success) {
-            fetchFarmTasks();
-          } else {
-            setError(result.error ?? 'Failed to add farm.');
+          if (!result.success) {
+            // Revert to the previous value if the server call failed
+            setFarmTaskCompletion((prev) =>
+              new Map(prev).set(taskId, !completed)
+            );
+            setError(result.error ?? 'Failed to update task.');
           }
           resolve();
         });
@@ -77,7 +82,7 @@ export function useTasks(selectedFarmId: string | null) {
 
       return result;
     },
-    [selectedFarmId, fetchFarmTasks]
+    [selectedFarmId]
   );
 
   const getTaskDetails = useCallback(

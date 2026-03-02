@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { RoomDrawer, WarningBanner } from '@/components';
+import { ProgressBar, RoomDrawer, WarningBanner } from '@/components';
 import { useTasks } from '@/hooks/useTasks';
 import { useRooms } from '@/hooks/useRooms';
 import { RoomId } from '@/types/tasks';
@@ -13,10 +13,37 @@ import {
   Link,
   Spinner,
   Heading,
-  Card,
-  Progress,
 } from '@radix-ui/themes';
+import { Card } from '@/components';
 import { ToggleGroup } from 'radix-ui';
+import {
+  mainCreamDark,
+  mainDarkText,
+  mainWhite,
+  pumpkinOrange,
+} from '@/styles/colors';
+import styled from 'styled-components';
+import { getCardVariantStyles } from '@/components/ui/Card';
+
+const BundleButton = styled(ToggleGroup.Item)<{
+  $isSelected: boolean;
+}>`
+  height: 100px;
+  ${({ $isSelected }) =>
+    getCardVariantStyles(
+      $isSelected ? 'featured' : 'tinted',
+      pumpkinOrange,
+      mainWhite
+    )}
+
+  &:hover {
+    ${({ $isSelected }) =>
+      !$isSelected &&
+      `
+        background: color-mix(in oklab, ${mainCreamDark}, black 10%);
+      `}
+  }
+`;
 
 export default function TrackerClient({
   userId,
@@ -51,9 +78,12 @@ export default function TrackerClient({
     roomCollection.forEach((room) =>
       room.bundleIds.forEach((bundle) => {
         total += bundle.tasksRequired;
-        completed += bundle.taskIds.filter((taskId) =>
-          farmTaskCompletion.get(taskId.taskId)
-        ).length;
+        completed += Math.min(
+          bundle.taskIds.filter((taskId) =>
+            farmTaskCompletion.get(taskId.taskId)
+          ).length,
+          bundle.tasksRequired
+        );
       })
     );
     return { totalCompleted: completed, totalTasks: total };
@@ -93,10 +123,17 @@ export default function TrackerClient({
           />
         </Box>
       )}
-      <Card>
-        <Heading>Restore the Valley</Heading>
-        <Text>{`${totalCompleted} / ${totalTasks} Items`}</Text>
-        <Progress value={Math.floor(totalCompleted / totalTasks)} size="3" />
+      <Card variant="tinted">
+        <Flex direction="column" gapY="2">
+          <Heading weight="bold">Restore the Valley</Heading>
+          <Heading
+            size="2"
+            style={{ color: mainDarkText }}
+          >{`${totalCompleted} / ${totalTasks} Items Donated`}</Heading>
+          <ProgressBar
+            value={Math.floor((totalCompleted / totalTasks) * 100)}
+          />
+        </Flex>
       </Card>
       <ToggleGroup.Root
         type="single"
@@ -106,11 +143,12 @@ export default function TrackerClient({
       >
         <Grid columns="6" gap="3">
           {roomCollection.map((room) => (
-            <ToggleGroup.Item
+            <BundleButton
               value={room.roomId}
               key={`trigger-${room.roomId}`}
               onClick={() => setActiveRoom(room)}
               aria-label={room.roomName}
+              $isSelected={activeRoom && activeRoom.roomId === room.roomId}
             >
               <Flex
                 align="center"
@@ -119,12 +157,10 @@ export default function TrackerClient({
                 gap="1"
                 direction="column"
               >
-                <Text>
-                  <strong>{room.roomName}</strong>
-                </Text>
+                <Text weight="bold">{room.roomName}</Text>
                 <Text size="1">{getBundleCompleteLabel(room)}</Text>
               </Flex>
-            </ToggleGroup.Item>
+            </BundleButton>
           ))}
         </Grid>
       </ToggleGroup.Root>

@@ -18,6 +18,7 @@ import { useState } from 'react';
 import { getTaskDetails as getTaskDetailsAction } from '@/actions/taskActions';
 import { getCalendarEventsForTask } from '@/actions/calendarActions';
 import type { CalendarEventWithTasks } from '@/types/calendar';
+import { ChecklistItem } from '../ui';
 
 export default function TaskDetails({
   task,
@@ -76,12 +77,11 @@ export default function TaskDetails({
           onClick={handleToggle}
           style={{ justifyContent: 'flex-start' }}
         >
-          <input
-            type="checkbox"
-            checked={farmTaskCompletion.get(task.taskId) ?? false}
-            onChange={(e) => updateTask(task.taskId, e.target.checked)}
+          <ChecklistItem
+            onToggle={(completed) => updateTask(task.taskId, completed)}
+            isCompleted={farmTaskCompletion.get(task.taskId) ?? false}
+            label={task.name}
           />
-          <Text size="2">{task.name}</Text>
         </Button>
       </Dialog.Trigger>
       <Dialog.Content className="DialogContent">
@@ -101,35 +101,35 @@ export default function TaskDetails({
 
         <Dialog.Description>
           Bundle: {taskDetails?.bundle.name}
-          <Separator my="3" size="4" />
-          {calendarLoading ? (
-            <Text size="2" color="gray">
-              Loading calendar events...
-            </Text>
-          ) : calendarError ? (
-            <Text size="2" color="red">
-              Error loading calendar events: {calendarError}
-            </Text>
-          ) : calendarEvents.length > 0 ? (
-            calendarEvents.map((ce) => (
-              <div key={ce.id}>
-                <Text size="2" weight="medium">
-                  {ce.date}: {ce.name}
-                </Text>
-                {ce.description && (
-                  <Text size="2" color="gray" as="p">
-                    {ce.description}
-                  </Text>
-                )}
-              </div>
-            ))
-          ) : (
-            <Text size="2" color="gray">
-              No calendar events associated with this task.
-            </Text>
-          )}
-          <Separator my="3" size="4" />
         </Dialog.Description>
+        <Separator my="3" size="4" />
+        {calendarLoading ? (
+          <Text size="2" color="gray">
+            Loading calendar events...
+          </Text>
+        ) : calendarError ? (
+          <Text size="2" color="red">
+            Error loading calendar events: {calendarError}
+          </Text>
+        ) : calendarEvents.length > 0 ? (
+          calendarEvents.map((ce) => (
+            <div key={ce.id}>
+              <Text size="2" weight="medium">
+                {ce.date}: {ce.name}
+              </Text>
+              {ce.description && (
+                <Text size="2" color="gray" as="p">
+                  {ce.description}
+                </Text>
+              )}
+            </div>
+          ))
+        ) : (
+          <Text size="2" color="gray">
+            No calendar events associated with this task.
+          </Text>
+        )}
+        <Separator my="3" size="4" />
         <Dialog.Close>
           <Button
             my="3"

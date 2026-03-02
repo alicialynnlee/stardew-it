@@ -1,9 +1,8 @@
 'use client';
 
 import { TASK_TYPE_PALETTE } from '@/styles/tasks';
-import { FarmTaskCompletion, TaskId } from '@/types/tasks';
 import { TaskType } from '@/constants/taskTypes';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import { Button } from '@radix-ui/themes';
 
 const StyledTaskLabel = styled(Button)<{

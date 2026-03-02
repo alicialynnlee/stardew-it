@@ -49,7 +49,7 @@ export const sizeStyles: Record<ButtonSize, ReturnType<typeof css>> = {
   `,
 };
 
-function getVariantStyles(
+export function getButtonVariantStyles(
   variant: ButtonVariant,
   color: string,
   textColor: string
@@ -148,7 +148,7 @@ const StyledButton = styled(RadixButton)<{
   ${({ $fullWidth }) => $fullWidth && 'width: 100%;'}
   ${({ $size }) => sizeStyles[$size]}
   ${({ $variant, $color, $textColor }) =>
-    getVariantStyles($variant, $color, $textColor)}
+    getButtonVariantStyles($variant, $color, $textColor)}
 
   &:disabled {
     opacity: 0.45;

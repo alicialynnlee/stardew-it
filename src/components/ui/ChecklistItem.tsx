@@ -108,7 +108,6 @@ const CheckIcon = () => (
 const LabelText = styled.span<{
   $isCompleted: boolean;
 }>`
-  font-family: var(--font-roboto), sans-serif;
   font-size: 14px;
   line-height: 20px;
   flex: 1;
@@ -126,7 +125,6 @@ const LabelText = styled.span<{
 `;
 
 const TaskTypePill = styled.span<{ $bg: string; $color: string }>`
-  font-family: var(--font-roboto), sans-serif;
   font-size: 11px;
   font-weight: 500;
   padding: 2px 10px;
@@ -170,7 +168,10 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
       $isDisabled={isDisabled}
       $interactive={!!onToggle && !isDisabled}
       className={className}
-      onClick={handleClick}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleClick();
+      }}
       role="checkbox"
       aria-checked={isCompleted}
       aria-label={label}

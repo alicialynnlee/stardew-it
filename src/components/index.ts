@@ -11,3 +11,4 @@ export { default as UserMenu } from './user-menu/UserMenu';
 export { default as FarmList } from './farm-selector/FarmList';
 export { default as TaskLabel } from './task-label/TaskLabel';
 export { Button, Card, ChecklistItem } from './ui';
+export { default as ProgressBar } from './progress-bar/ProgressBar';
