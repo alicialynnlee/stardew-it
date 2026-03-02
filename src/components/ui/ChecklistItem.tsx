@@ -13,7 +13,7 @@ import {
 } from '@/styles/colors';
 
 export interface ChecklistItemProps {
-  label: string;
+  label?: string;
   isCompleted?: boolean;
   isDisabled?: boolean;
   taskType?: TaskType;
@@ -176,7 +176,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
       aria-label={label}
     >
       {renderCheckbox()}
-      <LabelText $isCompleted={isCompleted}>{label}</LabelText>
+      {label && <LabelText $isCompleted={isCompleted}>{label}</LabelText>}
       {taskType && palette && (
         <TaskTypePill $bg={palette.base} $color={palette.text}>
           {taskType}

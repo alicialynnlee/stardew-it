@@ -5,8 +5,9 @@ import { useSession } from 'next-auth/react';
 import FarmSelector from '../farm-selector/FarmSelector';
 import UserMenu from '../user-menu/UserMenu';
 import * as Styled from './Navbar.styled';
-import { Button, Card, Flex, Separator } from '@radix-ui/themes';
+import { Flex, Heading, Separator } from '@radix-ui/themes';
 import Jumino from '../jumino/Jumino';
+import { Card, Button } from '@/components';
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -18,11 +19,10 @@ export default function Navbar() {
           <Link href="/">
             <div>
               <Jumino size="sm" state="idle" />
-              Stardew It
+              <Heading>Stardew It</Heading>
             </div>
           </Link>
         </Styled.HomeContainer>
-        <Button loading />
       </Styled.Navbar>
     );
   }
@@ -33,13 +33,13 @@ export default function Navbar() {
         <Link href="/">
           <Styled.HomeContainer>
             <Jumino size="sm" state="idle" />
-            Stardew It
+            <Heading>Stardew It</Heading>
           </Styled.HomeContainer>
         </Link>
       </div>
       <Styled.AuthActions>
         {session ? (
-          <Card>
+          <Card className="auth-bar" variant="flat">
             <Flex direction="row" gap="2" align="center">
               <FarmSelector />
               <Separator orientation="vertical" decorative />
@@ -48,7 +48,7 @@ export default function Navbar() {
           </Card>
         ) : (
           <Link href="/auth">
-            <Button>Sign In</Button>
+            <Button variant="primary">Sign In</Button>
           </Link>
         )}
       </Styled.AuthActions>

@@ -1,14 +1,31 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  CrossCircledIcon,
-  PlusCircledIcon,
-  TrashIcon,
-  CheckCircledIcon,
-} from '@radix-ui/react-icons';
-import { Button, Flex, IconButton, Text, TextField } from '@radix-ui/themes';
+import { Flex, Separator, Text, TextField } from '@radix-ui/themes';
 import type { Farm } from '@prisma/client';
+import { Button, ChecklistItem } from '@/components';
+import styled from 'styled-components';
+import { sageDark, sageMist } from '@/styles/colors';
+import { PiPlusCircleFill, PiTrashLight } from 'react-icons/pi';
+
+const FarmOption = styled(Button)<{
+  $isSelected: boolean;
+}>`
+  flex: 1;
+  margin: 0;
+  justify-content: space-between;
+  border-radius: 8px;
+
+  ${({ $isSelected }) =>
+    $isSelected &&
+    `
+    background-color: ${sageMist};
+  `}
+
+  &:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.05);
+  }
+`;
 
 interface FarmListProps {
   farms: Farm[];
@@ -28,6 +45,7 @@ export default function FarmList({
   showOptions,
 }: FarmListProps) {
   const [newFarm, setNewFarm] = useState('');
+  const [showInput, setShowInput] = useState(false);
 
   const handleAdd = () => {
     if (!newFarm.trim()) return;
@@ -41,6 +59,7 @@ export default function FarmList({
         listStyle: 'none',
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'center',
         gap: '0.5rem',
         padding: 0,
         margin: 0,
@@ -54,76 +73,96 @@ export default function FarmList({
           style={{ width: '100%' }}
           key={farm.id}
         >
-          <Button
-            // TODO: handle selected style
+          <FarmOption
             variant="ghost"
+            size="sm"
             color="gray"
-            onClick={() => onSelectFarm(farm.id)}
-            style={{ flex: '1', margin: '0', justifyContent: 'space-between' }}
+            onClick={() =>
+              selectedFarmId === farm.id
+                ? onSelectFarm('')
+                : onSelectFarm(farm.id)
+            }
+            $isSelected={farm.id === selectedFarmId}
+            aria-label={
+              selectedFarmId === farm.id
+                ? `deselect farm ${farm.name}`
+                : `select farm ${farm.name}`
+            }
           >
             <Flex direction={'column'} align={'start'}>
               <Text weight="bold">{farm.name}</Text>
-              <Text>{farm.date}</Text>
+              <Text size="1" weight="regular">
+                {farm.date}
+              </Text>
             </Flex>
-          </Button>
-
-          {selectedFarmId === farm.id && showOptions && (
-            <IconButton
-              size="1"
-              variant="ghost"
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelectFarm('');
-              }}
-              title="Deselect farm"
-            >
-              <CrossCircledIcon />
-            </IconButton>
-          )}
-          {showOptions && (
-            <IconButton
-              size="1"
-              variant="ghost"
-              color="red"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDeleteFarm(farm.id);
-              }}
-              title="Delete farm"
-            >
-              <TrashIcon width="15" height="15" />
-            </IconButton>
-          )}
+            <Flex direction="row" gap="1" align="center">
+              {farm.id === selectedFarmId && <ChecklistItem isCompleted />}
+              {showOptions && (
+                <Button
+                  variant="icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteFarm(farm.id);
+                  }}
+                  aria-label="Delete farm"
+                  style={{ height: '25px', width: '25px' }}
+                >
+                  <PiTrashLight />
+                </Button>
+              )}
+            </Flex>
+          </FarmOption>
         </Flex>
       ))}
-      <Flex gapX="1" align="center" justify="between" style={{ width: '100%' }}>
-        <TextField.Root
-          placeholder="Add a new farm..."
-          value={newFarm}
-          style={{ flex: '1' }}
-          onChange={(e) => {
-            e.stopPropagation();
-            setNewFarm(e.target.value);
+      <Separator orientation="horizontal" style={{ width: '100%' }} />
+
+      {showInput ? (
+        <Flex
+          gapX="1"
+          align="center"
+          justify="between"
+          style={{
+            width: '100%',
+            flex: '1',
+            padding: '8px 0',
+            fontSize: '13px',
+            borderRadius: '50px',
+            gap: '6px',
           }}
-          onKeyDown={(e) => {
-            e.stopPropagation();
-            if (e.key === 'Enter') {
-              handleAdd();
-            }
-          }}
-        />
-        <IconButton
-          size="1"
-          variant="ghost"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAdd();
-          }}
-          disabled={!newFarm.trim()}
         >
-          <PlusCircledIcon height="15" width="15" />
-        </IconButton>
-      </Flex>
+          <TextField.Root
+            placeholder="Add a new farm..."
+            value={newFarm}
+            style={{ width: '80%', flex: '1' }}
+            onChange={(e) => {
+              e.stopPropagation();
+              setNewFarm(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              e.stopPropagation();
+              if (e.key === 'Enter') {
+                handleAdd();
+              }
+            }}
+          />
+          <Button
+            size="sm"
+            variant="primary"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAdd();
+            }}
+            disabled={!newFarm.trim()}
+          >
+            Add
+          </Button>
+        </Flex>
+      ) : (
+        <Button variant="ghost" onClick={() => setShowInput(true)}>
+          <PiPlusCircleFill />
+          Add new farm
+        </Button>
+      )}
     </ul>
   );
 }

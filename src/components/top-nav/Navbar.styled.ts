@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { charcoalBlack, whiteSmoke } from '@/styles/colors';
+import { charcoalBlack, mainWhite, whiteSmoke } from '@/styles/colors';
+import { sizeStyles } from '../ui/Button';
 
 export const Navbar = styled.nav`
   display: flex;
@@ -22,10 +23,10 @@ export const Home = styled.div`
 `;
 
 export const AuthActions = styled.div`
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  font-size: 1rem;
+  .auth-bar {
+    ${sizeStyles.sm}
+    background-color: ${mainWhite};
+  }
 `;
 
 export const AuthButton = styled.button`

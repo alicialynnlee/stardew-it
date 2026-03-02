@@ -131,7 +131,7 @@ const HeaderBrand = styled.div`
 `;
 
 const HeaderTitle = styled.div`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 20px;
   font-weight: 700;
   line-height: 25px;
@@ -152,7 +152,7 @@ const VersionBadge = styled.div`
   background: #f3ece7;
   border-radius: 50px;
   padding: 4px 12px;
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #9a6c4c;
@@ -187,7 +187,7 @@ const SidebarGroup = styled.div`
 `;
 
 const SidebarGroupLabel = styled.div`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 12px;
   font-weight: 700;
   line-height: 20px;
@@ -263,7 +263,7 @@ const SectionHeader = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 30px;
   font-weight: 700;
   line-height: 36px;
@@ -283,7 +283,7 @@ const SectionDesc = styled.p`
 /* ─── Hero ─── */
 
 const HeroTitle = styled.h1`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 48px;
   font-weight: 800;
   line-height: 48px;
@@ -323,7 +323,7 @@ const SubsectionHeadingRow = styled.div`
 `;
 
 const SubsectionTitle = styled.h3`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 24px;
   font-weight: 700;
   line-height: 32px;
@@ -356,7 +356,7 @@ const ColorCard = styled.div`
 `;
 
 const ColorCardTitle = styled.h4`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 28px;
@@ -395,14 +395,14 @@ const ColorNameRow = styled.div`
 `;
 
 const ColorName = styled.span`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: #1b130d;
 `;
 
 const ColorHex = styled.span`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: #1b130d;
@@ -429,7 +429,7 @@ const IllustrativeCard = styled.div`
 `;
 
 const IllustrativeLabel = styled.div`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #9a6c4c;
@@ -516,7 +516,7 @@ const WhiteCard = styled.div`
 `;
 
 const Subheading = styled.h4`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 28px;
@@ -563,7 +563,7 @@ const PrimaryBtn = styled.button`
   border: none;
   border-radius: 16px;
   padding: 10px 24px;
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -587,7 +587,7 @@ const SecondaryBtn = styled.button`
   border: 2px solid #f3ece7;
   border-radius: 16px;
   padding: 12px 25px;
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -603,7 +603,7 @@ const IconBtnStyled = styled.button`
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: #6b7c74;
@@ -625,7 +625,7 @@ const FarmSelectorBox = styled.div`
 `;
 
 const FarmSelectorLabel = styled.div`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #9a6c4c;
@@ -660,7 +660,7 @@ const FarmSelectorText = styled.span`
 `;
 
 const SpacingLabel = styled.div`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #9a6c4c;
@@ -729,7 +729,7 @@ const IconographyCol = styled.div`
 `;
 
 const IconCategoryLabel = styled.div`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: #9a6c4c;
@@ -873,7 +873,7 @@ const FeaturedCardContent = styled.div`
 `;
 
 const FeaturedCardTitle = styled.div`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 20px;
   font-weight: 700;
   line-height: 28px;
@@ -893,7 +893,7 @@ const FeaturedCardBtn = styled.button`
   border: none;
   border-radius: 24px;
   padding: 8px 16px;
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -945,7 +945,7 @@ const PrimaryBtnLg = styled.button`
   border: none;
   border-radius: 50px;
   padding: 12px 24px;
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -969,7 +969,7 @@ const SecondaryBtnLg = styled.button`
   border: 1px solid #f3ece7;
   border-radius: 50px;
   padding: 13px 25px;
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -980,7 +980,7 @@ const TextLinkBtn = styled.button`
   background: none;
   border: none;
   color: #ec6d13;
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -1029,7 +1029,7 @@ const SegmentBtn = styled.button<{ $active?: boolean }>`
   border: none;
   border-radius: 6px;
   padding: 6px 16px;
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 12px;
   font-weight: ${({ $active }) => ($active ? '700' : '500')};
   color: ${({ $active }) => ($active ? '#ec6d13' : '#9a6c4c')};
@@ -1087,7 +1087,7 @@ const StateIconCircle = styled.div<{ $bg: string; $shadow?: boolean }>`
 `;
 
 const StateLabel = styled.div<{ $color: string }>`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 16px;
   font-weight: 700;
   line-height: 24px;
@@ -1099,7 +1099,7 @@ const StateBadge = styled.div<{ $bg: string; $color: string }>`
   background: ${({ $bg }) => $bg};
   border-radius: 50px;
   padding: 4px 12px;
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: ${({ $color }) => $color};
@@ -1137,7 +1137,7 @@ const InputStatesCard = styled.div`
 `;
 
 const InputStateLabel = styled.div`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #9a6c4c;
@@ -1230,7 +1230,7 @@ const ProgressCol = styled.div`
 `;
 
 const ProgressHeadLabel = styled.div`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: #9a6c4c;
@@ -1246,14 +1246,14 @@ const ProgressLabelRow = styled.div`
 `;
 
 const ProgressBarLabel = styled.span`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #1b130d;
 `;
 
 const ProgressBarPct = styled.span<{ $color: string }>`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: ${({ $color }) => $color};
@@ -1337,7 +1337,7 @@ const CircleInner = styled.div<{ $size: number }>`
 `;
 
 const CircleLabel = styled.span<{ $size: 'lg' | 'sm' }>`
-  font-family: var(--font-publicSans), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
   font-size: ${({ $size }) => ($size === 'lg' ? '20px' : '12px')};
   font-weight: 700;
   color: ${({ $size }) => ($size === 'lg' ? '#ec6d13' : '#8da399')};
@@ -1948,7 +1948,7 @@ export default function DesignSystem2Page() {
                 <TypeLabelCell>Display H1</TypeLabelCell>
                 <h1
                   style={{
-                    fontFamily: 'var(--font-publicSans), sans-serif',
+                    fontFamily: 'var(--font-montserrat), sans-serif',
                     fontSize: 48,
                     fontWeight: 800,
                     lineHeight: '48px',
@@ -1964,7 +1964,7 @@ export default function DesignSystem2Page() {
                 <TypeLabelCell>Heading H2</TypeLabelCell>
                 <h2
                   style={{
-                    fontFamily: 'var(--font-publicSans), sans-serif',
+                    fontFamily: 'var(--font-montserrat), sans-serif',
                     fontSize: 30,
                     fontWeight: 700,
                     lineHeight: '36px',
@@ -1979,7 +1979,7 @@ export default function DesignSystem2Page() {
                 <TypeLabelCell>Heading H3</TypeLabelCell>
                 <h3
                   style={{
-                    fontFamily: 'var(--font-publicSans), sans-serif',
+                    fontFamily: 'var(--font-montserrat), sans-serif',
                     fontSize: 20,
                     fontWeight: 700,
                     lineHeight: '28px',
@@ -2010,7 +2010,7 @@ export default function DesignSystem2Page() {
                 <TypeLabelCell>Caption / Label</TypeLabelCell>
                 <span
                   style={{
-                    fontFamily: 'var(--font-publicSans), sans-serif',
+                    fontFamily: 'var(--font-montserrat), sans-serif',
                     fontSize: 12,
                     fontWeight: 700,
                     color: '#9a6c4c',
@@ -2046,7 +2046,7 @@ export default function DesignSystem2Page() {
                     <div>
                       <div
                         style={{
-                          fontFamily: 'var(--font-publicSans), sans-serif',
+                          fontFamily: 'var(--font-montserrat), sans-serif',
                           fontSize: 18,
                           fontWeight: 700,
                           color: '#1b130d',
@@ -2089,7 +2089,7 @@ export default function DesignSystem2Page() {
                     />
                     <div
                       style={{
-                        fontFamily: 'var(--font-publicSans), sans-serif',
+                        fontFamily: 'var(--font-montserrat), sans-serif',
                         fontSize: 18,
                         fontWeight: 700,
                         color: '#1b130d',
