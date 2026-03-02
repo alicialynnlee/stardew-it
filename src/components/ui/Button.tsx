@@ -2,17 +2,12 @@
 
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { Button as RadixButton } from '@radix-ui/themes';
 import {
   pumpkinOrange,
-  pumpkinRust,
-  pumpkinCream,
   mainCreamDark,
   mainBlack,
   mainWhite,
-  sageGreen,
-  sageDark,
-  sageMist,
-  springBg,
 } from '@/styles/colors';
 
 export type ButtonVariant =
@@ -33,7 +28,7 @@ export interface ButtonProps
   children: React.ReactNode;
 }
 
-const sizeStyles: Record<ButtonSize, ReturnType<typeof css>> = {
+export const sizeStyles: Record<ButtonSize, ReturnType<typeof css>> = {
   sm: css`
     padding: 8px 16px;
     font-size: 13px;
@@ -105,14 +100,13 @@ function getVariantStyles(
         background: none;
         color: ${color};
         border: none;
-        padding-left: 0;
-        padding-right: 0;
         box-shadow: none;
 
         &:hover:not(:disabled) {
           color: ${color};
         }
       `;
+
     case 'icon':
       return css`
         background: ${mainWhite};
@@ -131,7 +125,7 @@ function getVariantStyles(
   }
 }
 
-const StyledButton = styled.button<{
+const StyledButton = styled(RadixButton)<{
   $variant: ButtonVariant;
   $size: ButtonSize;
   $color: string;
@@ -141,7 +135,6 @@ const StyledButton = styled.button<{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-publicSans), sans-serif;
   font-weight: 700;
   cursor: pointer;
   transition:
@@ -150,6 +143,7 @@ const StyledButton = styled.button<{
     box-shadow 0.15s ease;
   white-space: nowrap;
   line-height: 1.25;
+  height: unset;
 
   ${({ $fullWidth }) => $fullWidth && 'width: 100%;'}
   ${({ $size }) => sizeStyles[$size]}

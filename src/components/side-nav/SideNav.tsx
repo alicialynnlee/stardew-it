@@ -9,8 +9,10 @@ import {
 import * as Styled from './SideNav.styled';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Card, Flex } from '@radix-ui/themes';
+import { Flex } from '@radix-ui/themes';
 import Link from 'next/link';
+import { Card } from '@/components';
+import { mainDarkText, sageGreen } from '@/styles/colors';
 
 const NAV_ITEMS = [
   {
@@ -39,7 +41,7 @@ const SideNav: React.FC = () => {
 
   return (
     <Styled.SideNavContainer $isOpen={isOpen}>
-      <Card style={{ height: '100%', width: '100%' }}>
+      <Card className="nav-card" padding="sm">
         <Flex
           direction="column"
           justify="between"

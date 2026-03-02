@@ -4,6 +4,8 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { DropdownMenu, Avatar, Text, Button } from '@radix-ui/themes';
 import { GearIcon, ExitIcon, CaretDownIcon } from '@radix-ui/react-icons';
+import { mainDarkText, mainWhite, pumpkinOrange } from '@/styles/colors';
+import { Button as ButtonUI } from '@/components';
 
 export default function UserMenu() {
   const { data: session } = useSession();
@@ -17,20 +19,19 @@ export default function UserMenu() {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <Button variant="ghost" size="3" style={{ margin: '0 8px' }}>
-          <Avatar size="1" fallback={initials} radius="full" variant="soft" />
+        <ButtonUI variant="ghost" size="sm" color={mainDarkText}>
+          <Avatar size="1" fallback={initials} radius="full" variant="solid" />
           {userName}
-          <CaretDownIcon />
-        </Button>
+        </ButtonUI>
       </DropdownMenu.Trigger>
 
-      <DropdownMenu.Content align="end" sideOffset={8}>
+      <DropdownMenu.Content align="end" sideOffset={8} variant="soft">
         <DropdownMenu.Item onSelect={() => router.push('/settings')}>
-          <GearIcon /> Settings
+          Settings
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
         <DropdownMenu.Item color="red" onSelect={() => signOut()}>
-          <ExitIcon /> Logout
+          Logout
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>

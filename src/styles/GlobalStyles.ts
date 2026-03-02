@@ -6,7 +6,6 @@ import { mainBlack, mainBackground } from './colors';
 const GlobalStyles = createGlobalStyle`
   :root {
     --background: ${mainBackground};
-    --color-background: ${mainBackground};
     --foreground: ${mainBlack};
 
     /* Custom theme colors - Light mode */
@@ -124,6 +123,10 @@ const GlobalStyles = createGlobalStyle`
 
   // radix
   .radix-themes {
+    --color-background: ${mainBackground};
+    --default-font-family: var(--font-roboto);
+    --heading-font-family: var(--font-montserrat);
+
     --cursor-button: pointer;
     --cursor-checkbox: pointer;
     --cursor-disabled: default;
@@ -165,9 +168,6 @@ const GlobalStyles = createGlobalStyle`
     --accent-a10: var(--custom-a10);
     --accent-a11: var(--custom-a11);
     --accent-a12: var(--custom-a12);
-
-    --default-font-family: var(--font-roboto);
-    --heading-font-family: var(--font-publicSans);
   }
 `;
 

@@ -1,31 +1,36 @@
 import styled from 'styled-components';
 import { Text } from '@radix-ui/themes';
 import Link from 'next/link';
+import { sageDark } from '@/styles/colors';
+import { sizeStyles } from '../ui/Button';
 
 export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
   height: 100%;
   flex-shrink: 0;
   overflow-y: auto;
-  width: ${(props) => (props.$isOpen ? '17rem' : '6.6rem')};
+  width: ${(props) => (props.$isOpen ? '17rem' : '9.3rem')};
   padding: 1.5rem;
   transition: width 0.3s ease-in-out;
   z-index: 2;
 
+  .nav-card {
+    height: 100%;
+  }
+
   .nav-item {
     text-decoration: none;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    padding: 0.5rem;
-    border-radius: 8px;
-    gap: 0.5rem;
     transition: all 0.3s;
+    ${sizeStyles.md}
 
     &:not(.active):hover {
       background-color: var(--accent-a3);
       color: var(--accent-a12);
     }
     &.active {
-      background-color: var(--accent-a9);
+      background-color: ${sageDark};
       color: var(--custom-contrast);
     }
   }
