@@ -48,28 +48,27 @@ export default function EventDetails({
           </Styled.CloseButton>
         </Dialog.Close>
         <Dialog.Title>{event.name}</Dialog.Title>
-        <Dialog.Description>
-          <Flex direction="row" gap="1">
-            <Text size="3" weight="bold">
-              {event.date === 'year-round' ? 'Year Round' : event.date}
-            </Text>
-            {/* TODO: vars not available because dialog renders outside. */}
-            <Badge
-              style={{
-                backgroundColor: `var(--task-color-${event.type}, #D9D9D9)`,
-                color: `color-mix(in oklab, var(--task-color-${event.type}), black 60%)`,
-              }}
-            >
-              {event.type}
-            </Badge>
-          </Flex>
-          {event.description && (
-            <Text size="2" color="gray">
-              <br />
-              {event.description}
-            </Text>
-          )}
-        </Dialog.Description>
+
+        <Flex direction="row" gap="1">
+          <Text size="3" weight="bold">
+            {event.date === 'year-round' ? 'Year Round' : event.date}
+          </Text>
+          {/* TODO: vars not available because dialog renders outside. */}
+          <Badge
+            style={{
+              backgroundColor: `var(--task-color-${event.type}, #D9D9D9)`,
+              color: `color-mix(in oklab, var(--task-color-${event.type}), black 60%)`,
+            }}
+          >
+            {event.type}
+          </Badge>
+        </Flex>
+        {event.description && (
+          <Dialog.Description>
+            <br />
+            {event.description}
+          </Dialog.Description>
+        )}
         {event.tasks && event.tasks.length > 0 && (
           <div>
             <Separator my="3" size="4" />

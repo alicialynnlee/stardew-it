@@ -19,7 +19,7 @@ const paddingMap: Record<CardPadding, string> = {
   lg: '33px',
 };
 
-function getVariantStyles(
+export function getCardVariantStyles(
   variant: CardVariant,
   color: string,
   textColor: string
@@ -71,7 +71,7 @@ const StyledCard = styled.div<{
   $textColor: string;
 }>`
   ${({ $variant, $color, $textColor }) =>
-    getVariantStyles($variant, $color, $textColor)}
+    getCardVariantStyles($variant, $color, $textColor)}
   padding: ${({ $padding }) => paddingMap[$padding]};
   position: relative;
   overflow: hidden;
