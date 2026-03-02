@@ -148,7 +148,9 @@ export default function TrackerClient({
               key={`trigger-${room.roomId}`}
               onClick={() => setActiveRoom(room)}
               aria-label={room.roomName}
-              $isSelected={activeRoom && activeRoom.roomId === room.roomId}
+              $isSelected={
+                activeRoom ? activeRoom.roomId === room.roomId : false
+              }
             >
               <Flex
                 align="center"
