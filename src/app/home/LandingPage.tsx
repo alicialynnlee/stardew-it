@@ -38,14 +38,14 @@ const Container = styled.div`
 `;
 
 const Tagline = styled.p`
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
   color: ${sageGreen};
   text-align: center;
   margin: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 `;
 
 const HeroSection = styled.section`
@@ -214,7 +214,7 @@ export default function LandingPage() {
       <Container>
         {/* Hero Section */}
         <HeroSection>
-          <Tagline>Stardew Valley Companion</Tagline>
+          <Tagline>Organize Your Homestead</Tagline>
           <MainHeading>Your Digital Farming Companion</MainHeading>
           <SubHeading>
             Manage your crops, tasks, and festivals across all your farms in one cozy place. Track your progress season by season.
