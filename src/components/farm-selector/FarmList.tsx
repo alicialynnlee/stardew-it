@@ -5,7 +5,7 @@ import { Flex, Separator, Text, TextField } from '@radix-ui/themes';
 import type { Farm } from '@prisma/client';
 import { Button, ChecklistItem } from '@/components';
 import styled from 'styled-components';
-import { sageDark, sageMist } from '@/styles/colors';
+import { sageMist } from '@/styles/colors';
 import { PiPlusCircleFill, PiTrashLight } from 'react-icons/pi';
 
 const FarmOption = styled(Button)<{
@@ -55,6 +55,7 @@ export default function FarmList({
 
   return (
     <ul
+      id="farm-selector"
       style={{
         listStyle: 'none',
         display: 'flex',

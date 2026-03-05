@@ -238,13 +238,13 @@ export default function DashboardClient({
               </Heading>
               <Flex direction="column" gap="3">
                 {upcomingEvents && upcomingEvents.length > 0 ? (
-                  upcomingEvents.map((event) => {
+                  upcomingEvents.map((event, idx) => {
                     const TaskIcon =
                       TASK_CONFIG[(event.type as TaskType) ?? 'other'].icon;
                     const taskColor =
                       TASK_CONFIG[(event.type as TaskType) ?? 'other'].color;
                     return (
-                      <Flex direction="row" gap="2" align="center">
+                      <Flex direction="row" gap="2" align="center" key={idx}>
                         <IconCircle icon={TaskIcon} color={taskColor} />
                         <Flex direction="column" justify="center">
                           <Text weight="bold" size="1">
