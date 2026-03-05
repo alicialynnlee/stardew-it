@@ -12,7 +12,7 @@ import {
 } from '@radix-ui/themes';
 import TaskDetails from '../task-details/TaskDetails';
 import { BUNDLE_CONFIG, DEFAULT_BUNDLE_CONFIG } from '@/constants/bundleConfig';
-import { mainBlack, mainDarkText, mainWhite } from '@/styles/colors';
+import { mainBlack, mainWhite } from '@/styles/colors';
 import styled from 'styled-components';
 
 const IconContainer = styled(IconButton)<{ $bundleColor: string }>`

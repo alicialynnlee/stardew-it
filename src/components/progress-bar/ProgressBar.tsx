@@ -1,6 +1,6 @@
 'use client';
 
-import { mainWhite, pumpkinOrange } from '@/styles/colors';
+import { mainCreamDark, mainWhite, pumpkinOrange } from '@/styles/colors';
 import styled from 'styled-components';
 
 const ProgressBarContainer = styled.div`
@@ -8,6 +8,7 @@ const ProgressBarContainer = styled.div`
   height: 20px;
   border-radius: 12px;
   background: ${mainWhite};
+  border: 1px solid ${mainCreamDark};
   display: flex;
   align-items: center;
   padding: 3px;

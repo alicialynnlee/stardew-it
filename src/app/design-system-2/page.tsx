@@ -212,7 +212,7 @@ const SidebarNavLink = styled.a<{ $active?: boolean }>`
     $active ? 'rgba(243, 236, 231, 0.5)' : 'transparent'};
   cursor: pointer;
   text-decoration: none;
-  color: ${({ $active }) => ($active ? '#ec6d13' : '#1b130d')};
+  color: ${({ $active }) => ($active ? '#C16A4D' : '#1b130d')};
   font-family: var(--font-roboto), sans-serif;
   font-size: 16px;
   font-weight: ${({ $active }) => ($active ? '500' : '400')};
@@ -558,7 +558,7 @@ const BtnGroup = styled.div`
 `;
 
 const PrimaryBtn = styled.button`
-  background: #ec6d13;
+  background: #c16a4d;
   color: white;
   border: none;
   border-radius: 16px;
@@ -850,7 +850,7 @@ const InteractiveCorner = styled.div`
 `;
 
 const FeaturedCard = styled.div`
-  background: #ec6d13;
+  background: #c16a4d;
   border-radius: 32px;
   padding: 24px;
   box-shadow:
@@ -889,7 +889,7 @@ const FeaturedCardDesc = styled.div`
 
 const FeaturedCardBtn = styled.button`
   background: white;
-  color: #ec6d13;
+  color: #c16a4d;
   border: none;
   border-radius: 24px;
   padding: 8px 16px;
@@ -940,7 +940,7 @@ const BtnDemoItem = styled.div`
 `;
 
 const PrimaryBtnLg = styled.button`
-  background: #ec6d13;
+  background: #c16a4d;
   color: white;
   border: none;
   border-radius: 50px;
@@ -979,7 +979,7 @@ const SecondaryBtnLg = styled.button`
 const TextLinkBtn = styled.button`
   background: none;
   border: none;
-  color: #ec6d13;
+  color: #c16a4d;
   font-family: var(--font-montserrat), sans-serif;
   font-size: 16px;
   font-weight: 700;
@@ -1032,7 +1032,7 @@ const SegmentBtn = styled.button<{ $active?: boolean }>`
   font-family: var(--font-montserrat), sans-serif;
   font-size: 12px;
   font-weight: ${({ $active }) => ($active ? '700' : '500')};
-  color: ${({ $active }) => ($active ? '#ec6d13' : '#9a6c4c')};
+  color: ${({ $active }) => ($active ? '#C16A4D' : '#9a6c4c')};
   cursor: pointer;
   box-shadow: ${({ $active }) =>
     $active ? '0 1px 2px 0 rgba(0,0,0,0.05)' : 'none'};
@@ -1122,7 +1122,7 @@ const StateProgressFill = styled.div<{ $w: string }>`
   top: 0;
   bottom: 0;
   width: ${({ $w }) => $w};
-  background: #ec6d13;
+  background: #c16a4d;
   border-radius: 50px;
 `;
 
@@ -1165,8 +1165,8 @@ const CheckboxChecked = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 16px;
-  background: #ec6d13;
-  border: 1px solid #ec6d13;
+  background: #c16a4d;
+  border: 1px solid #c16a4d;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1340,7 +1340,7 @@ const CircleLabel = styled.span<{ $size: 'lg' | 'sm' }>`
   font-family: var(--font-montserrat), sans-serif;
   font-size: ${({ $size }) => ($size === 'lg' ? '20px' : '12px')};
   font-weight: 700;
-  color: ${({ $size }) => ($size === 'lg' ? '#ec6d13' : '#8da399')};
+  color: ${({ $size }) => ($size === 'lg' ? '#C16A4D' : '#8da399')};
 `;
 
 // === Page Component ===
@@ -1527,11 +1527,11 @@ export default function DesignSystem2Page() {
                 <ColorCard>
                   <ColorCardTitle>Secondary Tones</ColorCardTitle>
                   <ColorRow>
-                    <ColorSwatch $color="#ec6d13" />
+                    <ColorSwatch $color="#C16A4D" />
                     <ColorInfo>
                       <ColorNameRow>
                         <ColorName>Pumpkin Orange</ColorName>
-                        <ColorHex>#EC6D13</ColorHex>
+                        <ColorHex>#C16A4D</ColorHex>
                       </ColorNameRow>
                       <ColorDesc>Main action color, brand identity.</ColorDesc>
                     </ColorInfo>
@@ -2205,7 +2205,7 @@ export default function DesignSystem2Page() {
                 <StateIconCircle $bg="rgba(236,109,19,0.1)">
                   <img src={CO_INPROGRESS_ICON} alt="" />
                 </StateIconCircle>
-                <StateLabel $color="#ec6d13">In Progress</StateLabel>
+                <StateLabel $color="#C16A4D">In Progress</StateLabel>
                 <StateProgressBar>
                   <StateProgressFill $w="50%" />
                 </StateProgressBar>
@@ -2263,10 +2263,10 @@ export default function DesignSystem2Page() {
                 <div>
                   <ProgressLabelRow>
                     <ProgressBarLabel>Total Completion</ProgressBarLabel>
-                    <ProgressBarPct $color="#ec6d13">65%</ProgressBarPct>
+                    <ProgressBarPct $color="#C16A4D">65%</ProgressBarPct>
                   </ProgressLabelRow>
                   <ProgressBarOuter>
-                    <ProgressBarFill $w="65%" $color="#ec6d13" />
+                    <ProgressBarFill $w="65%" $color="#C16A4D" />
                   </ProgressBarOuter>
                 </div>
 
@@ -2286,7 +2286,7 @@ export default function DesignSystem2Page() {
               <ProgressCol>
                 <ProgressHeadLabel>Circular &amp; Radial</ProgressHeadLabel>
                 <CircleRow>
-                  <CircleProgress $size={80} $pct={75} $color="#ec6d13">
+                  <CircleProgress $size={80} $pct={75} $color="#C16A4D">
                     <CircleInner $size={64}>
                       <CircleLabel $size="lg">75%</CircleLabel>
                     </CircleInner>
