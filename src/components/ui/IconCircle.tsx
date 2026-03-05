@@ -4,6 +4,7 @@ import { ComponentPropsWithoutRef } from 'react';
 import { Box } from '@radix-ui/themes';
 import { IconType } from 'react-icons';
 import styled from 'styled-components';
+import { sageGreen } from '@/styles/colors';
 
 const StyledCircle = styled(Box)<{ $color: string }>`
   display: flex;
@@ -18,27 +19,20 @@ const StyledCircle = styled(Box)<{ $color: string }>`
 export interface IconCircleProps
   extends Omit<ComponentPropsWithoutRef<typeof Box>, 'color'> {
   icon: IconType;
-  color: string;
+  color?: string;
   iconSize?: number;
 }
 
 export function IconCircle({
   icon: Icon,
-  color,
+  color = sageGreen,
   iconSize = 16,
   width = '36px',
   height = '36px',
-  style,
-  ...rest
+  ...props
 }: IconCircleProps) {
   return (
-    <StyledCircle
-      $color={color}
-      width={width}
-      height={height}
-      style={style}
-      {...rest}
-    >
+    <StyledCircle $color={color} width={width} height={height} {...props}>
       <Icon size={iconSize} />
     </StyledCircle>
   );

@@ -25,6 +25,7 @@ import {
 } from 'react-icons/pi';
 import { ProgressBar } from '@/components';
 import * as Styled from './home.styled';
+import TipsSection from './TipsSection';
 
 const CTAContainer = styled.div`
   display: flex;
@@ -133,18 +134,18 @@ export default function LandingPage() {
             size="lg"
             onClick={() => {
               // Scroll to features section
-              document.querySelector('[data-features]')?.scrollIntoView({
+              document.querySelector('#tips')?.scrollIntoView({
                 behavior: 'smooth',
               });
             }}
           >
-            Learn More
+            Read Tips
           </Button>
         </CTAContainer>
       </Styled.HeroSection>
 
       {/* Features Section */}
-      <Grid columns="3" gap="6">
+      <Grid columns="3" gap="6" mb="6">
         {/* Track Seasons */}
         <Link href="/tracker">
           <FeatureCard>
@@ -237,12 +238,15 @@ export default function LandingPage() {
                 Never miss a bundle or harvest day again
               </Text>
               {/* TODO: center this card vertically in the remaining card space*/}
-              {/* TODO: fill this card in with something from the calendar*/}
+              {/* TODO: fill this card in with something from the calendar, maybe a day box*/}
               <Card variant="flat">{'stuff'}</Card>
             </Flex>
           </FeatureCard>
         </Link>
       </Grid>
+
+      {/* Tips Section */}
+      <TipsSection />
     </Styled.Wrapper>
   );
 }

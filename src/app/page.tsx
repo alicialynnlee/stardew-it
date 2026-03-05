@@ -42,9 +42,14 @@ export default function Home() {
     return <LandingPage />;
   }
 
+  // Logged in but farm loading
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   // Logged in but no farm selected → Show prompt
   if (!selectedFarmId) {
-    return <NoFarmSelected />;
+    return <NoFarmSelected username={session.user.name} />;
   }
 
   // Logged in + farm selected → Show dashboard

@@ -5,66 +5,22 @@ import { useSeasonalContext, useSelectedDay } from '@/contexts/SeasonalContext';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { useTasks } from '@/hooks/useTasks';
 import { useRooms } from '@/hooks/useRooms';
-import styled from 'styled-components';
 import Link from 'next/link';
-import { Card, Button, ProgressBar, ChecklistItem } from '@/components';
-import { SEASONAL_PALETTES } from '@/styles/seasonal';
-import { TASK_TYPE_PALETTE } from '@/styles/tasks';
 import {
-  Box,
-  Flex,
-  Text,
-  Spinner,
-  Heading,
-  Badge,
-  Grid,
-  IconButton,
-} from '@radix-ui/themes';
+  Card,
+  Button,
+  ProgressBar,
+  ChecklistItem,
+  IconCircle,
+} from '@/components';
+import { Flex, Text, Spinner, Heading, Grid } from '@radix-ui/themes';
 import { CalendarEventWithTasks, Day } from '@/types/calendar';
-import * as Styled from './home.styled';
 import { mainCreamDark, mainDarkText, mainWhite } from '@/styles/colors';
-import { CalendarIcon } from '@radix-ui/react-icons';
-import {
-  PiCheckCircleLight,
-  PiLightbulbLight,
-  PiPlantLight,
-} from 'react-icons/pi';
+import { PiPlantLight } from 'react-icons/pi';
 import { SEASONS } from '@/constants/calendar';
 import { TASK_CONFIG, TaskType } from '@/constants/taskTypes';
-
-const SectionTitle = styled.h2`
-  font-size: 1.5rem;
-  margin: 2rem 0 1rem;
-  color: var(--foreground);
-`;
-
-const TipsSection = styled.div<{ $color: string }>`
-  background: ${({ $color }) => {
-    // Adjust opacity based on the primary color
-    return `${$color}15`;
-  }};
-  border: 2px solid ${({ $color }) => $color};
-  border-radius: 16px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-`;
-
-const TipsList = styled.ol<{ $color: string }>`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-
-  li {
-    margin-bottom: 0.75rem;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--foreground);
-  }
-
-  li strong {
-    color: ${({ $color }) => $color};
-  }
-`;
+import TipsSection from './TipsSection';
+import * as Styled from './home.styled';
 
 // Motivational quotes by season
 const QUOTES = {
@@ -77,35 +33,6 @@ const QUOTES = {
     'Even in the quietest season, the most important work happens in stillness and planning.',
 };
 
-// Tips for the dashboard
-const TIPS = [
-  {
-    title: 'Choose the fruit bat cave.',
-    description:
-      'It drops forageable fruits you need for bundles — the mushroom cave is tempting but harder to replace.',
-  },
-  {
-    title: 'Check the Traveling Cart every Friday & Saturday.',
-    description:
-      'She stocks rare items like Red Cabbage seeds that can save your Year 1 run.',
-  },
-  {
-    title: 'Pick the Year 1 Completable option for Red Cabbage.',
-    description:
-      'In the remixed bundles setting, this guarantees Red Cabbage is obtainable without relying on luck.',
-  },
-  {
-    title: 'Save one of everything.',
-    description:
-      'Fish, crops, foraged items — if it looks unique, stash it in a chest. Future-you will be grateful.',
-  },
-  {
-    title: 'Plan your rainy days.',
-    description:
-      'Rain means free watering, so use those days to mine, fish, or forage instead. Every energy point counts in Year 1.',
-  },
-];
-
 export default function DashboardClient({
   username,
   selectedFarmId,
@@ -113,9 +40,9 @@ export default function DashboardClient({
   username: string | null;
   selectedFarmId: string | null;
 }) {
-  const { currentSeason, palette } = useSeasonalContext();
+  const { currentSeason } = useSeasonalContext();
   const selectedDay = useSelectedDay();
-  const { calendarEvents, isLoading, error } = useCalendarEvents();
+  const { calendarEvents, isLoading } = useCalendarEvents();
   const { farmTaskCompletion } = useTasks(selectedFarmId);
   const { roomCollection } = useRooms();
   const [todayEvents, setTodayEvents] = useState<CalendarEventWithTasks[]>([]);
@@ -203,6 +130,7 @@ export default function DashboardClient({
     setNextFestival(nextEvent);
   }, [selectedDay, calendarEvents]);
 
+  // Get title greeting
   const getGreeting = () => {
     let greeting = 'Good Evening';
     const hour = new Date().getHours();
@@ -229,16 +157,12 @@ export default function DashboardClient({
         </Heading>
 
         <Styled.Tagline>
-          <Badge color="gray" size="1">
-            <CalendarIcon />
-            {selectedDay}
-          </Badge>{' '}
-          {quote}
+          {selectedDay} - {quote}
         </Styled.Tagline>
       </Styled.HeroSection>
 
       {/* Community Center Progress */}
-      <Card>
+      <Card variant="tinted">
         <Flex direction="column" gapY="2">
           <Heading weight="bold">Community Center Progress</Heading>
           <Heading
@@ -294,10 +218,7 @@ export default function DashboardClient({
                   justify="center"
                   align="center"
                 >
-                  {/* TODO: replace these with UI component for round unclickable icon button */}
-                  <IconButton>
-                    <PiPlantLight width="18" height="18" />
-                  </IconButton>
+                  <IconCircle icon={PiPlantLight} width="18" height="18" />
                   <Text size="2" weight="bold" style={{ color: mainDarkText }}>
                     Everything is tended to!
                   </Text>
@@ -324,13 +245,7 @@ export default function DashboardClient({
                       TASK_CONFIG[(event.type as TaskType) ?? 'other'].color;
                     return (
                       <Flex direction="row" gap="2" align="center">
-                        {/* TODO: replace these with UI component for round unclickable icon button */}
-                        <IconButton
-                          size="1"
-                          style={{ backgroundColor: taskColor }}
-                        >
-                          <TaskIcon width="10" height="10" />
-                        </IconButton>
+                        <IconCircle icon={TaskIcon} color={taskColor} />
                         <Flex direction="column" justify="center">
                           <Text weight="bold" size="1">
                             {event.name}
@@ -349,10 +264,7 @@ export default function DashboardClient({
                     justify="center"
                     align="center"
                   >
-                    {/* TODO: replace these with UI component for round unclickable icon button */}
-                    <IconButton>
-                      <PiPlantLight width="18" height="18" />
-                    </IconButton>
+                    <IconCircle icon={PiPlantLight} />
                     <Text
                       size="2"
                       weight="bold"
@@ -365,6 +277,9 @@ export default function DashboardClient({
                     </Text>
                   </Flex>
                 )}
+                <Link href="/calendar">
+                  <Button variant="ghost">See all events</Button>
+                </Link>
               </Flex>
             </Flex>
           </Card>
@@ -385,22 +300,7 @@ export default function DashboardClient({
       </Grid>
 
       {/* Tips Section */}
-      <Card variant="tinted">
-        {/* TODO: replace these with UI component for round unclickable icon button */}
-        <IconButton>
-          <PiLightbulbLight width="18" height="18" />
-        </IconButton>
-        <Heading weight="bold" size="3" style={{ color: mainDarkText }}>
-          Year 1 Survival Tips
-        </Heading>
-        <TipsList $color={palette.primary}>
-          {TIPS.map((tip, idx) => (
-            <li key={idx}>
-              <strong>{tip.title}</strong> {tip.description}
-            </li>
-          ))}
-        </TipsList>
-      </Card>
+      <TipsSection />
     </Styled.Wrapper>
   );
 }
