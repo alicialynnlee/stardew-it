@@ -1,6 +1,5 @@
 'use client';
 
-import * as Styled from './Calendar.styled';
 import {
   Button,
   Flex,
@@ -20,12 +19,12 @@ import {
   Day,
   CalendarEventWithTasks,
   CalendarEventData,
-  Season,
 } from '@/types/calendar';
 import { FarmTaskCompletion } from '@/types/tasks';
 import { useState, useMemo } from 'react';
 import { TaskType, TASK_TYPE_LIST } from '@/constants/taskTypes';
 import { TaskLabel } from '@/components';
+import * as Styled from './Calendar.styled';
 
 function getEventCompletion(
   event: CalendarEventWithTasks,

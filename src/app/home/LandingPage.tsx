@@ -74,57 +74,6 @@ const FeatureIcon = styled(IconButton)<{
   }
 `;
 
-const FeatureTitle = styled.h3`
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: ${mainBlack};
-  margin: 0;
-`;
-
-const FeatureDescription = styled.p`
-  font-size: 1rem;
-  color: #666;
-  margin: 0;
-  line-height: 1.6;
-`;
-
-const SampleItems = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0.5rem 0 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  font-size: 0.95rem;
-  color: #666;
-
-  li {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    &::before {
-      content: '✓';
-      color: ${sageGreen};
-      font-weight: bold;
-    }
-  }
-`;
-
-const CallToActionLink = styled(Link)`
-  text-decoration: none;
-  color: inherit;
-  width: fit-content;
-
-  @media (max-width: 480px) {
-    width: 100%;
-
-    button {
-      width: 100%;
-    }
-  }
-`;
-
 export default function LandingPage() {
   return (
     <Styled.Wrapper>

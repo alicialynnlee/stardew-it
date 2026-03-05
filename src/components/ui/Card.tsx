@@ -101,8 +101,9 @@ export default function Card({
   color = pumpkinOrange,
   textColor = mainWhite,
   className,
-  children,
   onClick,
+  children,
+  ...props
 }: {
   variant?: CardVariant;
   padding?: CardPadding;
@@ -121,6 +122,7 @@ export default function Card({
       $clickable={!!onClick}
       className={className}
       onClick={onClick}
+      {...props}
     >
       {children}
     </StyledCard>
