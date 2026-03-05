@@ -99,11 +99,19 @@ const GlobalStyles = createGlobalStyle`
   }
 
   main {
-    padding: 1.5rem;
+    padding: 1rem;
     flex: 1;
     min-height: 0;
     overflow-y: auto;
     width: 100%;
+
+    @media (min-width: 641px) {
+      padding: 1.5rem;
+    }
+
+    @media (min-width: 1025px) {
+      padding: 2rem;
+    }
   }
 
   * {

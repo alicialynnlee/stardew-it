@@ -3,6 +3,7 @@ import { Text } from '@radix-ui/themes';
 import Link from 'next/link';
 import { sageDark } from '@/styles/colors';
 import { sizeStyles } from '../ui/Button';
+import { BREAKPOINTS } from '@/styles/responsive';
 
 export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
   height: 100%;
@@ -12,6 +13,11 @@ export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
   padding: 1.5rem;
   transition: width 0.3s ease-in-out;
   z-index: 2;
+
+  /* Hide side nav on mobile, show as horizontal nav instead */
+  @media (max-width: ${BREAKPOINTS.mobile}px) {
+    display: none;
+  }
 
   .nav-card {
     height: 100%;

@@ -9,6 +9,7 @@ import {
   mainBlack,
   mainWhite,
 } from '@/styles/colors';
+import { BREAKPOINTS } from '@/styles/responsive';
 
 export type ButtonVariant =
   | 'primary'
@@ -30,22 +31,41 @@ export interface ButtonProps
 
 export const sizeStyles: Record<ButtonSize, ReturnType<typeof css>> = {
   sm: css`
+    /* Mobile: ensure 48px touch target */
     padding: 8px 16px;
+    min-height: 40px;
     font-size: 13px;
     border-radius: 50px;
     gap: 6px;
+
+    @media (max-width: ${BREAKPOINTS.mobile}px) {
+      min-height: 44px;
+    }
   `,
   md: css`
+    /* Mobile: ensure 48px touch target */
     padding: 12px 24px;
+    min-height: 44px;
     font-size: 14px;
     border-radius: 50px;
     gap: 8px;
+
+    @media (max-width: ${BREAKPOINTS.mobile}px) {
+      min-height: 48px;
+    }
   `,
   lg: css`
+    /* Mobile: ensure 48px+ touch target */
     padding: 14px 28px;
+    min-height: 48px;
     font-size: 16px;
     border-radius: 50px;
     gap: 8px;
+
+    @media (max-width: ${BREAKPOINTS.mobile}px) {
+      min-height: 56px;
+      padding: 16px 32px;
+    }
   `,
 };
 
@@ -117,6 +137,11 @@ export function getButtonVariantStyles(
         width: 40px;
         height: 40px;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+        @media (max-width: ${BREAKPOINTS.mobile}px) {
+          width: 48px;
+          height: 48px;
+        }
 
         &:hover:not(:disabled) {
           background: ${mainCreamDark};

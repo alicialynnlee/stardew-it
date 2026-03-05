@@ -141,7 +141,10 @@ export default function TrackerClient({
         value={activeRoom?.roomId}
         aria-label="Room Selector"
       >
-        <Grid columns="6" gap="3">
+        <Grid
+          columns={{ initial: '2', sm: '2', md: '3', lg: '6' }}
+          gap={{ initial: '2', sm: '2', md: '3', lg: '3' }}
+        >
           {roomCollection.map((room) => (
             <BundleButton
               value={room.roomId}
