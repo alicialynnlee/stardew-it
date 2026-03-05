@@ -15,7 +15,7 @@ export const ashGray = '#6E6E6E'; // For subtext or notes
 export const mainBackground = '#FCFAF8'; // Page background — warm cream
 export const mainWhite = '#FFFFFF'; // Card background — light
 export const mainCreamDark = '#F3ECE7'; // Card background — dark / borders
-export const mainDarkText = '#9A6C4C'; // Muted text, labels
+export const mainDarkText = '#5D4037'; // Muted text, labels
 export const mainBlack = '#1B130D'; // Primary text
 
 // Primary color — Sage
@@ -24,7 +24,7 @@ export const sageDark = '#6B7C74';
 export const sageMist = '#E8EFEC';
 
 // Secondary — Pumpkin Orage
-export const pumpkinOrange = '#EC6D13';
+export const pumpkinOrange = '#C16A4D';
 export const pumpkinRust = '#D55F0B'; // Hover / active
 export const pumpkinCream = '#FCEDE2'; // Subtle background highlight
 

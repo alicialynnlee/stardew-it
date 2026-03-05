@@ -2,9 +2,8 @@
 
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { DropdownMenu, Avatar, Text, Button } from '@radix-ui/themes';
-import { GearIcon, ExitIcon, CaretDownIcon } from '@radix-ui/react-icons';
-import { mainDarkText, mainWhite, pumpkinOrange } from '@/styles/colors';
+import { DropdownMenu, Avatar } from '@radix-ui/themes';
+import { mainDarkText } from '@/styles/colors';
 import { Button as ButtonUI } from '@/components';
 
 export default function UserMenu() {

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { TASK_TYPE_COLORS } from '@/styles/seasonal';
+import { TASK_CONFIG, TASK_TYPE_LIST, TaskType } from '@/constants/taskTypes';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface TaskTypeColorsShowcaseProps {}
@@ -94,19 +94,6 @@ const TaskCode = styled.span`
   word-break: break-all;
 `;
 
-type TaskType = keyof typeof TASK_TYPE_COLORS;
-
-const taskTypes: TaskType[] = [
-  'foraging',
-  'fishing',
-  'mining',
-  'farming',
-  'animals',
-  'cooking',
-  'calendar',
-  'other',
-];
-
 const getTaskEmoji = (taskType: TaskType): string => {
   const emojiMap: Record<TaskType, string> = {
     foraging: '🌲',
@@ -122,7 +109,6 @@ const getTaskEmoji = (taskType: TaskType): string => {
 };
 
 const TaskTypeColorsShowcase: React.FC<TaskTypeColorsShowcaseProps> = () => {
-  const colors = TASK_TYPE_COLORS;
   const [copiedColor, setCopiedColor] = useState<TaskType | null>(null);
 
   const handleTaskTypeClick = (taskType: TaskType, hex: string) => {
@@ -143,8 +129,8 @@ const TaskTypeColorsShowcase: React.FC<TaskTypeColorsShowcaseProps> = () => {
       </SectionHeader>
 
       <TaskTypesGrid>
-        {taskTypes.map((taskType) => {
-          const color = colors[taskType];
+        {TASK_TYPE_LIST.map((taskType) => {
+          const color = TASK_CONFIG[taskType].color;
           const isCopied = copiedColor === taskType;
 
           return (
