@@ -55,9 +55,10 @@ export async function updateFarmTask(
     if (!farm) {
       return { success: false, error: 'Unauthorized: Farm not found.' };
     }
-    await prisma.farmTask.update({
+    await prisma.farmTask.upsert({
       where: { farmId_taskId: { farmId: selectedFarmId, taskId } },
-      data: { completed },
+      update: { completed },
+      create: { farmId: selectedFarmId, taskId, completed },
     });
     return { success: true };
   } catch (error) {
