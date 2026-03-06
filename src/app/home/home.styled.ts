@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { sageGreen } from '@/styles/colors';
 import { spacing, BREAKPOINTS } from '@/styles/responsive';
+import { Card } from '@radix-ui/themes';
 
 export const Wrapper = styled.div`
   width: 100%;
