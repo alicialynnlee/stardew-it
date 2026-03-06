@@ -145,12 +145,14 @@ export default function AuthPage() {
           </Styled.Field>
           <Styled.Field name="password">
             <Form.Label>Password</Form.Label>
-            <input
-              required
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-            />
+            <Form.Control asChild>
+              <input
+                required
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+              />
+            </Form.Control>
             <Form.Message match="valueMissing">
               Please enter a password.
             </Form.Message>
@@ -161,12 +163,14 @@ export default function AuthPage() {
           {!isSignIn && (
             <Styled.Field name="confirmpassword">
               <Form.Label>Confirm Password</Form.Label>
-              <input
-                required
-                type="password"
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                disabled={loading}
-              />
+              <Form.Control asChild>
+                <input
+                  required
+                  type="password"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  disabled={loading}
+                />
+              </Form.Control>
               <Form.Message match="valueMissing">
                 Please confirm your password.
               </Form.Message>

@@ -29,15 +29,30 @@ import TipsSection from './TipsSection';
 
 const CTAContainer = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 1rem;
+  width: 100%;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 481px) {
+    gap: 1rem;
+  }
 `;
 
 const FeatureCard = styled(Card)`
   transition: all 0.3s ease;
-  height: 400px;
+  height: auto;
+  min-height: 300px;
+
+  @media (min-width: 768px) {
+    height: 400px;
+  }
 
   &:hover {
     transform: translateY(-4px);
@@ -78,23 +93,20 @@ export default function LandingPage() {
               Get Started
             </Button>
           </Link>
-          <Button
-            variant="secondary"
-            size="lg"
-            onClick={() => {
-              // Scroll to features section
-              document.querySelector('#tips')?.scrollIntoView({
-                behavior: 'smooth',
-              });
-            }}
-          >
-            Read Tips
-          </Button>
+          <Link href="#tips">
+            <Button variant="secondary" size="lg">
+              Read Tips
+            </Button>
+          </Link>
         </CTAContainer>
       </Styled.HeroSection>
 
       {/* Features Section */}
-      <Grid columns="3" gap="6" mb="6">
+      <Grid
+        columns={{ initial: '1', sm: '1', md: '2', lg: '3' }}
+        gap={{ initial: '3', sm: '3', md: '4', lg: '6' }}
+        mb="6"
+      >
         {/* Track Seasons */}
         <Link href="/tracker">
           <FeatureCard>

@@ -175,7 +175,11 @@ export default function DashboardClient({
         </Flex>
       </Card>
 
-      <Grid gap="4" columns="2" my="4">
+      <Grid
+        gap={{ initial: '2', sm: '2', md: '4', lg: '4' }}
+        columns={{ initial: '1', sm: '1', md: '1', lg: '2' }}
+        my="4"
+      >
         <Card>
           <Flex direction="column" gapY="2">
             <Flex direction="row" gapY="2" align="center" justify="between">

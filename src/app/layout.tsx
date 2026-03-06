@@ -73,10 +73,20 @@ export default async function RootLayout({
                 display: 'flex',
                 height: 'calc(100vh - 5rem)',
                 overflow: 'hidden',
+                flexDirection: 'row',
               }}
             >
               <SideNav />
-              <main className="flex-grow">{children}</main>
+              <main
+                style={{
+                  flex: 1,
+                  minHeight: 0,
+                  overflow: 'auto',
+                  width: '100%',
+                }}
+              >
+                {children}
+              </main>
             </div>
           </SeasonalProvider>
         </Providers>
