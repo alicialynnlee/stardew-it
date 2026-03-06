@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { charcoalBlack, mainWhite, whiteSmoke, mainDarkText } from '@/styles/colors';
+import {
+  charcoalBlack,
+  mainWhite,
+  whiteSmoke,
+  mainDarkText,
+} from '@/styles/colors';
 import { sizeStyles } from '../ui/Button';
 import { BREAKPOINTS } from '@/styles/responsive';
 
@@ -102,7 +107,6 @@ export const AuthActions = styled.div`
       width: 100%;
 
       > div {
-        flex-direction: column;
         width: 100%;
 
         > div:first-child {

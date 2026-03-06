@@ -1,11 +1,6 @@
 import styled from 'styled-components';
-import { Form } from 'radix-ui';
-import { lightRed, sageGreen } from '@/styles/colors';
-import { media, spacing, BREAKPOINTS } from '@/styles/responsive';
-import { Card } from '@radix-ui/themes';
-import { Form } from 'radix-ui';
-import { lightRed, sageGreen } from '@/styles/colors';
-import { media, spacing, BREAKPOINTS } from '@/styles/responsive';
+import { sageGreen } from '@/styles/colors';
+import { spacing, BREAKPOINTS } from '@/styles/responsive';
 
 export const Wrapper = styled.div`
   width: 100%;

@@ -79,7 +79,11 @@ export default function NoFarmSelected({
       </Styled.HeroSection>
 
       {/* Farm Selector section */}
-      <Grid columns="3" gap="6" mb="6">
+      <Grid
+        columns={{ initial: '1', sm: '1', md: '2', lg: '3' }}
+        gap={{ initial: '3', sm: '3', md: '4', lg: '6' }}
+        mb="6"
+      >
         {farms.map((farm, idx) => (
           <FarmCard onClick={() => handleSelectFarm(farm.id)}>
             <Flex

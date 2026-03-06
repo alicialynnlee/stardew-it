@@ -93,18 +93,11 @@ export default function LandingPage() {
               Get Started
             </Button>
           </Link>
-          <Button
-            variant="secondary"
-            size="lg"
-            onClick={() => {
-              // Scroll to features section
-              document.querySelector('#tips')?.scrollIntoView({
-                behavior: 'smooth',
-              });
-            }}
-          >
-            Read Tips
-          </Button>
+          <Link href="#tips">
+            <Button variant="secondary" size="lg">
+              Read Tips
+            </Button>
+          </Link>
         </CTAContainer>
       </Styled.HeroSection>
 
