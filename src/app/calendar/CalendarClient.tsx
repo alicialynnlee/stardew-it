@@ -14,6 +14,44 @@ import { CalendarEventWithTasks, Day } from '@/types/calendar';
 import { Box, Flex, Grid, Link, Spinner } from '@radix-ui/themes';
 import { useState, useEffect } from 'react';
 import { setFarmDateAction } from '@/actions/farmActions';
+import styled from 'styled-components';
+import { BREAKPOINTS } from '@/styles/responsive';
+
+const ResponsiveGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  gap: 1rem;
+  width: 100%;
+  height: auto;
+
+  /* Desktop: side-by-side layout */
+  @media (min-width: ${BREAKPOINTS.tablet + 1}px) {
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr;
+    height: calc(100vh - 9rem);
+  }
+`;
+
+const CalendarContainer = styled.div`
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+
+  @media (min-width: ${BREAKPOINTS.tablet + 1}px) {
+    height: 100%;
+  }
+`;
+
+const PanelContainer = styled.div`
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+
+  @media (min-width: ${BREAKPOINTS.tablet + 1}px) {
+    height: 100%;
+  }
+`;
 
 export default function CalendarClient({
   userId,
@@ -80,36 +118,34 @@ export default function CalendarClient({
           />
         </Box>
       )}
-      <Grid
-        height="calc(100vh - 9rem)"
-        gap="4"
-        width="100%"
-        rows="1"
-        columns="3fr 1fr"
-      >
-        <Calendar
-          farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
-          viewingSeasonIndex={viewingSeasonIndex}
-          selectedDay={selectedDay}
-          changeSelectedDay={(dayIndex) => handleChangeSelectedDay(dayIndex)}
-          changeViewingSeasonIndex={(seasonIndex) =>
-            setViewingSeasonIndex(seasonIndex)
-          }
-          selectedEvent={selectedEvent}
-          changeSelectedEvent={(event) => setSelectedEvent(event)}
-          calendarEvents={calendarEvents}
-          viewingDay={viewingDay}
-          changeViewingDay={(newDay) => setViewingDay(newDay)}
-        />
-        <CalendarPanel
-          viewingSeasonIndex={viewingSeasonIndex}
-          viewingDay={viewingDay}
-          selectedDay={selectedDay}
-          changeSelectedEvent={(event) => setSelectedEvent(event)}
-          farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
-          calendarEvents={calendarEvents}
-        />
-      </Grid>
+      <ResponsiveGrid>
+        <CalendarContainer>
+          <Calendar
+            farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
+            viewingSeasonIndex={viewingSeasonIndex}
+            selectedDay={selectedDay}
+            changeSelectedDay={(dayIndex) => handleChangeSelectedDay(dayIndex)}
+            changeViewingSeasonIndex={(seasonIndex) =>
+              setViewingSeasonIndex(seasonIndex)
+            }
+            selectedEvent={selectedEvent}
+            changeSelectedEvent={(event) => setSelectedEvent(event)}
+            calendarEvents={calendarEvents}
+            viewingDay={viewingDay}
+            changeViewingDay={(newDay) => setViewingDay(newDay)}
+          />
+        </CalendarContainer>
+        <PanelContainer>
+          <CalendarPanel
+            viewingSeasonIndex={viewingSeasonIndex}
+            viewingDay={viewingDay}
+            selectedDay={selectedDay}
+            changeSelectedEvent={(event) => setSelectedEvent(event)}
+            farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
+            calendarEvents={calendarEvents}
+          />
+        </PanelContainer>
+      </ResponsiveGrid>
       {selectedEvent && (
         <EventDetails
           event={selectedEvent}
