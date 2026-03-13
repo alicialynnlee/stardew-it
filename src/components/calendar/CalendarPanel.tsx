@@ -1,9 +1,12 @@
 'use client';
 
-import * as Styled from './CalendarPanel.styled';
-import { Badge, Card, Flex, IconButton, Select, Text } from '@radix-ui/themes';
-import { CheckIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import { DAYS, SEASONS } from '@/constants/calendar';
+import { Flex, Text } from '@radix-ui/themes';
+import {
+  DAYS,
+  SEASONS_CONFIG,
+  SEASONS_LIST,
+  SeasonType,
+} from '@/constants/calendar';
 import {
   CalendarEventData,
   CalendarEventWithTasks,
@@ -11,10 +14,38 @@ import {
   Season,
 } from '@/types/calendar';
 import { FarmTaskCompletion } from '@/types/tasks';
-import { useState, useMemo } from 'react';
-import { SEASONAL_PALETTES, Season as SeasonStyle } from '@/styles/seasonal';
-import { TASK_TYPE_PALETTE } from '@/styles/tasks';
-import { TaskType } from '@/constants/taskTypes';
+import { useMemo } from 'react';
+import { TASK_CONFIG, TaskType } from '@/constants/taskTypes';
+import { Card, Badge } from '@/components';
+import {
+  ashGray,
+  mainWhite,
+  pumpkinRust,
+  sage10,
+  sageDark,
+} from '@/styles/colors';
+import { PiCheckCircleLight } from 'react-icons/pi';
+import styled from 'styled-components';
+
+const ScrollablePanelCard = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
+const ScrollableContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
+`;
+
+const EventCard = styled(Card)<{ $isCompleted?: boolean }>`
+  ${({ $isCompleted }) =>
+    $isCompleted &&
+    `
+    opacity: 0.5;
+    background-color: ${mainWhite};
+  `}
+`;
 
 export default function CalendarPanel({
   viewingSeasonIndex,
@@ -31,8 +62,6 @@ export default function CalendarPanel({
   farmTaskCompletion?: FarmTaskCompletion;
   calendarEvents?: CalendarEventData;
 }) {
-  const [isOpen, setIsOpen] = useState(true);
-
   // Get viewing day's calendar events
   const viewingDayCalendarEvents = useMemo(() => {
     if (!viewingDay || !calendarEvents) {
@@ -47,7 +76,7 @@ export default function CalendarPanel({
       return [];
     }
 
-    const currentSeason = SEASONS[viewingSeasonIndex] as Season;
+    const currentSeason = SEASONS_LIST[viewingSeasonIndex] as Season;
     const filteredEvents: CalendarEventWithTasks[] = [];
 
     // Daily events for this season
@@ -76,15 +105,16 @@ export default function CalendarPanel({
     const total = event.tasks.length;
     if (completed === total) {
       return (
-        <Text size="1" color="green" weight="bold">
-          <CheckIcon style={{ display: 'inline', verticalAlign: 'middle' }} />{' '}
-          Done
-        </Text>
+        <PiCheckCircleLight
+          size="30px"
+          color="green"
+          style={{ display: 'inline', verticalAlign: 'middle', opacity: '1' }}
+        />
       );
     }
     if (completed > 0) {
       return (
-        <Text size="1" color="gray">
+        <Text size="1" color="gray" style={{ zIndex: '1' }}>
           {completed}/{total}
         </Text>
       );
@@ -98,101 +128,109 @@ export default function CalendarPanel({
       event.tasks.length > 0 &&
       event.tasks.every((t) => farmTaskCompletion.get(t.id));
 
-    const eventSeason = (event.date.split(' ')[0].toLowerCase() ??
-      'spring') as SeasonStyle;
-    const eventSeasonalPalette = SEASONAL_PALETTES[eventSeason];
+    const eventSeason = (event.date.split(' ')[0] ?? 'Spring') as SeasonType;
 
     return (
-      <Styled.EventCard
+      <EventCard
+        variant="flat"
+        padding="sm"
         key={event.id}
-        size="1"
-        mt="2"
         onClick={() => changeSelectedEvent(event)}
         $isCompleted={!!allDone}
       >
         <Flex justify="between" align="center">
           <Flex direction="column" gap="2">
-            <Text size="2" weight="medium" as="div">
+            <Text
+              size="2"
+              weight="bold"
+              style={{
+                color: sageDark,
+                textDecoration: `${allDone ? 'line-through' : 'none'}`,
+              }}
+            >
               {event.name}
             </Text>
             {event.description && (
-              <Text size="1" weight={'light'}>
+              <Text size="1" style={{ color: sageDark }}>
                 {event.description}
               </Text>
             )}
             <Flex direction="row" gap="1">
               <Badge
+                variant={allDone ? 'secondary' : 'primary'}
+                color={
+                  allDone
+                    ? ashGray
+                    : SEASONS_CONFIG[eventSeason].backgroundColor
+                }
                 style={{
-                  backgroundColor: eventSeasonalPalette.border,
-                  color: eventSeasonalPalette.text,
+                  borderColor: `${allDone ? 'transparent' : SEASONS_CONFIG[eventSeason].primaryColor}`,
+                  color: `${allDone ? ashGray : SEASONS_CONFIG[eventSeason].primaryColor}`,
                 }}
               >
                 {event.date}
               </Badge>
               <Badge
-                style={{
-                  backgroundColor:
-                    TASK_TYPE_PALETTE[(event.type as TaskType) ?? 'other'].base,
-                  color:
-                    TASK_TYPE_PALETTE[(event.type as TaskType) ?? 'other'].text,
-                }}
+                variant="tertiary"
+                color={
+                  allDone
+                    ? ashGray
+                    : TASK_CONFIG[(event.type as TaskType) ?? 'other'].color
+                }
               >
-                {event.type}
+                {event.type.toUpperCase()}
               </Badge>
             </Flex>
           </Flex>
-
           {getCompletionBadge(event)}
         </Flex>
-      </Styled.EventCard>
+      </EventCard>
     );
   };
 
   return (
-    <Styled.PanelWrapper $isOpen={isOpen}>
-      <IconButton
-        variant="ghost"
-        className="panel-toggle"
-        highContrast
-        onClick={() => setIsOpen(!isOpen)}
-        style={{ marginBottom: '8px' }}
-      >
-        <ChevronRightIcon />
-      </IconButton>
-      <Styled.PanelContent $isOpen={isOpen} gap="4" direction="column">
-        <Card>
-          <Text size="2" weight="bold" as="div">
-            {viewingDay === selectedDay ? `Today's` : viewingDay} Events
-          </Text>
+    <Flex direction="column" gap="4">
+      {/* Viewing Day Events */}
+      <Card variant="outline" color={`${pumpkinRust}4D`}>
+        <Text size="4" weight="bold" style={{ color: sageDark }}>
+          {viewingDay === selectedDay ? `Today's` : viewingDay} Events
+        </Text>
+        <Flex direction="column" gap="2">
           {viewingDayCalendarEvents && viewingDayCalendarEvents.length > 0 ? (
-            viewingDayCalendarEvents?.map((event: CalendarEventWithTasks) =>
-              renderEventCard(event)
-            )
+            <Flex direction="column" gap="2" mt="2">
+              {viewingDayCalendarEvents?.map((event: CalendarEventWithTasks) =>
+                renderEventCard(event)
+              )}
+            </Flex>
           ) : (
-            <Text size="1" weight="light">
+            <Text size="1">
               No tasks scheduled
               <br />
               Enjoy your free day on the farm! 🌱
             </Text>
           )}
-        </Card>
-        <Styled.ScrollablePanelCard>
-          <Text size="2" weight="bold" as="div">
-            {SEASONS[viewingSeasonIndex]} Events
-          </Text>
-          {viewingSeasonCalendarEvents.length > 0 ? (
-            <Styled.ScrollableContent>
+        </Flex>
+      </Card>
+
+      {/* Seasonal Events */}
+      <ScrollablePanelCard variant="outline" color={sage10}>
+        <Text size="4" weight="bold" style={{ color: sageDark }}>
+          {SEASONS_LIST[viewingSeasonIndex]} Events
+        </Text>
+        {viewingSeasonCalendarEvents.length > 0 ? (
+          <ScrollableContent>
+            <Flex direction="column" gap="2" mt="2">
               {viewingSeasonCalendarEvents.map(
                 (event: CalendarEventWithTasks) => renderEventCard(event)
               )}
-            </Styled.ScrollableContent>
-          ) : (
-            <Text size="2" color="gray" mt="2">
-              No upcoming tasks
-            </Text>
-          )}
-        </Styled.ScrollablePanelCard>
-      </Styled.PanelContent>
-    </Styled.PanelWrapper>
+            </Flex>
+          </ScrollableContent>
+        ) : (
+          <Text size="2" color="gray" mt="2">
+            No upcoming tasks
+          </Text>
+        )}
+      </ScrollablePanelCard>
+    </Flex>
   );
 }

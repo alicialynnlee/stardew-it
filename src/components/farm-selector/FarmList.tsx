@@ -115,7 +115,9 @@ export default function FarmList({
           </FarmOption>
         </Flex>
       ))}
-      <Separator orientation="horizontal" style={{ width: '100%' }} />
+      {farms && farms.length > 0 && (
+        <Separator orientation="horizontal" style={{ width: '100%' }} />
+      )}
 
       {showInput ? (
         <Flex

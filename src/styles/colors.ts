@@ -22,6 +22,7 @@ export const mainBlack = '#1B130D'; // Primary text
 export const sageGreen = '#8DA399';
 export const sageDark = '#6B7C74';
 export const sageMist = '#E8EFEC';
+export const sage10 = `${sageGreen}1A`; // sage at 10% opacity
 
 // Secondary — Pumpkin Orage
 export const pumpkinOrange = '#C16A4D';

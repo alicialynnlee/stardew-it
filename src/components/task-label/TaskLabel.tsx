@@ -1,7 +1,6 @@
 'use client';
 
-import { TASK_TYPE_PALETTE } from '@/styles/tasks';
-import { TaskType } from '@/constants/taskTypes';
+import { TASK_CONFIG, TaskType } from '@/constants/taskTypes';
 import styled from 'styled-components';
 import { Button } from '@radix-ui/themes';
 
@@ -49,11 +48,11 @@ export default function TaskLabel({
   isCompleted?: boolean;
   onClickHandler?: () => void;
 }) {
-  const palette = TASK_TYPE_PALETTE[type];
+  const palette = TASK_CONFIG[type];
   return (
     <StyledTaskLabel
-      $baseColor={palette.base}
-      $textColor={palette.text}
+      $baseColor={palette.color}
+      $textColor={palette.textColor}
       $isOff={isOff}
       $isCompleted={isCompleted}
       {...(onClickHandler && { onClick: onClickHandler })}

@@ -13,7 +13,7 @@ import {
 import FarmSelector from '../farm-selector/FarmSelector';
 import UserMenu from '../user-menu/UserMenu';
 import * as Styled from './Navbar.styled';
-import { Flex, Heading, Separator } from '@radix-ui/themes';
+import { Flex, Separator } from '@radix-ui/themes';
 import Jumino from '../jumino/Jumino';
 import { Card, Button } from '@/components';
 
@@ -82,7 +82,7 @@ export default function Navbar() {
           </Styled.LeftSection>
           <Styled.AuthActions>
             {session ? (
-              <Card className="auth-bar" variant="flat">
+              <Card className="auth-bar" variant="flat" padding="sm">
                 <Flex direction="row" gap="2" align="center">
                   <FarmSelector />
                   <Separator orientation="vertical" decorative />

@@ -17,7 +17,7 @@ import { Flex, Text, Spinner, Heading, Grid } from '@radix-ui/themes';
 import { CalendarEventWithTasks, Day } from '@/types/calendar';
 import { mainCreamDark, mainDarkText, mainWhite } from '@/styles/colors';
 import { PiPlantLight } from 'react-icons/pi';
-import { SEASONS } from '@/constants/calendar';
+import { SEASONS_LIST } from '@/constants/calendar';
 import { TASK_CONFIG, TaskType } from '@/constants/taskTypes';
 import TipsSection from './TipsSection';
 import * as Styled from './home.styled';
@@ -96,7 +96,7 @@ export default function DashboardClient({
 
     const toAbsoluteDay = (dayStr: string): number => {
       const [season, num] = dayStr.split(' ');
-      const seasonIdx = SEASONS.indexOf(season);
+      const seasonIdx = SEASONS_LIST.indexOf(season);
       return seasonIdx * 28 + parseInt(num || '1');
     };
 

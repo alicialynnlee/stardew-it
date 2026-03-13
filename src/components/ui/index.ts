@@ -9,3 +9,5 @@ export type { ChecklistItemProps } from './ChecklistItem';
 
 export { IconCircle } from './IconCircle';
 export type { IconCircleProps } from './IconCircle';
+
+export { Badge } from './Badge';
