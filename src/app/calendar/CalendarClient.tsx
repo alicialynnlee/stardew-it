@@ -11,7 +11,7 @@ import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { useSetSelectedDay } from '@/contexts/SeasonalContext';
 // import { getCurrentUser } from '@/lib/auth';
 import { CalendarEventWithTasks, Day } from '@/types/calendar';
-import { Box, Flex, Link, Spinner } from '@radix-ui/themes';
+import { Box, Flex, Grid, Link, Spinner } from '@radix-ui/themes';
 import { useState, useEffect } from 'react';
 import { setFarmDateAction } from '@/actions/farmActions';
 
@@ -80,7 +80,13 @@ export default function CalendarClient({
           />
         </Box>
       )}
-      <Flex direction="row" align="stretch" height="calc(100vh - 9rem)" gap="4">
+      <Grid
+        height="calc(100vh - 9rem)"
+        gap="4"
+        width="100%"
+        rows="1"
+        columns="3fr 1fr"
+      >
         <Calendar
           farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
           viewingSeasonIndex={viewingSeasonIndex}
@@ -103,7 +109,7 @@ export default function CalendarClient({
           farmTaskCompletion={selectedFarmId ? farmTaskCompletion : undefined}
           calendarEvents={calendarEvents}
         />
-      </Flex>
+      </Grid>
       {selectedEvent && (
         <EventDetails
           event={selectedEvent}

@@ -19,8 +19,7 @@ export type ButtonVariant =
   | 'icon';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   color?: string;
@@ -33,25 +32,25 @@ export const sizeStyles: Record<ButtonSize, ReturnType<typeof css>> = {
   sm: css`
     /* Mobile: ensure 48px touch target */
     padding: 8px 16px;
-    min-height: 40px;
+    min-height: 24px;
     font-size: 13px;
     border-radius: 50px;
     gap: 6px;
 
     @media (max-width: ${BREAKPOINTS.mobile}px) {
-      min-height: 44px;
+      min-height: 26px;
     }
   `,
   md: css`
     /* Mobile: ensure 48px touch target */
     padding: 12px 24px;
-    min-height: 44px;
+    min-height: 36px;
     font-size: 14px;
     border-radius: 50px;
     gap: 8px;
 
     @media (max-width: ${BREAKPOINTS.mobile}px) {
-      min-height: 48px;
+      min-height: 40px;
     }
   `,
   lg: css`
@@ -80,9 +79,6 @@ export function getButtonVariantStyles(
         background: ${color};
         color: ${textColor};
         border: none;
-        box-shadow:
-          0 4px 6px -1px rgba(0, 0, 0, 0.1),
-          0 2px 4px -2px rgba(0, 0, 0, 0.1);
 
         &:hover:not(:disabled) {
           background: color-mix(in oklab, ${color}, black 10%);
@@ -94,7 +90,6 @@ export function getButtonVariantStyles(
         background: ${mainCreamDark};
         color: ${mainBlack};
         border: 1px solid ${mainCreamDark};
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 
         &:hover:not(:disabled) {
           background: #e8ddd6;

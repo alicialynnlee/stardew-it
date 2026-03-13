@@ -9,7 +9,12 @@ import {
   pumpkinOrange,
 } from '@/styles/colors';
 
-export type CardVariant = 'default' | 'tinted' | 'featured' | 'flat';
+export type CardVariant =
+  | 'default'
+  | 'tinted'
+  | 'featured'
+  | 'flat'
+  | 'outline';
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 
 const paddingMap: Record<CardPadding, string> = {
@@ -60,6 +65,14 @@ export function getCardVariantStyles(
         border-radius: 24px;
         box-shadow: none;
       `;
+    case 'outline':
+      // Flat / outline — white card, light border
+      return css`
+        background: ${mainWhite};
+        border: 2px solid ${color};
+        border-radius: 16px;
+        box-shadow: none;
+      `;
   }
 }
 
@@ -86,7 +99,7 @@ const StyledCard = styled.div<{
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px -4px rgba(27, 19, 13, 0.12);
+        box-shadow: 0 8px 8px -4px rgba(27, 19, 13, 0.12);
       }
 
       &:active {

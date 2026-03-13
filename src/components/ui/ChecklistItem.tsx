@@ -2,8 +2,7 @@
 
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { TaskType } from '@/constants/taskTypes';
-import { TASK_TYPE_PALETTE } from '@/styles/tasks';
+import { TASK_CONFIG, TaskType } from '@/constants/taskTypes';
 import {
   mainBlack,
   mainDarkText,
@@ -144,7 +143,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
   onToggle,
   className,
 }) => {
-  const palette = taskType ? TASK_TYPE_PALETTE[taskType] : null;
+  const palette = taskType ? TASK_CONFIG[taskType] : null;
 
   const handleClick = () => {
     if (!isDisabled && onToggle) {
@@ -179,7 +178,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
       {renderCheckbox()}
       {label && <LabelText $isCompleted={isCompleted}>{label}</LabelText>}
       {taskType && palette && (
-        <TaskTypePill $bg={palette.base} $color={palette.text}>
+        <TaskTypePill $bg={palette.color} $color={palette.textColor}>
           {taskType}
         </TaskTypePill>
       )}

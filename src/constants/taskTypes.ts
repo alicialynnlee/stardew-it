@@ -1,3 +1,4 @@
+import { mainBlack, mainWhite } from '@/styles/colors';
 import { IconType } from 'react-icons';
 import {
   PiAxeLight,
@@ -30,40 +31,49 @@ export type TaskType = (typeof TASK_TYPES)[keyof typeof TASK_TYPES];
  */
 export interface TaskConfig {
   color: string;
+  textColor: string;
   icon: IconType;
 }
 
 export const TASK_CONFIG: Record<TaskType, TaskConfig> = {
   [TASK_TYPES.FORAGING]: {
-    color: '#A8D86F',
+    color: '#6B8E23',
+    textColor: mainWhite,
     icon: PiLeafLight,
-  }, // Fresh green - nature/plants (Jumino brand green)
+  },
   [TASK_TYPES.FARMING]: {
-    color: '#D4A574', // Warm brown - crops/farm work
+    color: '#A4C639',
+    textColor: mainWhite,
     icon: PiPlantLight,
   },
   [TASK_TYPES.FISHING]: {
-    color: '#87CEEB', // Sky blue - water/tranquility
+    color: '#5F9EA0',
+    textColor: mainWhite,
     icon: PiFishLight,
   },
   [TASK_TYPES.MINING]: {
-    color: '#B8A5D6', // Soft purple - earth/mystery
+    color: '#708090', // Soft purple - earth/mystery
+    textColor: mainBlack,
     icon: PiAxeLight,
   },
   [TASK_TYPES.ANIMALS]: {
-    color: '#F4B6D9', // Soft pink - nurture/care
+    color: '#E9967A', // Soft pink - nurture/care
+    textColor: mainBlack,
     icon: PiPawPrintLight,
   },
   [TASK_TYPES.COOKING]: {
     color: '#F5B766', // Warm orange - creativity/warmth
+    textColor: mainBlack,
     icon: PiCookingPotLight,
   },
   [TASK_TYPES.CALENDAR]: {
-    color: '#FFD166', // Warm festive gold - festivals/events
+    color: '#85523D', // Brown
+    textColor: mainWhite,
     icon: PiCalendarDotsLight,
   },
   [TASK_TYPES.OTHER]: {
-    color: '#C4C4C4', // Soft gray - neutral/flexible
+    color: '#707070', // Soft gray - neutral/flexible
+    textColor: mainWhite,
     icon: PiDotsThreeLight,
   },
 };
