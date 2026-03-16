@@ -1,11 +1,30 @@
 'use client';
 
 import { Cross2Icon } from '@radix-ui/react-icons';
-import * as Styled from './EventDetails.styled';
-import { Text, Dialog, Separator, Button, Badge, Flex } from '@radix-ui/themes';
+import { Text, Dialog, Separator, Flex, Heading } from '@radix-ui/themes';
 import { useState } from 'react';
 import { CalendarEventWithTasks } from '@/types/calendar';
 import { FarmTaskCompletion } from '@/types/tasks';
+import {
+  ashGray,
+  mainBackground,
+  mainDarkText,
+  sageDark,
+  sageGreen,
+} from '@/styles/colors';
+import { Badge, ChecklistItem, ProgressBar, Button } from '@/components';
+import { TASK_CONFIG, TaskType } from '@/constants/taskTypes';
+import { SEASONS_CONFIG, SeasonType } from '@/constants/calendar';
+import styled from 'styled-components';
+
+const SectionTitle = styled(Text).attrs({
+  size: '1',
+  weight: 'bold',
+})`
+  text-transform: uppercase;
+  color: ${mainDarkText};
+  letter-spacing: 5%;
+`;
 
 export default function EventDetails({
   event,
@@ -24,6 +43,8 @@ export default function EventDetails({
     ? event.tasks.filter((t) => farmTaskCompletion.get(t.id)).length
     : 0;
 
+  const eventSeason = (event.date.split(' ')[0] ?? 'Spring') as SeasonType;
+
   return (
     <Dialog.Root
       open={isOpen}
@@ -32,75 +53,93 @@ export default function EventDetails({
         changeSelectedEvent(isOpen ? null : event);
       }}
     >
-      <Dialog.Content className="DialogContent">
+      <Dialog.Content style={{ backgroundColor: mainBackground }}>
         <Dialog.Close>
-          <Styled.CloseButton
-            radius="full"
-            variant="soft"
+          <Button
+            variant="icon"
             color="gray"
             aria-label="Close"
             onClick={() => {
               setIsOpen(false);
               changeSelectedEvent(null);
             }}
+            style={{ position: 'absolute', top: '10px', right: '10px' }}
           >
             <Cross2Icon />
-          </Styled.CloseButton>
+          </Button>
         </Dialog.Close>
-        <Dialog.Title>{event.name}</Dialog.Title>
+        <Dialog.Title style={{ color: mainDarkText }}>
+          Task Details
+        </Dialog.Title>
+        <Flex direction="row" gap="1" my="3">
+          {event.date === 'year-round' ? (
+            <Badge variant={'primary'} color={ashGray}>
+              Year Round
+            </Badge>
+          ) : (
+            <Badge
+              variant={'primary'}
+              color={SEASONS_CONFIG[eventSeason].backgroundColor}
+              style={{
+                borderColor: SEASONS_CONFIG[eventSeason].primaryColor,
+                color: SEASONS_CONFIG[eventSeason].primaryColor,
+              }}
+            >
+              {event.date}
+            </Badge>
+          )}
 
-        <Flex direction="row" gap="1">
-          <Text size="3" weight="bold">
-            {event.date === 'year-round' ? 'Year Round' : event.date}
-          </Text>
-          {/* TODO: vars not available because dialog renders outside. */}
           <Badge
-            style={{
-              backgroundColor: `var(--task-color-${event.type}, #D9D9D9)`,
-              color: `color-mix(in oklab, var(--task-color-${event.type}), black 60%)`,
-            }}
+            variant="tertiary"
+            color={TASK_CONFIG[(event.type as TaskType) ?? 'other'].color}
           >
-            {event.type}
+            {event.type.toUpperCase()}
           </Badge>
         </Flex>
+        <Flex direction="column" gap="1" my="4">
+          <SectionTitle>Task</SectionTitle>
+          <Heading>{event.name}</Heading>
+        </Flex>
+
         {event.description && (
-          <Dialog.Description>
-            <br />
-            {event.description}
-          </Dialog.Description>
+          <Flex direction="column" gap="1" my="4">
+            <SectionTitle>Description</SectionTitle>
+            <Dialog.Description>
+              <Text size="2">
+                <em>{event.description}</em>
+              </Text>
+            </Dialog.Description>
+          </Flex>
         )}
         {event.tasks && event.tasks.length > 0 && (
-          <div>
+          <Flex direction="column" gap="1" my="4">
             <Separator my="3" size="4" />
-            <Text size="3" weight="bold">
-              Associated Tasks
-            </Text>
+
+            <Flex direction="row" justify="between">
+              <SectionTitle>Associated Tasks</SectionTitle>
+              {farmTaskCompletion && (
+                <SectionTitle style={{ color: sageDark }}>
+                  {completedCount} / {event.tasks.length} tasks completed
+                </SectionTitle>
+              )}
+            </Flex>
             {farmTaskCompletion && (
-              <Text size="2" color="gray" as="p">
-                {completedCount} / {event.tasks.length} completed
-              </Text>
+              <ProgressBar
+                value={Math.floor((completedCount / event.tasks.length) * 100)}
+                color={sageGreen}
+              />
             )}
+
             {event.tasks.map((task) => {
               const isCompleted = farmTaskCompletion?.get(task.id) ?? false;
-
               if (farmTaskCompletion && updateTask) {
                 return (
-                  <Styled.TaskRow key={task.id}>
-                    <input
-                      type="checkbox"
-                      checked={isCompleted}
-                      onChange={(e) => updateTask(task.id, e.target.checked)}
-                    />
-                    <Styled.TaskName $isCompleted={isCompleted}>
-                      <Text size="2" weight={'bold'}>
-                        {task.name}
-                        {task.description && ': '}
-                      </Text>
-                      {task.description && (
-                        <Text size="2">{task.description}</Text>
-                      )}
-                    </Styled.TaskName>
-                  </Styled.TaskRow>
+                  <ChecklistItem
+                    key={task.id}
+                    isCompleted={isCompleted}
+                    onToggle={(completed) => updateTask(task.id, completed)}
+                    label={`${task.name}${task.description ? `: ${task.description}` : ''}`}
+                  />
                 );
               }
 
@@ -110,10 +149,10 @@ export default function EventDetails({
                 </Text>
               );
             })}
-          </div>
+          </Flex>
         )}
         <Dialog.Close>
-          <Button my="3">Close</Button>
+          <Button size="sm">Close</Button>
         </Dialog.Close>
       </Dialog.Content>
     </Dialog.Root>

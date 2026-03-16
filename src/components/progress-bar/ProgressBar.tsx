@@ -16,22 +16,32 @@ const ProgressBarContainer = styled.div`
 
 const ProgressBarInside = styled.div<{
   $width?: number;
+  $color?: string;
 }>`
   width: ${({ $width }) => $width}%;
   height: 100%;
   border-radius: 8px;
-  background: linear-gradient(
+  ${({ $color }) =>
+    $color
+      ? `background-color: ${$color}`
+      : `background: linear-gradient(
     90deg,
     rgba(141, 163, 153, 1) 0%,
     rgba(154, 108, 76, 1) 50%,
     rgba(236, 109, 19, 1) 100%
-  );
+  )`};
 `;
 
-export default function ProgressBar({ value }: { value: number }) {
+export default function ProgressBar({
+  value,
+  color,
+}: {
+  value: number;
+  color?: string;
+}) {
   return (
     <ProgressBarContainer>
-      <ProgressBarInside $width={value} />
+      <ProgressBarInside $width={value} $color={color} />
     </ProgressBarContainer>
   );
 }
