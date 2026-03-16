@@ -1,7 +1,6 @@
 'use client';
 
 import { Cross2Icon } from '@radix-ui/react-icons';
-import * as Styled from './EventDetails.styled';
 import { Text, Dialog, Separator, Flex, Heading } from '@radix-ui/themes';
 import { useState } from 'react';
 import { CalendarEventWithTasks } from '@/types/calendar';
@@ -13,10 +12,10 @@ import {
   sageDark,
   sageGreen,
 } from '@/styles/colors';
-import { Badge, Card, ChecklistItem, ProgressBar, Button } from '@/components';
-import styled from 'styled-components';
+import { Badge, ChecklistItem, ProgressBar, Button } from '@/components';
 import { TASK_CONFIG, TaskType } from '@/constants/taskTypes';
 import { SEASONS_CONFIG, SeasonType } from '@/constants/calendar';
+import styled from 'styled-components';
 
 const SectionTitle = styled(Text).attrs({
   size: '1',
@@ -56,18 +55,18 @@ export default function EventDetails({
     >
       <Dialog.Content style={{ backgroundColor: mainBackground }}>
         <Dialog.Close>
-          <Styled.CloseButton
-            radius="full"
-            variant="soft"
+          <Button
+            variant="icon"
             color="gray"
             aria-label="Close"
             onClick={() => {
               setIsOpen(false);
               changeSelectedEvent(null);
             }}
+            style={{ position: 'absolute', top: '10px', right: '10px' }}
           >
             <Cross2Icon />
-          </Styled.CloseButton>
+          </Button>
         </Dialog.Close>
         <Dialog.Title style={{ color: mainDarkText }}>
           Task Details
