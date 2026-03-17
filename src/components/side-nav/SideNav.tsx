@@ -12,7 +12,6 @@ import { usePathname } from 'next/navigation';
 import { Flex } from '@radix-ui/themes';
 import Link from 'next/link';
 import { Card } from '@/components';
-import { mainDarkText, sageGreen } from '@/styles/colors';
 
 const NAV_ITEMS = [
   {

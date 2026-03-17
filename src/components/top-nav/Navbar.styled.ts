@@ -1,10 +1,5 @@
 import styled from 'styled-components';
-import {
-  charcoalBlack,
-  mainWhite,
-  whiteSmoke,
-  mainDarkText,
-} from '@/styles/colors';
+import { charcoalBlack, mainWhite, mainDarkText } from '@/styles/colors';
 import { sizeStyles } from '../ui/Button';
 import { BREAKPOINTS } from '@/styles/responsive';
 
@@ -21,7 +16,7 @@ export const Navbar = styled.nav`
   height: 5rem;
   gap: 1rem;
 
-  @media (max-width: ${BREAKPOINTS.mobile}px) {
+  @media (max-width: ${BREAKPOINTS.sm}px) {
     padding: 0.75rem 1rem;
     height: auto;
     min-height: 4rem;
@@ -35,7 +30,7 @@ export const NavbarContent = styled.div`
   width: 100%;
   gap: 1rem;
 
-  @media (max-width: ${BREAKPOINTS.mobile}px) {
+  @media (max-width: ${BREAKPOINTS.sm}px) {
     gap: 0.5rem;
   }
 `;
@@ -50,7 +45,7 @@ export const LeftSection = styled.div`
     display: none;
   }
 
-  @media (max-width: ${BREAKPOINTS.mobile}px) {
+  @media (max-width: ${BREAKPOINTS.sm}px) {
     gap: 0.5rem;
 
     .hamburger-btn {
@@ -65,7 +60,7 @@ export const HomeContainer = styled.div`
   gap: 0.5rem;
   flex-shrink: 0;
 
-  @media (max-width: ${BREAKPOINTS.mobile}px) {
+  @media (max-width: ${BREAKPOINTS.sm}px) {
     gap: 0.25rem;
 
     h3,
@@ -78,7 +73,7 @@ export const HomeContainer = styled.div`
 `;
 
 export const BrandText = styled.h3`
-  @media (max-width: ${BREAKPOINTS.mobile}px) {
+  @media (max-width: ${BREAKPOINTS.sm}px) {
     display: none;
   }
 `;
@@ -94,7 +89,7 @@ export const AuthActions = styled.div`
   justify-content: flex-end;
   flex: 1;
 
-  @media (max-width: ${BREAKPOINTS.mobile}px) {
+  @media (max-width: ${BREAKPOINTS.sm}px) {
     width: 100%;
     order: 3;
   }
@@ -103,7 +98,7 @@ export const AuthActions = styled.div`
     ${sizeStyles.sm}
     background-color: ${mainWhite};
 
-    @media (max-width: ${BREAKPOINTS.mobile}px) {
+    @media (max-width: ${BREAKPOINTS.sm}px) {
       width: 100%;
 
       > div {
@@ -143,7 +138,7 @@ export const MobileMenu = styled.div`
     }
   }
 
-  @media (max-width: ${BREAKPOINTS.mobile}px) {
+  @media (max-width: ${BREAKPOINTS.sm}px) {
     display: block;
   }
 `;

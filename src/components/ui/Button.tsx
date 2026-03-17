@@ -37,7 +37,7 @@ export const sizeStyles: Record<ButtonSize, ReturnType<typeof css>> = {
     border-radius: 50px;
     gap: 6px;
 
-    @media (max-width: ${BREAKPOINTS.mobile}px) {
+    @media (max-width: ${BREAKPOINTS.sm}px) {
       min-height: 26px;
     }
   `,
@@ -49,7 +49,7 @@ export const sizeStyles: Record<ButtonSize, ReturnType<typeof css>> = {
     border-radius: 50px;
     gap: 8px;
 
-    @media (max-width: ${BREAKPOINTS.mobile}px) {
+    @media (max-width: ${BREAKPOINTS.sm}px) {
       min-height: 40px;
     }
   `,
@@ -61,10 +61,26 @@ export const sizeStyles: Record<ButtonSize, ReturnType<typeof css>> = {
     border-radius: 50px;
     gap: 8px;
 
-    @media (max-width: ${BREAKPOINTS.mobile}px) {
+    @media (max-width: ${BREAKPOINTS.sm}px) {
       min-height: 56px;
       padding: 16px 32px;
     }
+  `,
+};
+
+const iconSizeStyles: Record<ButtonSize, ReturnType<typeof css>> = {
+  sm: css`
+    /* Mobile: ensure 48px touch target */
+    width: 30px;
+    height: 30px;
+  `,
+  md: css`
+    width: 40px;
+    height: 40px;
+  `,
+  lg: css`
+    width: 50px;
+    height: 50px;
   `,
 };
 
@@ -129,14 +145,7 @@ export function getButtonVariantStyles(
         border: 1px solid ${mainCreamDark};
         border-radius: 50% !important;
         padding: 0;
-        width: 40px;
-        height: 40px;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-
-        @media (max-width: ${BREAKPOINTS.mobile}px) {
-          width: 48px;
-          height: 48px;
-        }
 
         &:hover:not(:disabled) {
           background: ${mainCreamDark};
@@ -166,7 +175,8 @@ const StyledButton = styled(RadixButton)<{
   height: unset;
 
   ${({ $fullWidth }) => $fullWidth && 'width: 100%;'}
-  ${({ $size }) => sizeStyles[$size]}
+  ${({ $size, $variant }) =>
+    $variant === 'icon' ? iconSizeStyles[$size] : sizeStyles[$size]}
   ${({ $variant, $color, $textColor }) =>
     getButtonVariantStyles($variant, $color, $textColor)}
 

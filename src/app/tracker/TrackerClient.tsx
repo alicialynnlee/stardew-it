@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { ProgressBar, RoomDrawer, WarningBanner } from '@/components';
+import { ProgressBar, WarningBanner } from '@/components';
 import { useTasks } from '@/hooks/useTasks';
 import { useRooms } from '@/hooks/useRooms';
 import { RoomId } from '@/types/tasks';
@@ -24,6 +24,7 @@ import {
 } from '@/styles/colors';
 import styled from 'styled-components';
 import { getCardVariantStyles } from '@/components/ui/Card';
+import BundleDrawer from '@/components/tracker-components/BundleDrawer';
 
 const BundleButton = styled(ToggleGroup.Item)<{
   $isSelected: boolean;
@@ -171,11 +172,20 @@ export default function TrackerClient({
       </ToggleGroup.Root>
       <Flex gap="5" direction="column">
         {activeRoom && (
-          <RoomDrawer
-            room={activeRoom}
-            farmTaskCompletion={farmTaskCompletion}
-            updateTask={updateTask}
-          />
+          <Grid
+            key={activeRoom.roomId}
+            columns={{ initial: '1', xs: '1', sm: '2', lg: '3' }}
+            gap="3"
+          >
+            {activeRoom.bundleIds.map((bundle) => (
+              <BundleDrawer
+                key={bundle.bundleId}
+                bundle={bundle}
+                farmTaskCompletion={farmTaskCompletion}
+                updateTask={updateTask}
+              />
+            ))}
+          </Grid>
         )}
       </Flex>
     </Flex>

@@ -14,8 +14,11 @@ import TaskDetails from '../task-details/TaskDetails';
 import { BUNDLE_CONFIG, DEFAULT_BUNDLE_CONFIG } from '@/constants/bundleConfig';
 import { mainBlack, mainWhite } from '@/styles/colors';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { BREAKPOINTS } from '@/styles/responsive';
+import { Button } from '../ui';
+import { PiCheckCircleLight } from 'react-icons/pi';
 
 const IconContainer = styled(IconButton)<{ $bundleColor: string }>`
   cursor: unset;
@@ -28,18 +31,21 @@ const IconContainer = styled(IconButton)<{ $bundleColor: string }>`
   }
 `;
 
-const ToggleButton = styled(IconButton)`
+const ToggleButton = styled(Button).attrs({
+  variant: 'icon',
+  size: 'sm',
+})`
   transition: transform 0.3s ease-in-out;
-  
+
   &[aria-expanded='true'] {
     transform: rotate(0deg);
   }
-  
+
   &[aria-expanded='false'] {
     transform: rotate(-90deg);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: ${BREAKPOINTS.sm}px) {
     display: none;
   }
 `;
@@ -69,16 +75,10 @@ export default function BundleDrawer({
   // Auto-collapse when completed, but allow user to expand
   const [isExpanded, setIsExpanded] = useState(!isCompleted);
 
-  useEffect(() => {
-    // Auto-collapse when bundle becomes completed
-    if (isCompleted && isExpanded) {
-      setIsExpanded(false);
-    }
-  }, [isCompleted, isExpanded]);
-
   return (
     <Card key={bundle.bundleId} style={{ padding: 0 }}>
       <Flex direction="column" width="100%">
+        {/* Bundle Header */}
         <Flex
           direction="column"
           p="4"
@@ -116,9 +116,7 @@ export default function BundleDrawer({
                     {bundle.tasksRequired && ` (${bundle.tasksRequired})`}
                   </Heading>
                   {isCompleted && (
-                    <Text size="1" style={{ color: mainWhite }}>
-                      ✓
-                    </Text>
+                    <PiCheckCircleLight color={mainWhite} size="20px" />
                   )}
                 </Flex>
                 <Text size="1" style={{ color: mainWhite }}>
@@ -151,6 +149,8 @@ export default function BundleDrawer({
             ))}
           </Flex>
         </Flex>
+
+        {/* Task Container */}
         <TasksContainer $isExpanded={isExpanded}>
           <ScrollArea type="auto" scrollbars="vertical" style={{ height: 150 }}>
             <Flex direction="column" p="4" gap="1">

@@ -6,6 +6,7 @@ import { sizeStyles } from '../ui/Button';
 import { BREAKPOINTS } from '@/styles/responsive';
 
 export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
+  display: none;
   height: 100%;
   flex-shrink: 0;
   overflow-y: auto;
@@ -15,8 +16,8 @@ export const SideNavContainer = styled.aside<{ $isOpen: boolean }>`
   z-index: 2;
 
   /* Hide side nav on mobile, show as horizontal nav instead */
-  @media (max-width: ${BREAKPOINTS.mobile}px) {
-    display: none;
+  @media (min-width: ${BREAKPOINTS.sm}px) {
+    display: block;
   }
 
   .nav-card {
