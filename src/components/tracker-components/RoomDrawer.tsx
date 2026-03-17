@@ -14,7 +14,11 @@ export default function RoomDrawer({
   updateTask: (taskId: string, completed: boolean) => void;
 }) {
   return (
-    <Grid key={room.roomId} columns="3" gap="3">
+    <Grid 
+      key={room.roomId} 
+      columns={{ initial: '1', sm: '1', md: '2', lg: '3' }}
+      gap="3"
+    >
       {room.bundleIds.map((bundle) => (
         <BundleDrawer
           key={bundle.bundleId}
