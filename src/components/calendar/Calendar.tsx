@@ -34,6 +34,7 @@ import {
   sageGreen,
   sageMist,
 } from '@/styles/colors';
+import { BREAKPOINTS } from '@/styles/responsive';
 
 const CardWrapper = styled(Card)`
   display: flex;
@@ -85,8 +86,8 @@ const DayBox = styled(Flex)<{ $isSelected?: boolean; $isViewing?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
-  padding: 1rem;
+  gap: 4px;
+  padding: 0.5rem;
   background-color: ${({ $isSelected }) =>
     $isSelected ? 'transparent' : mainWhite};
   border: ${({ $isSelected, $isViewing }) =>
@@ -98,6 +99,12 @@ const DayBox = styled(Flex)<{ $isSelected?: boolean; $isViewing?: boolean }>`
   overflow-y: auto;
   cursor: pointer;
   min-height: 100px;
+
+  /* Desktop: side-by-side layout */
+  @media (min-width: ${BREAKPOINTS.tablet + 1}px) {
+    padding: 1rem;
+    gap: 6px;
+  }
 `;
 
 function getEventCompletion(
